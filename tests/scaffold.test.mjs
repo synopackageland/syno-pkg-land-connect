@@ -4,7 +4,7 @@ import {readFileSync, existsSync} from 'node:fs';
 import YAML from 'yaml';
 // Published on registry.npmjs.org; the integrity is the npm dist.integrity pin.
 const PINS={
- "@synopackageland/ui": ["0.25.30", "sha512-tSZNGlc7OptTkuWhIUvk5szCr5YHQJ82narhgmwL6JNQL0Fd2hCkqLlaR8/yJMgMMxo0SUkKlo+9jv6wOIYywQ=="],
+ "@synopackageland/ui": ["0.25.31", "sha512-1I/EKvdAqEqFjzX6NnxHqd5bAZuORr2ks9Igzq6p9gtKsEXhiYTdB70/esEaz1+hc9Bkaxpscgp/+HDKZwVXPA=="],
  "@synopackageland/sdk": ["0.53.52", "sha512-P7QAXnlHkRIyHQn0MF0EymXea2q79FbZdR3pAmF/ga+3gKEEqDV37yiygg5Fayij8syfT11TexIVR+1xvMdv6Q=="]
 };
 test('native Vue scaffold ships a non-root package with public pinned UI and MIT license', () => {

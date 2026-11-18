@@ -7,7 +7,7 @@ schema: 2
 package: SynoPkgConnect
 version: 0.1.0
 # Increase for every SPK you hand out with the same version (INFO 0.1.0-0001).
-build: 184
+build: 185
 displayname: Syno Connect Center
 maintainer: Syno Package Land
 metadata:
@@ -31,7 +31,7 @@ backend:
 # (vendor/mobile-web) holds the Material Icons glyph map, where "password" names
 # an icon code point; scripts/mobile_web.py update keeps the bundle's name here.
 ui_secret_ignores:
-  - file: "app/m/_expo/static/js/web/index-6b3750e4a579de6e80be99c350b3aaef.js"
+  - file: "app/m/_expo/static/js/web/index-25e7c02ce4adc9636ad2a497afc37c06.js"
     reason: "Material Icons glyph map entry for the password icon, not a credential"
     match:
       - "password:61506"

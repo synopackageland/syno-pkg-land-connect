@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.0-0185
+
+- Phone page: adding a NAS asks you to trust its certificate when needed; Apps open at once with a launch screen, and Surveillance Station sub-Apps fit the phone
+- The Add connection wizard shows every way at once
+
 ## 0.1.0-0184
 
 - Updated to the latest UI kit and SDK
