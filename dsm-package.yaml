@@ -1,0 +1,114 @@
+# Standalone native DSM package: an unsigned SPK that runs as its own package
+# `synopkgland build` reads this file.
+schema: 2
+
+# INFO.package: letters and digits, starting with a letter. It also names the
+# DSM app (SYNO.SDS.<package>) and the CGI URL /webman/3rdparty/<package>/.
+package: SynoPkgConnect
+version: 0.1.0
+# Increase for every SPK you hand out with the same version (INFO 0.1.0-0001).
+build: 183
+displayname: Syno Connect Center
+maintainer: Syno Package Land
+metadata:
+  maintainer_url: https://synopkgland.com/
+# DSM 7.2 or later: the phone page's short address (ui.short_paths) uses DSM's
+# web-config worker, which DSM 7.1 refuses in unsigned packages.
+os_min_ver: "7.2-64570"
+# Package Center, main-menu and window icon: icon_<size>.png rendered from
+# assets/icon/icon.svg by scripts/icons.py.
+icon: assets/icon
+
+# One SPK per architecture. Supported: x86_64, aarch64, armv7.
+arches: [x86_64, aarch64, armv7]
+
+backend:
+  kind: go
+  dir: backend
+  main: ./cmd/app
+
+# Reviewed false positives in public UI files. The phone browser page's bundle
+# (vendor/mobile-web) holds the Material Icons glyph map, where "password" names
+# an icon code point; scripts/mobile_web.py update keeps the bundle's name here.
+ui_secret_ignores:
+  - file: "app/m/_expo/static/js/web/index-6b3750e4a579de6e80be99c350b3aaef.js"
+    reason: "Material Icons glyph map entry for the password icon, not a credential"
+    match:
+      - "password:61506"
+
+ui:
+  # Static files served at /webman/3rdparty/<package>/app/. app.js and app.css
+  # are required; anything else (images, chunks) is copied as is.
+  dir: frontend/dist
+  build: {cwd: frontend, command: [python3, ../scripts/prepare.py]}
+  # A fixed address for the phone browser page (m/ in the hashed UI folder):
+  # a stub that forwards to the current build, so links survive an update.
+  stable_pages:
+    m: m/index.html
+  # https://<NAS>:<port>/m redirects to that page while Connect runs.
+  short_paths:
+    /m: m
+
+# UI languages: i18n/messages/<locale>.json for en, zh-TW, zh-CN, ja, ko, de,
+# fr, es and it (DSM's other languages fall back to English). build checks
+# that every language has the en.json keys and placeholders, and that the keys
+# listed in the glossary use Synology's own DSM wording.
+i18n:
+  messages: i18n/messages
+  glossary: i18n/glossary.json
+  # Package Center names per language (INFO displayname_<lang>). Descriptions and
+  # release notes come only from the catalog (SYNOPKGLAND_CATALOG or --catalog).
+  info:
+    zh-TW:
+      displayname: Syno Connect Center
+    zh-CN:
+      displayname: Syno Connect Center
+    ja:
+      displayname: Syno Connect Center
+    ko:
+      displayname: Syno Connect Center
+    de:
+      displayname: Syno Connect Center
+    fr:
+      displayname: Syno Connect Center
+    es:
+      displayname: Syno Connect Center
+    it:
+      displayname: Syno Connect Center
+
+# Connection settings belong to DSM administrators: every route, the launcher
+# and the CGI admit administrators only.
+entry: admin-only
+
+# Direct SDK entry for the mobile shell, independent of Application Portal.
+mobile:
+  entry: app
+  start: /
+  min_shell: 1
+
+# No optional SDK capabilities: CGI and foreground daemon run as the package account.
+capabilities: {}
+
+# Operation metadata is authored once; ctl generate owns the derived artifacts.
+ctl:
+  enabled: true
+  aliases: [connect]
+  developedBy: synopkgland
+  registry: operations.json
+
+# Fixed foreground child managed by the CLI's package-user supervisor.
+daemon:
+  exec: connect/connectd
+  targets:
+    x86_64: build/daemon-x86_64
+    aarch64: build/daemon-aarch64
+    armv7: build/daemon-armv7
+  args:
+    - serve
+    - "${SYNOPKG_PKGDEST}/daemon/payload"
+    - "${SYNOPKG_PKGVAR}"
+  uninstall_args:
+    - retain
+    - "${SYNOPKG_PKGDEST}/daemon/payload"
+    - "${SYNOPKG_PKGVAR}"
+  env: {}

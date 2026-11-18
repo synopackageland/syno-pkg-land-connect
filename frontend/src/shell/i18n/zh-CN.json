@@ -1,0 +1,9 @@
+{
+  "status": "总览",
+  "apps": "App 网址",
+  "cloudflare": "Cloudflare",
+  "tailscale": "Tailscale",
+  "ipv6": "IPv6 直连",
+  "netbird": "NetBird",
+  "settings": "设置"
+}

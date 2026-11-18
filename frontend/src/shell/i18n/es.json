@@ -1,0 +1,9 @@
+{
+  "status": "Resumen",
+  "apps": "Direcciones de apps",
+  "cloudflare": "Cloudflare",
+  "tailscale": "Tailscale",
+  "ipv6": "Conexión IPv6 directa",
+  "netbird": "NetBird",
+  "settings": "Configuración"
+}

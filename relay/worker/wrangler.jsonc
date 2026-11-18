@@ -1,0 +1,11 @@
+{
+  "name": "connect-relay-example",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-24",
+  "compatibility_flags": ["enable_request_signal"],
+  "workers_dev": true,
+  "preview_urls": false,
+  "durable_objects": {"bindings": [{"name": "TUNNEL", "class_name": "Tunnel"}]},
+  "migrations": [{"tag": "v1", "new_sqlite_classes": ["Tunnel"]}],
+  "observability": {"enabled": false}
+}

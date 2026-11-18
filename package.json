@@ -1,0 +1,28 @@
+{
+  "name": "syno-pkg-connect",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "test": "bash scripts/test-internal-names.sh && bash scripts/check-internal-names.sh && python3 -m unittest discover -s tests/build && node --test tests/ctl.test.mjs tests/registry.test.mjs tests/scaffold.test.mjs tests/lifecycle.test.mjs tests/supervisor-memory.test.mjs tests/migration.test.mjs tests/i18n-ux.test.mjs tests/icon.test.mjs tests/frontend-check.test.mjs tests/e2e-llm.test.mjs tests/e2e-cloudflare-restore.test.mjs tests/e2e-addresses.test.mjs tests/e2e-regressions.test.mjs tests/e2e-ready.test.mjs tests/e2e-public-traffic.test.mjs tests/signal-bridge.test.mjs && bash scripts/backend-test.sh ./... && bash scripts/frontend-check.sh 'pnpm test'",
+    "lint": "node scripts/lint.mjs && (cd backend && go vet ./...) && bash scripts/frontend-check.sh 'pnpm run lint'",
+    "typecheck": "bash scripts/frontend-check.sh 'pnpm run typecheck'",
+    "build": "python3 scripts/build.py",
+    "gates": "pnpm run ctl:check && pnpm test && pnpm run lint && pnpm run typecheck && pnpm run build",
+    "dev": "node scripts/dev.mjs",
+    "e2e:nas": "node --env-file-if-exists=.env node_modules/@synopackageland/cli/dist/e2e/dsm.js tunnel -- e2e run",
+    "e2e:smoke": "node --env-file-if-exists=.env node_modules/@synopackageland/cli/dist/e2e/dsm.js tunnel -- e2e run tests/e2e/smoke.e2e.ts",
+    "ctl:check": "synopkgland ctl generate --check"
+  },
+  "devDependencies": {
+    "@ai-sdk/openai": "4.0.91",
+    "@e2e-dev/web": "0.14.0",
+    "@synopackageland/cli": "~0.54.8",
+    "@synopackageland/templates": "0.42.1",
+    "ai": "7.0.137",
+    "e2e": "0.19.0",
+    "playwright": "1.63.0"
+  },
+  "packageManager": "pnpm@10.33.2"
+}

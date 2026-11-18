@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!-- NAS Remote Connect: a NAS sending a signal out to the internet.
+       Source of every package icon: scripts/icons.py renders assets/icon/icon_<size>.png from it. -->
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2BC8A8"/>
+      <stop offset="1" stop-color="#0B8574"/>
+    </linearGradient>
+  </defs>
+  <rect x="16" y="16" width="224" height="224" rx="52" fill="url(#tile)"/>
+  <rect x="52" y="108" width="96" height="104" rx="16" fill="#FFFFFF"/>
+  <g fill="#0B8574">
+    <rect x="70" y="128" width="60" height="16" rx="8"/>
+    <rect x="70" y="154" width="60" height="16" rx="8"/>
+    <circle cx="80" cy="190" r="7"/>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-width="18">
+    <path d="M160 82 A28 28 0 0 1 188 110" stroke="#FFFFFF"/>
+    <path d="M160 44 A66 66 0 0 1 226 110" stroke="#B5F2E4"/>
+  </g>
+</svg>

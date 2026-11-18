@@ -1,0 +1,122 @@
+{
+  "package": "SynoPkgConnect",
+  "version": "0.1.0-0072",
+  "toolchain": {
+    "cli": "0.30.0",
+    "templates": "0.30.0",
+    "sdk": "0.30.1",
+    "ui": "0.14.10",
+    "executorTag": "executor/v0.27.0",
+    "goToolchain": "go1.26.10"
+  },
+  "check": {
+    "ok": true
+  },
+  "build": {
+    "ok": true
+  },
+  "inspect": {
+    "ok": true,
+    "findings": []
+  },
+  "nas_tested": false,
+  "manifest_sha256": "f5dce0b88c40dfc9486a48a99d2dd575ee0e4c80a3374854cf599f60999166d0",
+  "lock_sha256": {
+    "package-lock.json": "86119ca164e42171d5457cde4387774b35ee456c9086911cfe42c92dbf73b001",
+    "frontend/package-lock.json": "db99d0680cb5f177c0edbb561eecd9e1b0de429525d2071d0af227539f426c8f",
+    "backend/go.sum": "d56fd65f18d1f79b2d7aa01582368c1786042224efeef9887b85d4fdaa3bc6da"
+  },
+  "outputs": [
+    {
+      "file": "SynoPkgConnect-0.1.0-0072-aarch64.spk",
+      "size": 9732096,
+      "sha256": "279ec6597448017782956357664cfbc64fff652d754a87e1ccd0f13d1d4f7beb",
+      "md5": "7c737cbac2c3dff656afdf29b3c08e90"
+    },
+    {
+      "file": "SynoPkgConnect-0.1.0-0072-armv7.spk",
+      "size": 10252288,
+      "sha256": "1a25c55012e9f2024106cdc5aecc5be1f43c830aa22e0caaab87a96fae4611bf",
+      "md5": "8f9ac783310192dde953735290a39eb3"
+    },
+    {
+      "file": "SynoPkgConnect-0.1.0-0072-x86_64.spk",
+      "size": 10703872,
+      "sha256": "0a8cbf20c9e38ba6d1638d99799267c0692265bde226b47d86ac45ddfd4c414e",
+      "md5": "a790a999fd1393a589dee5e454733e8b"
+    }
+  ],
+  "go_binaries": [
+    {
+      "arch": "aarch64",
+      "path": "daemon/control",
+      "version": "go1.26.10",
+      "sha256": "7da24b45cdba3aa0b7148213dd72b490a903f198560d400259c84dd0d337b5c0",
+      "upstream_unmodified": false
+    },
+    {
+      "arch": "aarch64",
+      "path": "daemon/payload/connect/connectd",
+      "version": "go1.26.10",
+      "sha256": "c5b3f63aa8c90fefcc9f93e79e2b1f48617000a3025114b07366f54e25ec8234",
+      "upstream_unmodified": false
+    },
+    {
+      "arch": "aarch64",
+      "path": "ui/cgi/api.cgi",
+      "version": "go1.26.10",
+      "sha256": "f2af7dcbfbe04f576d95e155fb2226eec7efed6caa80a626f66bc46bf2b38512",
+      "upstream_unmodified": false
+    },
+    {
+      "arch": "armv7",
+      "path": "daemon/control",
+      "version": "go1.26.10",
+      "sha256": "b8adda3dea51074da283d37e67d6a5483f702b43a39dfc706d49474adc3d8d00",
+      "upstream_unmodified": false
+    },
+    {
+      "arch": "armv7",
+      "path": "daemon/payload/connect/connectd",
+      "version": "go1.26.10",
+      "sha256": "21f7ce307ac378b0448d8191b1857263456567ec1fbcc667fa89a611fb2bdb7c",
+      "upstream_unmodified": false
+    },
+    {
+      "arch": "armv7",
+      "path": "ui/cgi/api.cgi",
+      "version": "go1.26.10",
+      "sha256": "d94be7d6f176f30c6250cea351999b7044dd32711be54e371b4ca24150a09994",
+      "upstream_unmodified": false
+    },
+    {
+      "arch": "x86_64",
+      "path": "daemon/control",
+      "version": "go1.26.10",
+      "sha256": "4bed54373273fd30d2aaf3a643960c35a45c577283ed133fa97fc842c5e1dc9e",
+      "upstream_unmodified": false
+    },
+    {
+      "arch": "x86_64",
+      "path": "daemon/payload/connect/connectd",
+      "version": "go1.26.10",
+      "sha256": "a7f616c454a8894b7e961122a33a1e2ddab230a1242e2f33f4d00e4bc64baa3c",
+      "upstream_unmodified": false
+    },
+    {
+      "arch": "x86_64",
+      "path": "ui/cgi/api.cgi",
+      "version": "go1.26.10",
+      "sha256": "cf19ce9a526c6d8c638a89f1ef7887282575fab17ebc90b01bfeaa6be32c6121",
+      "upstream_unmodified": false
+    }
+  ],
+  "nas_validation": {
+    "platform": "none",
+    "scope": [],
+    "limits": [
+      "Acceptance SPKs passed local build, check, artifact and inspection checks; device acceptance is pending",
+      "No reboot, external reachability, or cross-architecture device validation is claimed"
+    ]
+  }
+}

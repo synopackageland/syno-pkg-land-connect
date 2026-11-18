@@ -1,0 +1,490 @@
+{
+  "version": "2026-11-06",
+  "goals": [
+    "apps",
+    "services-web",
+    "services-desktop",
+    "all"
+  ],
+  "options": [
+    {
+      "id": "cloudflare-quick",
+      "provider": "cloudflare",
+      "mode": "quick",
+      "tier": 1,
+      "goals": {
+        "apps": 1
+      },
+      "fit": "temporary-share",
+      "reach": "dsm-web",
+      "scope": "one-web-address",
+      "cost": "free",
+      "accounts": [],
+      "client": "browser",
+      "difficulty": 1,
+      "https": "cloudflare-certificate",
+      "limits": [
+        "address-changes",
+        "testing-only"
+      ],
+      "who": "anyone-with-link",
+      "via": "cloudflare",
+      "gate": "none",
+      "public": true,
+      "pairWith": [
+        "dsm-2fa",
+        "auto-block",
+        "turn-off-when-done"
+      ],
+      "risk": "login-page",
+      "protection": "cloudflare",
+      "install": {
+        "app": "none",
+        "desktop": "yes",
+        "phone": "yes"
+      },
+      "pricing": {
+        "limits": [
+          "quick-testing-only"
+        ],
+        "links": {
+          "terms": "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/do-more-with-tunnels/trycloudflare/"
+        },
+        "checked": "2026-10"
+      },
+      "guide": [
+        "consent-start",
+        "send-address",
+        "turn-off"
+      ]
+    },
+    {
+      "id": "cloudflare-workers",
+      "goals": {
+        "apps": 1
+      },
+      "fit": "free-share",
+      "reach": "dsm-web",
+      "scope": "address-per-app",
+      "cost": "free",
+      "accounts": [
+        "cloudflare"
+      ],
+      "client": "browser",
+      "difficulty": 2,
+      "https": "cloudflare-certificate",
+      "limits": [
+        "workers-daily-requests",
+        "upload-100mb",
+        "video-restricted"
+      ],
+      "who": "anyone-with-link",
+      "via": "cloudflare",
+      "gate": "dsm-sign-in",
+      "public": true,
+      "pairWith": [
+        "dsm-2fa",
+        "auto-block",
+        "strong-password"
+      ],
+      "risk": "login-page",
+      "protection": "cloudflare",
+      "install": {
+        "app": "none",
+        "desktop": "yes",
+        "phone": "yes"
+      },
+      "pricing": {
+        "limits": [
+          "workers-daily-requests",
+          "upload-100mb",
+          "video-terms"
+        ],
+        "links": {
+          "pricing": "https://developers.cloudflare.com/workers/platform/pricing/",
+          "limits": "https://developers.cloudflare.com/workers/platform/limits/",
+          "terms": "https://www.cloudflare.com/service-specific-terms-application-services/"
+        },
+        "checked": "2026-11"
+      },
+      "guide": [
+        "free-link-token",
+        "open-address",
+        "protect"
+      ]
+    },
+    {
+      "id": "cloudflare-domain",
+      "provider": "cloudflare",
+      "mode": "domain",
+      "tier": 2,
+      "goals": {
+        "apps": 2,
+        "services-web": 1
+      },
+      "fit": "long-term-share",
+      "reach": "dsm-web",
+      "scope": "address-per-app",
+      "cost": "domain-fee",
+      "accounts": [
+        "cloudflare",
+        "domain"
+      ],
+      "client": "browser",
+      "difficulty": 3,
+      "https": "cloudflare-certificate",
+      "limits": [
+        "upload-100mb",
+        "video-restricted"
+      ],
+      "who": "anyone-with-link",
+      "via": "cloudflare",
+      "gate": "cloudflare-access",
+      "public": true,
+      "pairWith": [
+        "dsm-2fa",
+        "auto-block",
+        "strong-password"
+      ],
+      "links": {
+        "registrar": "https://www.cloudflare.com/domains/"
+      },
+      "risk": "login-page",
+      "protection": "cloudflare",
+      "install": {
+        "app": "none",
+        "desktop": "yes",
+        "phone": "yes"
+      },
+      "pricing": {
+        "limits": [
+          "domain-purchase",
+          "upload-100mb",
+          "video-terms"
+        ],
+        "links": {
+          "registrar": "https://www.cloudflare.com/products/registrar/",
+          "terms": "https://www.cloudflare.com/service-specific-terms-application-services/",
+          "upload": "https://developers.cloudflare.com/support/troubleshooting/http-status-codes/4xx-client-error/error-413/"
+        },
+        "checked": "2026-10"
+      },
+      "guide": [
+        "domain-ready",
+        "domain-sign-in",
+        "open-address",
+        "protect"
+      ],
+      "guideFor": {
+        "services-web": [
+          "domain-ready",
+          "domain-sign-in",
+          "app-address",
+          "protect"
+        ]
+      }
+    },
+    {
+      "id": "tailscale",
+      "provider": "tailscale",
+      "goals": {
+        "services-desktop": 2,
+        "all": 1
+      },
+      "fit": "own-devices",
+      "reach": "nas-services",
+      "scope": "private-network",
+      "cost": "free",
+      "accounts": [
+        "tailscale"
+      ],
+      "client": "app-each-device",
+      "difficulty": 2,
+      "https": "tailscale-certificate",
+      "limits": [
+        "https-needs-admin-console"
+      ],
+      "who": "your-devices",
+      "via": "encrypted-relay",
+      "gate": "network-sign-in",
+      "public": false,
+      "pairWith": [
+        "access-rules",
+        "remove-lost-devices",
+        "dsm-2fa"
+      ],
+      "links": {
+        "download": "https://tailscale.com/download"
+      },
+      "risk": "own-devices",
+      "protection": "private-network",
+      "install": {
+        "app": "tailscale",
+        "desktop": "yes",
+        "phone": "yes",
+        "links": {
+          "mac": "https://tailscale.com/download/mac",
+          "windows": "https://tailscale.com/download/windows",
+          "linux": "https://tailscale.com/download/linux",
+          "ios": "https://tailscale.com/download/ios",
+          "android": "https://tailscale.com/download/android"
+        }
+      },
+      "pricing": {
+        "limits": [
+          "tailscale-personal"
+        ],
+        "links": {
+          "pricing": "https://tailscale.com/pricing"
+        },
+        "checked": "2026-10"
+      },
+      "guide": [
+        "nas-sign-in",
+        "client-install",
+        "client-use",
+        "protect"
+      ]
+    },
+    {
+      "id": "netbird",
+      "provider": "netbird",
+      "goals": {
+        "all": 2
+      },
+      "fit": "own-devices-selfhost",
+      "reach": "policy-services",
+      "scope": "private-network",
+      "cost": "free-plan",
+      "accounts": [
+        "netbird"
+      ],
+      "client": "app-each-device",
+      "difficulty": 2,
+      "https": "wireguard-http",
+      "limits": [
+        "policy-required"
+      ],
+      "who": "policy-devices",
+      "via": "encrypted-relay",
+      "gate": "network-sign-in",
+      "public": false,
+      "pairWith": [
+        "access-rules",
+        "dsm-2fa"
+      ],
+      "links": {
+        "download": "https://docs.netbird.io/get-started/install"
+      },
+      "risk": "own-devices",
+      "protection": "private-network",
+      "install": {
+        "app": "netbird",
+        "desktop": "yes",
+        "phone": "yes",
+        "links": {
+          "mac": "https://docs.netbird.io/get-started/install",
+          "windows": "https://docs.netbird.io/get-started/install",
+          "linux": "https://docs.netbird.io/get-started/install",
+          "ios": "https://docs.netbird.io/get-started/install",
+          "android": "https://docs.netbird.io/get-started/install"
+        }
+      },
+      "pricing": {
+        "limits": [
+          "netbird-free",
+          "self-host"
+        ],
+        "links": {
+          "pricing": "https://netbird.io/pricing",
+          "selfHost": "https://docs.netbird.io/selfhosted/selfhosted-quickstart"
+        },
+        "checked": "2026-10"
+      },
+      "guide": [
+        "nas-sign-in",
+        "client-install",
+        "policy",
+        "client-use",
+        "protect"
+      ]
+    },
+    {
+      "id": "quickconnect",
+      "native": true,
+      "goals": {
+        "apps": 3,
+        "services-web": 2,
+        "services-desktop": 3
+      },
+      "fit": "synology-apps",
+      "reach": "dsm-and-synology-apps",
+      "scope": "synology-services",
+      "cost": "free",
+      "accounts": [
+        "synology"
+      ],
+      "client": "synology-apps",
+      "difficulty": 1,
+      "https": "dsm-managed",
+      "limits": [
+        "relay-slower",
+        "shared-domain"
+      ],
+      "who": "anyone-with-id",
+      "via": "synology-relay",
+      "gate": "none",
+      "public": true,
+      "pairWith": [
+        "dsm-2fa",
+        "auto-block"
+      ],
+      "risk": "login-page",
+      "protection": "synology-relay",
+      "install": {
+        "app": "synology-apps",
+        "desktop": "yes",
+        "phone": "yes"
+      },
+      "pricing": {
+        "limits": [],
+        "links": {},
+        "checked": "2026-10"
+      },
+      "guide": []
+    },
+    {
+      "id": "ddns",
+      "native": true,
+      "goals": {},
+      "fit": "own-router",
+      "reach": "forwarded-ports",
+      "scope": "per-service",
+      "cost": "free-plan",
+      "accounts": [
+        "ddns-provider"
+      ],
+      "client": "synology-apps",
+      "difficulty": 4,
+      "https": "own-certificate",
+      "limits": [
+        "port-forwarding"
+      ],
+      "who": "anyone",
+      "via": "direct",
+      "gate": "none",
+      "public": true,
+      "pairWith": [
+        "https-only",
+        "dsm-2fa",
+        "auto-block",
+        "dsm-firewall"
+      ],
+      "risk": "login-page",
+      "protection": "none",
+      "install": {
+        "app": "none",
+        "desktop": "yes",
+        "phone": "yes"
+      },
+      "pricing": {
+        "limits": [],
+        "links": {
+          "help": "https://kb.synology.com/en-global/DSM/help/DSM/AdminCenter/connection_ddns?version=7"
+        },
+        "checked": "2026-11"
+      },
+      "guide": []
+    },
+    {
+      "id": "ipv6",
+      "provider": "ipv6",
+      "requires": [
+        "ipv6-global"
+      ],
+      "goals": {
+        "apps": 9,
+        "services-web": 9,
+        "services-desktop": 9
+      },
+      "fit": "direct",
+      "reach": "selected-services",
+      "scope": "per-service",
+      "cost": "free",
+      "accounts": [],
+      "client": "visitor-ipv6",
+      "difficulty": 4,
+      "https": "own-certificate",
+      "limits": [
+        "visitor-needs-ipv6",
+        "address-may-change",
+        "router-setup"
+      ],
+      "who": "anyone",
+      "via": "direct",
+      "gate": "none",
+      "public": true,
+      "pairWith": [
+        "https-only",
+        "dsm-2fa",
+        "dsm-firewall",
+        "no-smb"
+      ],
+      "risk": "login-page",
+      "protection": "none",
+      "install": {
+        "app": "none",
+        "desktop": "yes",
+        "phone": "yes"
+      },
+      "pricing": {
+        "limits": [
+          "isp-dependent"
+        ],
+        "links": {},
+        "checked": "2026-10"
+      },
+      "guide": [
+        "checklist",
+        "open-address",
+        "protect"
+      ]
+    }
+  ],
+  "tcpServices": [
+    {
+      "id": "drive",
+      "port": 6690,
+      "localPort": 6690,
+      "connectTo": "localhost",
+      "notes": [
+        "drive-port-6690"
+      ],
+      "goal": "services-desktop",
+      "providers": [
+        "tailscale",
+        "netbird"
+      ]
+    },
+    {
+      "id": "smb",
+      "port": 445,
+      "localPort": 445,
+      "connectTo": "smb://<nas>",
+      "notes": [],
+      "goal": "all",
+      "providers": [
+        "tailscale",
+        "netbird"
+      ]
+    }
+  ],
+  "protections": {
+    "dsm-2fa": "https://kb.synology.com/en-global/DSM/help/DSM/SecureSignIn/2factor_authentication?version=7",
+    "auto-block": "https://kb.synology.com/en-global/DSM/help/DSM/AdminCenter/connection_security_protection?version=7",
+    "dsm-firewall": "https://kb.synology.com/en-global/DSM/help/DSM/AdminCenter/connection_security_firewall?version=7",
+    "strong-password": "https://kb.synology.com/en-global/DSM/help/DSM/AdminCenter/file_user_advanced?version=7",
+    "keep-updated": "https://kb.synology.com/en-global/DSM/help/DSM/AdminCenter/system_update_reset_desc?version=7",
+    "secure-nas": "https://kb.synology.com/en-global/DSM/tutorial/How_to_add_extra_security_to_your_Synology_NAS"
+  }
+}

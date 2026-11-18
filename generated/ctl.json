@@ -1,0 +1,5148 @@
+{
+  "commands": {
+    "app.status": {
+      "cli": [
+        "status"
+      ],
+      "summary": "Show package version and verified administrator identity",
+      "effect": "read",
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "package",
+          "version",
+          "nasName",
+          "user",
+          "admin",
+          "lang",
+          "locale",
+          "process",
+          "go_version",
+          "platform",
+          "time"
+        ],
+        "properties": {
+          "package": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "nasName": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "user": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "admin": {
+            "type": "boolean"
+          },
+          "lang": {
+            "type": "string"
+          },
+          "locale": {
+            "type": "string"
+          },
+          "process": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "uid",
+              "gid"
+            ],
+            "properties": {
+              "uid": {
+                "type": "integer"
+              },
+              "gid": {
+                "type": "integer"
+              }
+            }
+          },
+          "go_version": {
+            "type": "string"
+          },
+          "platform": {
+            "type": "string"
+          },
+          "time": {
+            "type": "string"
+          }
+        }
+      },
+      "flow": {
+        "type": "invoke",
+        "method": "app.status"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "description": "The entry page's DSM display-language hint",
+        "properties": {
+          "dsmLanguage": {
+            "type": "string",
+            "maxLength": 3,
+            "description": "The caller's DSM display language as the entry page read it (cht, enu, …); empty when DSM follows the browser"
+          }
+        },
+        "additionalProperties": false
+      },
+      "examples": [
+        {}
+      ],
+      "permission": "administrators",
+      "ai": "read"
+    },
+    "ctl.connection.status": {
+      "cli": [
+        "connection",
+        "status"
+      ],
+      "summary": "Show connection states and failure codes; a pending sign-in returns its time-limited login link; connecting is not completed; pending sign-in links and codes are returned unchanged; finish browser authorization in the App",
+      "effect": "read",
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "provider",
+          "state",
+          "simulation",
+          "loggedIn",
+          "networkReady",
+          "externalVerified"
+        ],
+        "properties": {
+          "apply": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "phase"
+            ],
+            "properties": {
+              "phase": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              },
+              "addedPorts": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "removedPorts": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "provider": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "knownLimitation": {
+            "type": "string"
+          },
+          "simulation": {
+            "type": "boolean"
+          },
+          "loggedIn": {
+            "type": "boolean"
+          },
+          "networkReady": {
+            "type": "boolean"
+          },
+          "externalVerified": {
+            "type": "boolean"
+          },
+          "loginUrl": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "userCode": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "loginDeadline": {
+            "type": "string"
+          },
+          "connections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/connection"
+            }
+          }
+        },
+        "$defs": {
+          "connection": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "provider",
+              "state",
+              "simulation",
+              "loggedIn",
+              "networkReady",
+              "externalVerified"
+            ],
+            "properties": {
+              "apply": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "phase"
+                ],
+                "properties": {
+                  "phase": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "addedPorts": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  },
+                  "removedPorts": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              },
+              "provider": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "phase": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              },
+              "mode": {
+                "type": "string"
+              },
+              "knownLimitation": {
+                "type": "string"
+              },
+              "simulation": {
+                "type": "boolean"
+              },
+              "loggedIn": {
+                "type": "boolean"
+              },
+              "networkReady": {
+                "type": "boolean"
+              },
+              "externalVerified": {
+                "type": "boolean"
+              },
+              "loginUrl": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "userCode": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "loginDeadline": {
+                "type": "string"
+              },
+              "connections": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/connection"
+                }
+              }
+            }
+          }
+        }
+      },
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.connection.status"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "description": "No parameters",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "examples": [
+        {}
+      ],
+      "permission": "administrators",
+      "ai": "read"
+    },
+    "ctl.ports.list": {
+      "cli": [
+        "ports",
+        "list"
+      ],
+      "summary": "List configured local services and their current port detection state",
+      "effect": "read",
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "entries",
+          "detection",
+          "mappingState",
+          "revision"
+        ],
+        "properties": {
+          "entries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "protocol",
+                "port",
+                "source",
+                "enabled",
+                "state"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "protocol": {
+                  "type": "string"
+                },
+                "port": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "state": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "detection": {
+            "type": "string"
+          },
+          "mappingState": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer"
+          }
+        }
+      },
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.ports.list"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "description": "No parameters",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "examples": [
+        {}
+      ],
+      "permission": "administrators",
+      "ai": "read"
+    },
+    "ctl.ipv6.status": {
+      "cli": [
+        "ipv6",
+        "status"
+      ],
+      "summary": "Diagnose local IPv6 availability; local addresses do not prove Internet reachability",
+      "effect": "read",
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "state",
+          "reason",
+          "addressCount",
+          "endpoints",
+          "checkedAt"
+        ],
+        "properties": {
+          "state": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "addressCount": {
+            "type": "integer"
+          },
+          "endpoints": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "port",
+                "reachability"
+              ],
+              "properties": {
+                "port": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "number",
+                    "scheme"
+                  ],
+                  "properties": {
+                    "number": {
+                      "type": "integer"
+                    },
+                    "scheme": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "reachability": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "checkedAt": {
+            "type": "string"
+          }
+        }
+      },
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.ipv6.status"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "description": "No parameters",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "examples": [
+        {}
+      ],
+      "permission": "administrators",
+      "ai": "read"
+    },
+    "advisor.recommend": {
+      "cli": [
+        "recommend"
+      ],
+      "summary": "Rank existing connection methods for a use without enabling any; each option lists its plain-language security and the first step, and steps needing consent or browser login say so in needs",
+      "effect": "read",
+      "resultSchema": {
+        "type": "object",
+        "required": [
+          "catalogVersion",
+          "options"
+        ],
+        "properties": {
+          "catalogVersion": {
+            "type": "string"
+          },
+          "goal": {
+            "type": "string",
+            "enum": [
+              "apps",
+              "services-web",
+              "services-desktop",
+              "all"
+            ]
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "rank",
+                "suitability",
+                "next"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "cloudflare-quick",
+                    "cloudflare-workers",
+                    "cloudflare-domain",
+                    "tailscale",
+                    "netbird",
+                    "quickconnect",
+                    "ddns",
+                    "ipv6"
+                  ]
+                },
+                "tier": {
+                  "type": "integer",
+                  "description": "Order of the Cloudflare options, not a name: 1 Cloudflare temporary address, 2 Cloudflare own domain (web HTTPS)"
+                },
+                "scope": {
+                  "type": "string",
+                  "description": "What one connection opens: one DSM web address, DSM and each app on its own address, chosen services one by one, a private network the devices join (the whole NAS on that network), or Synology's own services",
+                  "enum": [
+                    "one-web-address",
+                    "address-per-app",
+                    "per-service",
+                    "private-network",
+                    "synology-services"
+                  ]
+                },
+                "https": {
+                  "type": "string",
+                  "description": "Who provides HTTPS: Cloudflare's browser-trusted certificate (no DSM certificate or open port), a Tailscale ts.net certificate once HTTPS is on (else HTTP inside the tailnet), HTTP inside NetBird's WireGuard network, DSM's QuickConnect, or a certificate you set up in DSM for DDNS and IPv6",
+                  "enum": [
+                    "cloudflare-certificate",
+                    "tailscale-certificate",
+                    "wireguard-http",
+                    "dsm-managed",
+                    "own-certificate"
+                  ]
+                },
+                "suitability": {
+                  "type": "string",
+                  "enum": [
+                    "recommended",
+                    "alternative",
+                    "other",
+                    "unavailable"
+                  ]
+                },
+                "reasons": {
+                  "type": "array",
+                  "description": "needs_tcp_services: the use runs over the method's TCP services (Tailscale carries Drive or SMB as a tailnet-only TCP mapping); no_protection: nothing stands between the internet and the service, so the option is never recommended",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "risk": {
+                  "type": "string",
+                  "description": "Who reaches what: only your own devices, or a sign-in page anyone with the address sees",
+                  "enum": [
+                    "own-devices",
+                    "login-page"
+                  ]
+                },
+                "protection": {
+                  "type": "string",
+                  "description": "What stands between the internet and the NAS: Cloudflare, a private network only your devices join, Synology's relay, or none (services face the internet directly, as with direct IPv6)",
+                  "enum": [
+                    "cloudflare",
+                    "private-network",
+                    "synology-relay",
+                    "none"
+                  ]
+                },
+                "install": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "app",
+                    "desktop",
+                    "phone"
+                  ],
+                  "properties": {
+                    "app": {
+                      "type": "string"
+                    },
+                    "desktop": {
+                      "type": "string"
+                    },
+                    "phone": {
+                      "type": "string"
+                    },
+                    "links": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "pricing": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "limits",
+                    "links",
+                    "checked"
+                  ],
+                  "properties": {
+                    "limits": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "links": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    },
+                    "checked": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "guide": {
+                  "type": "array",
+                  "description": "The method's setup steps as message keys",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "guideFor": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "next": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "kind"
+                    ],
+                    "properties": {
+                      "kind": {
+                        "type": "string"
+                      },
+                      "command": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "input": {
+                        "type": "object",
+                        "properties": {
+                          "hostname": {
+                            "type": "string",
+                            "writeOnly": true
+                          }
+                        }
+                      },
+                      "needs": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "action": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string",
+                        "writeOnly": true
+                      }
+                    }
+                  }
+                },
+                "provider": {
+                  "type": "string"
+                },
+                "mode": {
+                  "type": "string"
+                },
+                "fit": {
+                  "type": "string"
+                },
+                "reach": {
+                  "type": "string"
+                },
+                "cost": {
+                  "type": "string"
+                },
+                "client": {
+                  "type": "string"
+                },
+                "who": {
+                  "type": "string"
+                },
+                "via": {
+                  "type": "string"
+                },
+                "gate": {
+                  "type": "string",
+                  "description": "The sign-in in front of the NAS's own: Cloudflare Access email sign-in (own domain, optional), DSM sign-in before an app (Free link and own domain), signing in to the private network, or none",
+                  "enum": [
+                    "cloudflare-access",
+                    "dsm-sign-in",
+                    "network-sign-in",
+                    "none"
+                  ]
+                },
+                "state": {
+                  "type": "string"
+                },
+                "accounts": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "requires": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "limits": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "pairWith": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "native": {
+                  "type": "boolean"
+                },
+                "public": {
+                  "type": "boolean"
+                },
+                "difficulty": {
+                  "type": "integer"
+                },
+                "rank": {
+                  "type": "integer"
+                },
+                "goals": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "integer"
+                  }
+                },
+                "links": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "flow": {
+        "type": "invoke",
+        "method": "advisor.recommend"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "goal": {
+            "type": "string",
+            "description": "apps: DSM and package web pages in a browser; services-web: a service such as Drive from its phone app or a browser (DSM HTTPS); services-desktop: a computer's TCP client such as Drive Client sync (TCP 6690); all: every service including SMB (445); omitted keeps catalog order",
+            "enum": [
+              "apps",
+              "services-web",
+              "services-desktop",
+              "all"
+            ],
+            "examples": [
+              "apps",
+              "all"
+            ]
+          }
+        }
+      },
+      "examples": [
+        {
+          "goal": "apps"
+        },
+        {
+          "goal": "services-desktop"
+        },
+        {
+          "goal": "all"
+        },
+        {}
+      ],
+      "permission": "administrators",
+      "ai": "read"
+    },
+    "ctl.diagnose": {
+      "cli": [
+        "diagnose"
+      ],
+      "summary": "Explain each provider's state, connector, addresses and next step; a pending browser sign-in returns its time-limited login link for the calling administrator; query again after signing in",
+      "effect": "read",
+      "resultSchema": {
+        "type": "object",
+        "required": [
+          "catalogVersion",
+          "ipv6Global",
+          "providers",
+          "dsmExternal",
+          "dsmSecurity"
+        ],
+        "properties": {
+          "catalogVersion": {
+            "type": "string"
+          },
+          "ipv6Global": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "providers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "provider",
+                "state",
+                "addresses",
+                "next",
+                "simulation",
+                "loggedIn",
+                "networkReady",
+                "externalVerified"
+              ],
+              "properties": {
+                "provider": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string"
+                },
+                "code": {
+                  "type": "string"
+                },
+                "mode": {
+                  "type": "string"
+                },
+                "connector": {
+                  "type": "string",
+                  "enum": [
+                    "installed",
+                    "missing",
+                    "busy",
+                    "unknown"
+                  ]
+                },
+                "loginUrl": {
+                  "type": "string",
+                  "writeOnly": true
+                },
+                "addresses": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "writeOnly": true
+                  }
+                },
+                "next": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "kind"
+                    ],
+                    "properties": {
+                      "kind": {
+                        "type": "string"
+                      },
+                      "command": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "input": {
+                        "type": "object",
+                        "properties": {
+                          "hostname": {
+                            "type": "string",
+                            "writeOnly": true
+                          }
+                        }
+                      },
+                      "needs": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "action": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string",
+                        "writeOnly": true
+                      }
+                    }
+                  }
+                },
+                "apply": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "phase"
+                  ],
+                  "properties": {
+                    "phase": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    },
+                    "addedPorts": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      }
+                    },
+                    "removedPorts": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                "phase": {
+                  "type": "string"
+                },
+                "knownLimitation": {
+                  "type": "string"
+                },
+                "simulation": {
+                  "type": "boolean"
+                },
+                "loggedIn": {
+                  "type": "boolean"
+                },
+                "networkReady": {
+                  "type": "boolean"
+                },
+                "externalVerified": {
+                  "type": "boolean"
+                },
+                "userCode": {
+                  "type": "string",
+                  "writeOnly": true
+                },
+                "loginDeadline": {
+                  "type": "string"
+                },
+                "connections": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/connection"
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "dsmExternal": {
+            "type": "object",
+            "description": "DSM's External Access address against the stable address of a running own Cloudflare domain or token; a temporary trycloudflare address and private Tailscale or NetBird addresses are never suggested. next proposes external set; ask the user before running it",
+            "required": [
+              "state",
+              "current",
+              "suggested"
+            ],
+            "properties": {
+              "state": {
+                "type": "string",
+                "enum": [
+                  "matches",
+                  "differs",
+                  "not-set",
+                  "no-stable-address",
+                  "unknown"
+                ]
+              },
+              "reason": {
+                "type": "string",
+                "enum": [
+                  "temporary-address",
+                  "private-address",
+                  "none",
+                  "read-failed"
+                ]
+              },
+              "current": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "hostname": {
+                    "type": "string"
+                  },
+                  "http_port": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "https_port": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "suggested": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "hostname": {
+                    "type": "string"
+                  },
+                  "httpsPort": {
+                    "type": "integer"
+                  },
+                  "source": {
+                    "type": "string",
+                    "enum": [
+                      "cloudflare"
+                    ]
+                  }
+                }
+              },
+              "next": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "kind"
+                  ],
+                  "properties": {
+                    "kind": {
+                      "type": "string"
+                    },
+                    "command": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "input": {
+                      "type": "object",
+                      "properties": {
+                        "hostname": {
+                          "type": "string",
+                          "writeOnly": true
+                        }
+                      }
+                    },
+                    "needs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "action": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string",
+                      "writeOnly": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "dsmSecurity": {
+            "type": "object",
+            "description": "Whether DSM Auto Block and enforced 2-factor sign-in are on, read with the caller's own DSM session; unknown when DSM refuses the read (only administrators may read them). next holds a user step turn-on-auto-block or turn-on-dsm-2fa with DSM's official help url for each one that is off; Syno Connect Center never changes them",
+            "required": [
+              "auto-block",
+              "dsm-2fa",
+              "next"
+            ],
+            "properties": {
+              "auto-block": {
+                "type": "string",
+                "enum": [
+                  "on",
+                  "off",
+                  "unknown"
+                ]
+              },
+              "dsm-2fa": {
+                "type": "string",
+                "enum": [
+                  "on",
+                  "off",
+                  "unknown"
+                ]
+              },
+              "next": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "kind"
+                  ],
+                  "properties": {
+                    "kind": {
+                      "type": "string"
+                    },
+                    "command": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "input": {
+                      "type": "object",
+                      "properties": {
+                        "hostname": {
+                          "type": "string",
+                          "writeOnly": true
+                        }
+                      }
+                    },
+                    "needs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "action": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string",
+                      "writeOnly": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "additionalProperties": false,
+        "$defs": {
+          "connection": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "provider",
+              "state",
+              "simulation",
+              "loggedIn",
+              "networkReady",
+              "externalVerified"
+            ],
+            "properties": {
+              "apply": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "phase"
+                ],
+                "properties": {
+                  "phase": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "addedPorts": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  },
+                  "removedPorts": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              },
+              "provider": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "phase": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              },
+              "mode": {
+                "type": "string"
+              },
+              "knownLimitation": {
+                "type": "string"
+              },
+              "simulation": {
+                "type": "boolean"
+              },
+              "loggedIn": {
+                "type": "boolean"
+              },
+              "networkReady": {
+                "type": "boolean"
+              },
+              "externalVerified": {
+                "type": "boolean"
+              },
+              "loginUrl": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "userCode": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "loginDeadline": {
+                "type": "string"
+              },
+              "connections": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/connection"
+                }
+              }
+            }
+          }
+        }
+      },
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.diagnose"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "description": "No parameters",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "examples": [
+        {}
+      ],
+      "permission": "administrators",
+      "ai": "read"
+    },
+    "external.status": {
+      "cli": [
+        "external",
+        "status"
+      ],
+      "summary": "Compare DSM's External Access address (Control Panel > External Access > Advanced) with the stable own-domain address Syno Connect Center runs; reads only",
+      "effect": "read",
+      "resultSchema": {
+        "type": "object",
+        "description": "DSM's External Access address against the stable address of a running own Cloudflare domain or token; a temporary trycloudflare address and private Tailscale or NetBird addresses are never suggested. next proposes external set; ask the user before running it",
+        "required": [
+          "state",
+          "current",
+          "suggested"
+        ],
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "matches",
+              "differs",
+              "not-set",
+              "no-stable-address",
+              "unknown"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "temporary-address",
+              "private-address",
+              "none",
+              "read-failed"
+            ]
+          },
+          "current": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "hostname": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "http_port": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "https_port": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            }
+          },
+          "suggested": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "hostname": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "httpsPort": {
+                "type": "integer"
+              },
+              "source": {
+                "type": "string",
+                "enum": [
+                  "cloudflare"
+                ]
+              }
+            }
+          },
+          "next": {
+            "type": "array"
+          }
+        },
+        "additionalProperties": false
+      },
+      "flow": {
+        "type": "invoke",
+        "method": "external.status"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "description": "No parameters",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "examples": [
+        {}
+      ],
+      "permission": "administrators",
+      "ai": "read"
+    },
+    "external.set": {
+      "cli": [
+        "external",
+        "set"
+      ],
+      "summary": "Set DSM's advertised External Access host name and ports with the administrator's own DSM session; DSM's listening ports do not change; the same values again change nothing",
+      "effect": "write",
+      "resultSchema": {
+        "type": "object",
+        "description": "changed is false when DSM already had every value; previous is the value before, for restoring",
+        "required": [
+          "changed",
+          "previous",
+          "advice"
+        ],
+        "properties": {
+          "changed": {
+            "type": "boolean"
+          },
+          "previous": {
+            "type": "object",
+            "properties": {
+              "hostname": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "http_port": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "https_port": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            }
+          },
+          "advice": {
+            "type": "object",
+            "description": "DSM's External Access address against the stable address of a running own Cloudflare domain or token; a temporary trycloudflare address and private Tailscale or NetBird addresses are never suggested. next proposes external set; ask the user before running it",
+            "required": [
+              "state",
+              "current",
+              "suggested"
+            ],
+            "properties": {
+              "state": {
+                "type": "string",
+                "enum": [
+                  "matches",
+                  "differs",
+                  "not-set",
+                  "no-stable-address",
+                  "unknown"
+                ]
+              },
+              "reason": {
+                "type": "string",
+                "enum": [
+                  "temporary-address",
+                  "private-address",
+                  "none",
+                  "read-failed"
+                ]
+              },
+              "current": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "hostname": {
+                    "type": "string",
+                    "writeOnly": true
+                  },
+                  "http_port": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "https_port": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "suggested": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "properties": {
+                  "hostname": {
+                    "type": "string",
+                    "writeOnly": true
+                  },
+                  "httpsPort": {
+                    "type": "integer"
+                  },
+                  "source": {
+                    "type": "string",
+                    "enum": [
+                      "cloudflare"
+                    ]
+                  }
+                }
+              },
+              "next": {
+                "type": "array"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "flow": {
+        "type": "invoke",
+        "method": "external.set"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "description": "Only the given fields change; use diagnose's dsmExternal.suggested and ask the user first",
+        "additionalProperties": false,
+        "required": [
+          "hostname"
+        ],
+        "properties": {
+          "hostname": {
+            "type": "string",
+            "description": "Host name or IP address DSM advertises for external links; empty clears it",
+            "maxLength": 253,
+            "pattern": "^[A-Za-z0-9.:-]*$",
+            "examples": [
+              "nas.example.com"
+            ]
+          },
+          "httpsPort": {
+            "type": "integer",
+            "description": "Advertised external HTTPS port",
+            "minimum": 1,
+            "maximum": 65535,
+            "examples": [
+              443
+            ]
+          },
+          "httpPort": {
+            "type": "integer",
+            "description": "Advertised external HTTP port; must differ from httpsPort",
+            "minimum": 1,
+            "maximum": 65535
+          }
+        }
+      },
+      "examples": [
+        {
+          "hostname": "nas.example.com",
+          "httpsPort": 443
+        }
+      ],
+      "permission": "administrators",
+      "ai": "draft",
+      "preview": "external.set.preview"
+    },
+    "ctl.connection.disconnect": {
+      "cli": [
+        "connection",
+        "disconnect"
+      ],
+      "summary": "Request disconnection without forgetting saved settings; read connection status to confirm stopped",
+      "effect": "write",
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "provider",
+          "state",
+          "simulation",
+          "loggedIn",
+          "networkReady",
+          "externalVerified"
+        ],
+        "properties": {
+          "apply": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "phase"
+            ],
+            "properties": {
+              "phase": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              },
+              "addedPorts": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "removedPorts": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "provider": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "knownLimitation": {
+            "type": "string"
+          },
+          "simulation": {
+            "type": "boolean"
+          },
+          "loggedIn": {
+            "type": "boolean"
+          },
+          "networkReady": {
+            "type": "boolean"
+          },
+          "externalVerified": {
+            "type": "boolean"
+          },
+          "loginUrl": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "userCode": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "loginDeadline": {
+            "type": "string"
+          },
+          "connections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/connection"
+            }
+          }
+        },
+        "$defs": {
+          "connection": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "provider",
+              "state",
+              "simulation",
+              "loggedIn",
+              "networkReady",
+              "externalVerified"
+            ],
+            "properties": {
+              "apply": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "phase"
+                ],
+                "properties": {
+                  "phase": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "addedPorts": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  },
+                  "removedPorts": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              },
+              "provider": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "phase": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              },
+              "mode": {
+                "type": "string"
+              },
+              "knownLimitation": {
+                "type": "string"
+              },
+              "simulation": {
+                "type": "boolean"
+              },
+              "loggedIn": {
+                "type": "boolean"
+              },
+              "networkReady": {
+                "type": "boolean"
+              },
+              "externalVerified": {
+                "type": "boolean"
+              },
+              "loginUrl": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "userCode": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "loginDeadline": {
+                "type": "string"
+              },
+              "connections": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/connection"
+                }
+              }
+            }
+          }
+        }
+      },
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.connection.disconnect"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "description": "Stop one provider or all providers; does not remove saved configuration",
+        "additionalProperties": false,
+        "properties": {
+          "provider": {
+            "type": "string",
+            "description": "Provider to stop; omitted or all stops every provider",
+            "enum": [
+              "all",
+              "cloudflare",
+              "tailscale",
+              "netbird",
+              "ipv6"
+            ],
+            "default": "all",
+            "examples": [
+              "tailscale",
+              "all"
+            ]
+          }
+        }
+      },
+      "examples": [
+        {
+          "provider": "tailscale"
+        },
+        {
+          "provider": "all"
+        }
+      ],
+      "permission": "administrators",
+      "ai": "draft",
+      "preview": "ctl.connection.disconnect.preview"
+    },
+    "ctl.connection.connect": {
+      "cli": [
+        "connection",
+        "connect"
+      ],
+      "summary": "Configure or reconnect a provider; returns acceptance, not completion; query diagnose for the login link; binary_required returns state connector-required with the next commands; pending sign-in links and codes are returned unchanged; finish browser authorization in the App",
+      "effect": "write",
+      "resultSchema": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "provider",
+              "state",
+              "simulation",
+              "loggedIn",
+              "networkReady",
+              "externalVerified"
+            ],
+            "properties": {
+              "apply": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "phase"
+                ],
+                "properties": {
+                  "phase": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "addedPorts": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  },
+                  "removedPorts": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              },
+              "provider": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "phase": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              },
+              "mode": {
+                "type": "string"
+              },
+              "knownLimitation": {
+                "type": "string"
+              },
+              "simulation": {
+                "type": "boolean"
+              },
+              "loggedIn": {
+                "type": "boolean"
+              },
+              "networkReady": {
+                "type": "boolean"
+              },
+              "externalVerified": {
+                "type": "boolean"
+              },
+              "loginUrl": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "userCode": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "loginDeadline": {
+                "type": "string"
+              },
+              "connections": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/connection"
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "provider",
+              "state",
+              "code",
+              "next"
+            ],
+            "properties": {
+              "provider": {
+                "type": "string"
+              },
+              "state": {
+                "const": "connector-required"
+              },
+              "code": {
+                "const": "binary_required"
+              },
+              "next": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        ],
+        "$defs": {
+          "connection": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "provider",
+              "state",
+              "simulation",
+              "loggedIn",
+              "networkReady",
+              "externalVerified"
+            ],
+            "properties": {
+              "apply": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "phase"
+                ],
+                "properties": {
+                  "phase": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "addedPorts": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  },
+                  "removedPorts": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              },
+              "provider": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "phase": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              },
+              "mode": {
+                "type": "string"
+              },
+              "knownLimitation": {
+                "type": "string"
+              },
+              "simulation": {
+                "type": "boolean"
+              },
+              "loggedIn": {
+                "type": "boolean"
+              },
+              "networkReady": {
+                "type": "boolean"
+              },
+              "externalVerified": {
+                "type": "boolean"
+              },
+              "loginUrl": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "userCode": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "loginDeadline": {
+                "type": "string"
+              },
+              "connections": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/connection"
+                }
+              }
+            }
+          }
+        }
+      },
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.connection.connect"
+      },
+      "paramsSchema": {
+        "allOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "provider": {
+                "type": "string",
+                "description": "Existing connection provider",
+                "enum": [
+                  "cloudflare",
+                  "tailscale",
+                  "netbird",
+                  "ipv6"
+                ]
+              },
+              "mode": {
+                "type": "string",
+                "description": "Cloudflare temporary address or own-domain setup/reconnect",
+                "enum": [
+                  "quick",
+                  "domain"
+                ]
+              },
+              "subdomain": {
+                "type": "string",
+                "description": "Optional Cloudflare domain label; fill locally",
+                "writeOnly": true
+              },
+              "token": {
+                "type": "string",
+                "description": "Optional Tailscale auth key or NetBird setup key; JSON file/stdin only",
+                "writeOnly": true,
+                "maxLength": 4096
+              },
+              "confirmExposure": {
+                "type": "boolean",
+                "description": "Explicit administrator consent to expose the configured services; --yes does not replace it"
+              },
+              "replace": {
+                "type": "boolean",
+                "description": "Accept that the running connection drops for about a minute while a change it cannot keep is applied"
+              },
+              "loginServer": {
+                "type": "string",
+                "description": "Optional HTTPS Headscale login server origin",
+                "writeOnly": true
+              },
+              "loginOrigin": {
+                "type": "string",
+                "description": "Optional trusted HTTPS Headscale browser login origin",
+                "writeOnly": true
+              },
+              "managementUrl": {
+                "type": "string",
+                "description": "Optional NetBird management URL",
+                "writeOnly": true
+              },
+              "loginOrigins": {
+                "type": "array",
+                "description": "Explicitly trusted HTTPS NetBird login origins",
+                "writeOnly": true,
+                "maxItems": 8,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "confirmManagementPolicy": {
+                "type": "boolean",
+                "description": "Consent to self-hosted NetBird management policy when using a setup key"
+              },
+              "serviceIds": {
+                "type": "array",
+                "description": "IPv6 service IDs from ports list; omit to use enabled services",
+                "maxItems": 16,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "provider"
+            ]
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "enum": [
+                    "cloudflare",
+                    "ipv6"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "confirmExposure": {
+                  "const": true
+                }
+              },
+              "required": [
+                "confirmExposure"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "not": {
+                    "const": "cloudflare"
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "mode": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "not": {
+                    "const": "cloudflare"
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "subdomain": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "not": {
+                    "const": "ipv6"
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "serviceIds": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "not": {
+                    "const": "tailscale"
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "loginServer": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "not": {
+                    "const": "tailscale"
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "loginOrigin": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "not": {
+                    "const": "netbird"
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "managementUrl": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "not": {
+                    "const": "netbird"
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "loginOrigins": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "not": {
+                    "const": "netbird"
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "confirmManagementPolicy": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "enum": [
+                    "cloudflare",
+                    "ipv6"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "token": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "const": "tailscale"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "confirmExposure": {
+                  "const": false
+                }
+              }
+            }
+          }
+        ]
+      },
+      "examples": [
+        {
+          "provider": "cloudflare",
+          "mode": "quick",
+          "confirmExposure": true
+        },
+        {
+          "provider": "cloudflare",
+          "mode": "domain",
+          "confirmExposure": true
+        },
+        {
+          "provider": "tailscale"
+        },
+        {
+          "provider": "netbird"
+        },
+        {
+          "provider": "ipv6",
+          "confirmExposure": true
+        }
+      ],
+      "permission": "administrators",
+      "ai": "draft",
+      "preview": "ctl.connection.connect.preview"
+    },
+    "connection.check": {
+      "cli": [
+        "connection",
+        "check"
+      ],
+      "summary": "Start or read the existing bounded background connection probe; checking is pending and externalVerified=false is not outside reachability",
+      "effect": "read",
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "provider",
+          "state",
+          "externalVerified"
+        ],
+        "properties": {
+          "provider": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "externalVerified": {
+            "type": "boolean"
+          },
+          "checkedAt": {
+            "type": "string"
+          },
+          "attempts": {
+            "type": "integer"
+          }
+        }
+      },
+      "flow": {
+        "type": "invoke",
+        "method": "connection.check"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "provider": {
+            "type": "string",
+            "description": "Existing connection provider",
+            "enum": [
+              "cloudflare",
+              "tailscale",
+              "netbird",
+              "ipv6"
+            ]
+          }
+        },
+        "required": [
+          "provider"
+        ]
+      },
+      "examples": [
+        {
+          "provider": "tailscale"
+        }
+      ],
+      "permission": "administrators",
+      "ai": "read"
+    },
+    "ctl.connection.forget": {
+      "cli": [
+        "connection",
+        "forget"
+      ],
+      "summary": "Forget a disconnected provider's saved service bindings; disconnect first; does not delete cloud resources",
+      "effect": "destructive",
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "provider",
+          "state",
+          "simulation",
+          "loggedIn",
+          "networkReady",
+          "externalVerified"
+        ],
+        "properties": {
+          "apply": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "phase"
+            ],
+            "properties": {
+              "phase": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              },
+              "addedPorts": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "removedPorts": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "provider": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "knownLimitation": {
+            "type": "string"
+          },
+          "simulation": {
+            "type": "boolean"
+          },
+          "loggedIn": {
+            "type": "boolean"
+          },
+          "networkReady": {
+            "type": "boolean"
+          },
+          "externalVerified": {
+            "type": "boolean"
+          },
+          "loginUrl": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "userCode": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "loginDeadline": {
+            "type": "string"
+          },
+          "connections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/connection"
+            }
+          }
+        },
+        "$defs": {
+          "connection": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "provider",
+              "state",
+              "simulation",
+              "loggedIn",
+              "networkReady",
+              "externalVerified"
+            ],
+            "properties": {
+              "apply": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "phase"
+                ],
+                "properties": {
+                  "phase": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "addedPorts": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  },
+                  "removedPorts": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              },
+              "provider": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "phase": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              },
+              "mode": {
+                "type": "string"
+              },
+              "knownLimitation": {
+                "type": "string"
+              },
+              "simulation": {
+                "type": "boolean"
+              },
+              "loggedIn": {
+                "type": "boolean"
+              },
+              "networkReady": {
+                "type": "boolean"
+              },
+              "externalVerified": {
+                "type": "boolean"
+              },
+              "loginUrl": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "userCode": {
+                "type": "string",
+                "writeOnly": true
+              },
+              "loginDeadline": {
+                "type": "string"
+              },
+              "connections": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/connection"
+                }
+              }
+            }
+          }
+        }
+      },
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.connection.forget"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "provider": {
+            "type": "string",
+            "description": "Existing connection provider",
+            "enum": [
+              "cloudflare",
+              "tailscale",
+              "netbird",
+              "ipv6"
+            ]
+          }
+        },
+        "required": [
+          "provider"
+        ]
+      },
+      "examples": [
+        {
+          "provider": "ipv6"
+        }
+      ],
+      "permission": "administrators",
+      "ai": "draft",
+      "preview": "ctl.connection.forget.preview"
+    },
+    "ctl.ports.followset": {
+      "cli": [
+        "ports",
+        "follow"
+      ],
+      "summary": "Follow installed TCP service declarations on Tailscale private networks only; enabling requires consent",
+      "effect": "write",
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "entries",
+          "detection",
+          "mappingState",
+          "revision"
+        ],
+        "properties": {
+          "entries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "protocol",
+                "port",
+                "source",
+                "enabled",
+                "state"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "protocol": {
+                  "type": "string"
+                },
+                "port": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "state": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "detection": {
+            "type": "string"
+          },
+          "mappingState": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer"
+          }
+        }
+      },
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.ports.followset"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "enabled"
+        ],
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "confirmExposure": {
+            "type": "boolean"
+          }
+        }
+      },
+      "examples": [
+        {
+          "enabled": false
+        },
+        {
+          "enabled": true,
+          "confirmExposure": true
+        }
+      ],
+      "permission": "administrators",
+      "ai": "draft",
+      "preview": "ctl.ports.followset.preview"
+    },
+    "ctl.cloudflare.access.status": {
+      "cli": [
+        "cloudflare",
+        "access",
+        "status"
+      ],
+      "summary": "Read email restriction counts and sync status without private addresses",
+      "effect": "read",
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.cloudflare.access.status"
+      },
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "state",
+          "revision",
+          "working",
+          "emailCount",
+          "endpointCount",
+          "protectedCount"
+        ],
+        "properties": {
+          "state": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "working": {
+            "type": "boolean"
+          },
+          "emailCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "endpointCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "protectedCount": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "examples": [
+        {}
+      ],
+      "permission": "administrators",
+      "ai": "read"
+    },
+    "ctl.cloudflare.access.set": {
+      "cli": [
+        "cloudflare",
+        "access",
+        "set"
+      ],
+      "summary": "Replace the shared email list; native clients cannot pass Access and active public streams close",
+      "effect": "write",
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.cloudflare.access.set"
+      },
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "state",
+          "revision",
+          "working",
+          "emailCount",
+          "endpointCount",
+          "protectedCount"
+        ],
+        "properties": {
+          "state": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "working": {
+            "type": "boolean"
+          },
+          "emailCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "endpointCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "protectedCount": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "emails",
+          "revision",
+          "confirm"
+        ],
+        "properties": {
+          "emails": {
+            "type": "array",
+            "maxItems": 100,
+            "writeOnly": true,
+            "description": "Complete replacement list; use a local JSON input file, never command-line email values",
+            "items": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 254
+            }
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "confirm": {
+            "type": "boolean",
+            "const": true,
+            "description": "Confirm native Photos, DS file and Drive clients cannot use this address; browser login does not authorize them"
+          }
+        }
+      },
+      "examples": [
+        {
+          "emails": [],
+          "revision": 0,
+          "confirm": true
+        }
+      ],
+      "permission": "administrators",
+      "ai": "draft",
+      "preview": "ctl.cloudflare.access.set.preview"
+    },
+    "ctl.cloudflare.access.sync": {
+      "cli": [
+        "cloudflare",
+        "access",
+        "sync"
+      ],
+      "summary": "Check and repair owned Access apps without changing foreign settings",
+      "effect": "write",
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.cloudflare.access.sync"
+      },
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "state",
+          "revision",
+          "working",
+          "emailCount",
+          "endpointCount",
+          "protectedCount"
+        ],
+        "properties": {
+          "state": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "working": {
+            "type": "boolean"
+          },
+          "emailCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "endpointCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "protectedCount": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "examples": [
+        {}
+      ],
+      "permission": "administrators",
+      "ai": "draft",
+      "preview": "ctl.cloudflare.access.sync.preview"
+    },
+    "ctl.ports.upsert": {
+      "cli": [
+        "ports",
+        "upsert"
+      ],
+      "summary": "Add or edit a custom local service; enabling requires explicit exposure consent",
+      "effect": "write",
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "entries",
+          "detection",
+          "mappingState",
+          "revision"
+        ],
+        "properties": {
+          "entries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "protocol",
+                "port",
+                "source",
+                "enabled",
+                "state"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "protocol": {
+                  "type": "string"
+                },
+                "port": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "state": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "detection": {
+            "type": "string"
+          },
+          "mappingState": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer"
+          }
+        }
+      },
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.ports.upsert"
+      },
+      "paramsSchema": {
+        "allOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Custom service ID from ports list; omit when adding a service",
+                "pattern": "^custom-[a-f0-9]{32}$"
+              },
+              "name": {
+                "type": "string",
+                "description": "Service display name; keep private text in a local JSON input file",
+                "minLength": 1,
+                "maxLength": 80,
+                "writeOnly": true
+              },
+              "protocol": {
+                "type": "string",
+                "description": "Local TCP service protocol",
+                "enum": [
+                  "http",
+                  "https",
+                  "tcp"
+                ]
+              },
+              "port": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 65535,
+                "description": "TCP port number"
+              },
+              "enabled": {
+                "type": "boolean",
+                "description": "Whether providers may expose this service"
+              },
+              "confirmExposure": {
+                "type": "boolean",
+                "description": "Explicit exposure consent for enabled service"
+              }
+            },
+            "required": [
+              "name",
+              "protocol",
+              "port",
+              "enabled"
+            ]
+          },
+          {
+            "if": {
+              "properties": {
+                "enabled": {
+                  "const": true
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            },
+            "then": {
+              "properties": {
+                "confirmExposure": {
+                  "const": true
+                }
+              },
+              "required": [
+                "confirmExposure"
+              ]
+            }
+          }
+        ]
+      },
+      "examples": [
+        {
+          "name": "Example service",
+          "protocol": "https",
+          "port": 7443,
+          "enabled": false
+        }
+      ],
+      "permission": "administrators",
+      "ai": "draft",
+      "preview": "ctl.ports.upsert.preview"
+    },
+    "ctl.ports.delete": {
+      "cli": [
+        "ports",
+        "delete"
+      ],
+      "summary": "Delete one custom service mapping; built-in DSM services cannot be deleted",
+      "effect": "destructive",
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "entries",
+          "detection",
+          "mappingState",
+          "revision"
+        ],
+        "properties": {
+          "entries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "protocol",
+                "port",
+                "source",
+                "enabled",
+                "state"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "protocol": {
+                  "type": "string"
+                },
+                "port": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "state": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "detection": {
+            "type": "string"
+          },
+          "mappingState": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer"
+          }
+        }
+      },
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.ports.delete"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Custom service ID from ports list; omit when adding a service",
+            "pattern": "^custom-[a-f0-9]{32}$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "examples": [
+        {
+          "id": "custom-00000000000000000000000000000000"
+        }
+      ],
+      "permission": "administrators",
+      "ai": "draft",
+      "preview": "ctl.ports.delete.preview"
+    },
+    "ctl.ports.dsmset": {
+      "cli": [
+        "ports",
+        "dsmset"
+      ],
+      "summary": "Enable or disable a detected DSM service mapping; does not change DSM settings",
+      "effect": "write",
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "entries",
+          "detection",
+          "mappingState",
+          "revision"
+        ],
+        "properties": {
+          "entries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "protocol",
+                "port",
+                "source",
+                "enabled",
+                "state"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "protocol": {
+                  "type": "string"
+                },
+                "port": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "state": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "detection": {
+            "type": "string"
+          },
+          "mappingState": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer"
+          }
+        }
+      },
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.ports.dsmset"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Detected DSM service",
+            "enum": [
+              "dsm-http",
+              "dsm-https"
+            ]
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether providers may expose the detected DSM service"
+          },
+          "confirmExposure": {
+            "type": "boolean",
+            "description": "Explicit exposure consent when enabling"
+          }
+        },
+        "required": [
+          "id",
+          "enabled"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "enabled": {
+                  "const": true
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            },
+            "then": {
+              "properties": {
+                "confirmExposure": {
+                  "const": true
+                }
+              },
+              "required": [
+                "confirmExposure"
+              ]
+            }
+          }
+        ]
+      },
+      "examples": [
+        {
+          "id": "dsm-https",
+          "enabled": true,
+          "confirmExposure": true
+        },
+        {
+          "id": "dsm-http",
+          "enabled": false
+        }
+      ],
+      "permission": "administrators",
+      "ai": "draft",
+      "preview": "ctl.ports.dsmset.preview"
+    },
+    "binaries.status": {
+      "cli": [
+        "binaries",
+        "status"
+      ],
+      "summary": "Show installed, previous and latest connector versions and pending operation state",
+      "effect": "read",
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "runtimeVersion",
+          "product",
+          "current",
+          "latest",
+          "previous",
+          "checkedAt",
+          "verification",
+          "phase",
+          "error",
+          "busy",
+          "updateAvailable"
+        ],
+        "properties": {
+          "runtimeVersion": {
+            "type": "string"
+          },
+          "product": {
+            "type": "string"
+          },
+          "current": {
+            "type": "string"
+          },
+          "latest": {
+            "type": "string"
+          },
+          "previous": {
+            "type": "string"
+          },
+          "checkedAt": {
+            "type": "string"
+          },
+          "verification": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "errorCode": {
+            "type": "string"
+          },
+          "retryAt": {
+            "type": "string"
+          },
+          "hint": {
+            "type": "string"
+          },
+          "busy": {
+            "type": "boolean"
+          },
+          "updateAvailable": {
+            "type": "boolean"
+          }
+        }
+      },
+      "flow": {
+        "type": "invoke",
+        "method": "binaries.status"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "product": {
+            "type": "string",
+            "description": "Official connector binary managed by Syno Connect Center",
+            "enum": [
+              "cloudflared",
+              "tailscale",
+              "netbird"
+            ]
+          }
+        },
+        "required": [
+          "product"
+        ]
+      },
+      "examples": [
+        {
+          "product": "tailscale"
+        }
+      ],
+      "permission": "administrators",
+      "ai": "read"
+    },
+    "binaries.check": {
+      "cli": [
+        "binaries",
+        "check"
+      ],
+      "summary": "Request an asynchronous upstream update check; query binaries status until busy=false",
+      "effect": "write",
+      "resultSchema": {
+        "description": "A completed binary status, or CLI --no-wait acceptance with the original product status; acceptance is not completion",
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "runtimeVersion",
+              "product",
+              "current",
+              "latest",
+              "previous",
+              "checkedAt",
+              "verification",
+              "phase",
+              "error",
+              "busy",
+              "updateAvailable"
+            ],
+            "properties": {
+              "runtimeVersion": {
+                "type": "string"
+              },
+              "product": {
+                "type": "string"
+              },
+              "current": {
+                "type": "string"
+              },
+              "latest": {
+                "type": "string"
+              },
+              "previous": {
+                "type": "string"
+              },
+              "checkedAt": {
+                "type": "string"
+              },
+              "verification": {
+                "type": "string"
+              },
+              "phase": {
+                "type": "string"
+              },
+              "error": {
+                "type": "string"
+              },
+              "errorCode": {
+                "type": "string"
+              },
+              "retryAt": {
+                "type": "string"
+              },
+              "hint": {
+                "type": "string"
+              },
+              "busy": {
+                "type": "boolean"
+              },
+              "updateAvailable": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "accepted",
+              "job"
+            ],
+            "properties": {
+              "accepted": {
+                "const": true
+              },
+              "job": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "runtimeVersion",
+                  "product",
+                  "current",
+                  "latest",
+                  "previous",
+                  "checkedAt",
+                  "verification",
+                  "phase",
+                  "error",
+                  "busy",
+                  "updateAvailable"
+                ],
+                "properties": {
+                  "runtimeVersion": {
+                    "type": "string"
+                  },
+                  "product": {
+                    "type": "string"
+                  },
+                  "current": {
+                    "type": "string"
+                  },
+                  "latest": {
+                    "type": "string"
+                  },
+                  "previous": {
+                    "type": "string"
+                  },
+                  "checkedAt": {
+                    "type": "string"
+                  },
+                  "verification": {
+                    "type": "string"
+                  },
+                  "phase": {
+                    "type": "string"
+                  },
+                  "error": {
+                    "type": "string"
+                  },
+                  "errorCode": {
+                    "type": "string"
+                  },
+                  "retryAt": {
+                    "type": "string"
+                  },
+                  "hint": {
+                    "type": "string"
+                  },
+                  "busy": {
+                    "type": "boolean"
+                  },
+                  "updateAvailable": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "flow": {
+        "type": "job",
+        "start": "binaries.check",
+        "poll": "binaries.status",
+        "jobId": "product",
+        "idParam": "product",
+        "state": "phase",
+        "done": [
+          "ready",
+          "idle"
+        ],
+        "failed": [
+          "failed"
+        ],
+        "intervalMs": 500,
+        "timeoutMs": 300000
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "product": {
+            "type": "string",
+            "description": "Official connector binary managed by Syno Connect Center",
+            "enum": [
+              "cloudflared",
+              "tailscale",
+              "netbird"
+            ]
+          }
+        },
+        "required": [
+          "product"
+        ]
+      },
+      "examples": [
+        {
+          "product": "tailscale"
+        }
+      ],
+      "permission": "administrators",
+      "ai": "draft",
+      "longRunning": true,
+      "preview": "binaries.check.preview"
+    },
+    "binaries.update": {
+      "cli": [
+        "binaries",
+        "update"
+      ],
+      "summary": "Request a verified connector update in the daemon; query binaries status until busy=false; do not blindly retry",
+      "effect": "write",
+      "resultSchema": {
+        "description": "A completed binary status, or CLI --no-wait acceptance with the original product status; acceptance is not completion",
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "runtimeVersion",
+              "product",
+              "current",
+              "latest",
+              "previous",
+              "checkedAt",
+              "verification",
+              "phase",
+              "error",
+              "busy",
+              "updateAvailable"
+            ],
+            "properties": {
+              "runtimeVersion": {
+                "type": "string"
+              },
+              "product": {
+                "type": "string"
+              },
+              "current": {
+                "type": "string"
+              },
+              "latest": {
+                "type": "string"
+              },
+              "previous": {
+                "type": "string"
+              },
+              "checkedAt": {
+                "type": "string"
+              },
+              "verification": {
+                "type": "string"
+              },
+              "phase": {
+                "type": "string"
+              },
+              "error": {
+                "type": "string"
+              },
+              "errorCode": {
+                "type": "string"
+              },
+              "retryAt": {
+                "type": "string"
+              },
+              "hint": {
+                "type": "string"
+              },
+              "busy": {
+                "type": "boolean"
+              },
+              "updateAvailable": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "accepted",
+              "job"
+            ],
+            "properties": {
+              "accepted": {
+                "const": true
+              },
+              "job": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "runtimeVersion",
+                  "product",
+                  "current",
+                  "latest",
+                  "previous",
+                  "checkedAt",
+                  "verification",
+                  "phase",
+                  "error",
+                  "busy",
+                  "updateAvailable"
+                ],
+                "properties": {
+                  "runtimeVersion": {
+                    "type": "string"
+                  },
+                  "product": {
+                    "type": "string"
+                  },
+                  "current": {
+                    "type": "string"
+                  },
+                  "latest": {
+                    "type": "string"
+                  },
+                  "previous": {
+                    "type": "string"
+                  },
+                  "checkedAt": {
+                    "type": "string"
+                  },
+                  "verification": {
+                    "type": "string"
+                  },
+                  "phase": {
+                    "type": "string"
+                  },
+                  "error": {
+                    "type": "string"
+                  },
+                  "errorCode": {
+                    "type": "string"
+                  },
+                  "retryAt": {
+                    "type": "string"
+                  },
+                  "hint": {
+                    "type": "string"
+                  },
+                  "busy": {
+                    "type": "boolean"
+                  },
+                  "updateAvailable": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "flow": {
+        "type": "job",
+        "start": "binaries.update",
+        "poll": "binaries.status",
+        "jobId": "product",
+        "idParam": "product",
+        "state": "phase",
+        "done": [
+          "ready",
+          "idle"
+        ],
+        "failed": [
+          "failed"
+        ],
+        "intervalMs": 500,
+        "timeoutMs": 300000
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "product": {
+            "type": "string",
+            "description": "Official connector binary managed by Syno Connect Center",
+            "enum": [
+              "cloudflared",
+              "tailscale",
+              "netbird"
+            ]
+          }
+        },
+        "required": [
+          "product"
+        ]
+      },
+      "examples": [
+        {
+          "product": "tailscale"
+        }
+      ],
+      "permission": "administrators",
+      "ai": "draft",
+      "longRunning": true,
+      "preview": "binaries.update.preview"
+    },
+    "binaries.rollback": {
+      "cli": [
+        "binaries",
+        "rollback"
+      ],
+      "summary": "Request restoration of the retained previous connector binary; query binaries status until busy=false",
+      "effect": "write",
+      "resultSchema": {
+        "description": "A completed binary status, or CLI --no-wait acceptance with the original product status; acceptance is not completion",
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "runtimeVersion",
+              "product",
+              "current",
+              "latest",
+              "previous",
+              "checkedAt",
+              "verification",
+              "phase",
+              "error",
+              "busy",
+              "updateAvailable"
+            ],
+            "properties": {
+              "runtimeVersion": {
+                "type": "string"
+              },
+              "product": {
+                "type": "string"
+              },
+              "current": {
+                "type": "string"
+              },
+              "latest": {
+                "type": "string"
+              },
+              "previous": {
+                "type": "string"
+              },
+              "checkedAt": {
+                "type": "string"
+              },
+              "verification": {
+                "type": "string"
+              },
+              "phase": {
+                "type": "string"
+              },
+              "error": {
+                "type": "string"
+              },
+              "errorCode": {
+                "type": "string"
+              },
+              "retryAt": {
+                "type": "string"
+              },
+              "hint": {
+                "type": "string"
+              },
+              "busy": {
+                "type": "boolean"
+              },
+              "updateAvailable": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "accepted",
+              "job"
+            ],
+            "properties": {
+              "accepted": {
+                "const": true
+              },
+              "job": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "runtimeVersion",
+                  "product",
+                  "current",
+                  "latest",
+                  "previous",
+                  "checkedAt",
+                  "verification",
+                  "phase",
+                  "error",
+                  "busy",
+                  "updateAvailable"
+                ],
+                "properties": {
+                  "runtimeVersion": {
+                    "type": "string"
+                  },
+                  "product": {
+                    "type": "string"
+                  },
+                  "current": {
+                    "type": "string"
+                  },
+                  "latest": {
+                    "type": "string"
+                  },
+                  "previous": {
+                    "type": "string"
+                  },
+                  "checkedAt": {
+                    "type": "string"
+                  },
+                  "verification": {
+                    "type": "string"
+                  },
+                  "phase": {
+                    "type": "string"
+                  },
+                  "error": {
+                    "type": "string"
+                  },
+                  "errorCode": {
+                    "type": "string"
+                  },
+                  "retryAt": {
+                    "type": "string"
+                  },
+                  "hint": {
+                    "type": "string"
+                  },
+                  "busy": {
+                    "type": "boolean"
+                  },
+                  "updateAvailable": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "flow": {
+        "type": "job",
+        "start": "binaries.rollback",
+        "poll": "binaries.status",
+        "jobId": "product",
+        "idParam": "product",
+        "state": "phase",
+        "done": [
+          "ready",
+          "idle"
+        ],
+        "failed": [
+          "failed"
+        ],
+        "intervalMs": 500,
+        "timeoutMs": 300000
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "product": {
+            "type": "string",
+            "description": "Official connector binary managed by Syno Connect Center",
+            "enum": [
+              "cloudflared",
+              "tailscale",
+              "netbird"
+            ]
+          }
+        },
+        "required": [
+          "product"
+        ]
+      },
+      "examples": [
+        {
+          "product": "tailscale"
+        }
+      ],
+      "permission": "administrators",
+      "ai": "draft",
+      "longRunning": true,
+      "preview": "binaries.rollback.preview"
+    },
+    "integration.status": {
+      "cli": [
+        "integration",
+        "status"
+      ],
+      "summary": "Read existing opt-in helper readiness without enabling privileged integration",
+      "effect": "read",
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "state",
+          "reason",
+          "packageRunning",
+          "scheduler"
+        ],
+        "properties": {
+          "state": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "packageRunning": {
+            "type": "string"
+          },
+          "scheduler": {
+            "type": "string"
+          },
+          "cleanup": {
+            "type": "string"
+          }
+        }
+      },
+      "flow": {
+        "type": "invoke",
+        "method": "integration.status"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "examples": [
+        {}
+      ],
+      "permission": "administrators",
+      "ai": "read"
+    },
+    "external.set.preview": {
+      "summary": "Preview set DSM's advertised External Access host name and ports with the administrator's own DSM session; DSM's listening ports do not change; the same values again change nothing; no state is changed",
+      "cli": [
+        "external",
+        "set",
+        "preview"
+      ],
+      "effect": "read",
+      "permission": "administrators",
+      "ai": "preview",
+      "flow": {
+        "type": "invoke",
+        "method": "external.set.preview"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "description": "Only the given fields change; use diagnose's dsmExternal.suggested and ask the user first",
+        "additionalProperties": false,
+        "required": [
+          "hostname"
+        ],
+        "properties": {
+          "hostname": {
+            "type": "string",
+            "description": "Host name or IP address DSM advertises for external links; empty clears it",
+            "maxLength": 253,
+            "pattern": "^[A-Za-z0-9.:-]*$",
+            "examples": [
+              "nas.example.com"
+            ]
+          },
+          "httpsPort": {
+            "type": "integer",
+            "description": "Advertised external HTTPS port",
+            "minimum": 1,
+            "maximum": 65535,
+            "examples": [
+              443
+            ]
+          },
+          "httpPort": {
+            "type": "integer",
+            "description": "Advertised external HTTP port; must differ from httpsPort",
+            "minimum": 1,
+            "maximum": 65535
+          }
+        }
+      },
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "method",
+          "effect",
+          "requiresConfirmation"
+        ],
+        "properties": {
+          "method": {
+            "const": "external.set"
+          },
+          "effect": {
+            "const": "write"
+          },
+          "requiresConfirmation": {
+            "const": true
+          }
+        }
+      },
+      "examples": [
+        {
+          "hostname": "nas.example.com",
+          "httpsPort": 443
+        }
+      ]
+    },
+    "ctl.connection.disconnect.preview": {
+      "summary": "Preview request disconnection without forgetting saved settings; read connection status to confirm stopped; no state is changed",
+      "cli": [
+        "connection",
+        "disconnect",
+        "preview"
+      ],
+      "effect": "read",
+      "permission": "administrators",
+      "ai": "preview",
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.connection.disconnect.preview"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "description": "Stop one provider or all providers; does not remove saved configuration",
+        "additionalProperties": false,
+        "properties": {
+          "provider": {
+            "type": "string",
+            "description": "Provider to stop; omitted or all stops every provider",
+            "enum": [
+              "all",
+              "cloudflare",
+              "tailscale",
+              "netbird",
+              "ipv6"
+            ],
+            "default": "all",
+            "examples": [
+              "tailscale",
+              "all"
+            ]
+          }
+        }
+      },
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "method",
+          "effect",
+          "requiresConfirmation"
+        ],
+        "properties": {
+          "method": {
+            "const": "ctl.connection.disconnect"
+          },
+          "effect": {
+            "const": "write"
+          },
+          "requiresConfirmation": {
+            "const": true
+          }
+        }
+      },
+      "examples": [
+        {
+          "provider": "tailscale"
+        },
+        {
+          "provider": "all"
+        }
+      ]
+    },
+    "ctl.connection.connect.preview": {
+      "summary": "Preview the connection request without contacting a provider; finish browser authorization in the App after human confirmation",
+      "cli": [
+        "connection",
+        "connect",
+        "preview"
+      ],
+      "effect": "read",
+      "permission": "administrators",
+      "ai": "preview",
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.connection.connect.preview"
+      },
+      "paramsSchema": {
+        "allOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "provider": {
+                "type": "string",
+                "description": "Existing connection provider",
+                "enum": [
+                  "cloudflare",
+                  "tailscale",
+                  "netbird",
+                  "ipv6"
+                ]
+              },
+              "mode": {
+                "type": "string",
+                "description": "Cloudflare temporary address or own-domain setup/reconnect",
+                "enum": [
+                  "quick",
+                  "domain"
+                ]
+              },
+              "subdomain": {
+                "type": "string",
+                "description": "Optional Cloudflare domain label; fill locally",
+                "writeOnly": true
+              },
+              "token": {
+                "type": "string",
+                "description": "Optional Tailscale auth key or NetBird setup key; JSON file/stdin only",
+                "writeOnly": true,
+                "maxLength": 4096
+              },
+              "confirmExposure": {
+                "type": "boolean",
+                "description": "Explicit administrator consent to expose the configured services; --yes does not replace it"
+              },
+              "replace": {
+                "type": "boolean",
+                "description": "Accept that the running connection drops for about a minute while a change it cannot keep is applied"
+              },
+              "loginServer": {
+                "type": "string",
+                "description": "Optional HTTPS Headscale login server origin",
+                "writeOnly": true
+              },
+              "loginOrigin": {
+                "type": "string",
+                "description": "Optional trusted HTTPS Headscale browser login origin",
+                "writeOnly": true
+              },
+              "managementUrl": {
+                "type": "string",
+                "description": "Optional NetBird management URL",
+                "writeOnly": true
+              },
+              "loginOrigins": {
+                "type": "array",
+                "description": "Explicitly trusted HTTPS NetBird login origins",
+                "writeOnly": true,
+                "maxItems": 8,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "confirmManagementPolicy": {
+                "type": "boolean",
+                "description": "Consent to self-hosted NetBird management policy when using a setup key"
+              },
+              "serviceIds": {
+                "type": "array",
+                "description": "IPv6 service IDs from ports list; omit to use enabled services",
+                "maxItems": 16,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "provider"
+            ]
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "enum": [
+                    "cloudflare",
+                    "ipv6"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "confirmExposure": {
+                  "const": true
+                }
+              },
+              "required": [
+                "confirmExposure"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "not": {
+                    "const": "cloudflare"
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "mode": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "not": {
+                    "const": "cloudflare"
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "subdomain": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "not": {
+                    "const": "ipv6"
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "serviceIds": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "not": {
+                    "const": "tailscale"
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "loginServer": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "not": {
+                    "const": "tailscale"
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "loginOrigin": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "not": {
+                    "const": "netbird"
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "managementUrl": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "not": {
+                    "const": "netbird"
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "loginOrigins": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "not": {
+                    "const": "netbird"
+                  }
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "confirmManagementPolicy": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "enum": [
+                    "cloudflare",
+                    "ipv6"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "token": false
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "provider": {
+                  "const": "tailscale"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "confirmExposure": {
+                  "const": false
+                }
+              }
+            }
+          }
+        ]
+      },
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "method",
+          "effect",
+          "requiresConfirmation"
+        ],
+        "properties": {
+          "method": {
+            "const": "ctl.connection.connect"
+          },
+          "effect": {
+            "const": "write"
+          },
+          "requiresConfirmation": {
+            "const": true
+          }
+        }
+      },
+      "examples": [
+        {
+          "provider": "cloudflare",
+          "mode": "quick",
+          "confirmExposure": true
+        },
+        {
+          "provider": "cloudflare",
+          "mode": "domain",
+          "confirmExposure": true
+        },
+        {
+          "provider": "tailscale"
+        },
+        {
+          "provider": "netbird"
+        },
+        {
+          "provider": "ipv6",
+          "confirmExposure": true
+        }
+      ]
+    },
+    "ctl.connection.forget.preview": {
+      "summary": "Preview forget a disconnected provider's saved service bindings; disconnect first; does not delete cloud resources; no state is changed",
+      "cli": [
+        "connection",
+        "forget",
+        "preview"
+      ],
+      "effect": "read",
+      "permission": "administrators",
+      "ai": "preview",
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.connection.forget.preview"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "provider": {
+            "type": "string",
+            "description": "Existing connection provider",
+            "enum": [
+              "cloudflare",
+              "tailscale",
+              "netbird",
+              "ipv6"
+            ]
+          }
+        },
+        "required": [
+          "provider"
+        ]
+      },
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "method",
+          "effect",
+          "requiresConfirmation"
+        ],
+        "properties": {
+          "method": {
+            "const": "ctl.connection.forget"
+          },
+          "effect": {
+            "const": "destructive"
+          },
+          "requiresConfirmation": {
+            "const": true
+          }
+        }
+      },
+      "examples": [
+        {
+          "provider": "ipv6"
+        }
+      ]
+    },
+    "ctl.ports.followset.preview": {
+      "summary": "Preview follow installed TCP service declarations on Tailscale private networks only; enabling requires consent; no state is changed",
+      "cli": [
+        "ports",
+        "follow",
+        "preview"
+      ],
+      "effect": "read",
+      "permission": "administrators",
+      "ai": "preview",
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.ports.followset.preview"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "enabled"
+        ],
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "confirmExposure": {
+            "type": "boolean"
+          }
+        }
+      },
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "method",
+          "effect",
+          "requiresConfirmation"
+        ],
+        "properties": {
+          "method": {
+            "const": "ctl.ports.followset"
+          },
+          "effect": {
+            "const": "write"
+          },
+          "requiresConfirmation": {
+            "const": true
+          }
+        }
+      },
+      "examples": [
+        {
+          "enabled": false
+        },
+        {
+          "enabled": true,
+          "confirmExposure": true
+        }
+      ]
+    },
+    "ctl.cloudflare.access.set.preview": {
+      "summary": "Preview replace the shared email list; native clients cannot pass Access and active public streams close; no state is changed",
+      "cli": [
+        "cloudflare",
+        "access",
+        "set",
+        "preview"
+      ],
+      "effect": "read",
+      "permission": "administrators",
+      "ai": "preview",
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.cloudflare.access.set.preview"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "emails",
+          "revision",
+          "confirm"
+        ],
+        "properties": {
+          "emails": {
+            "type": "array",
+            "maxItems": 100,
+            "writeOnly": true,
+            "description": "Complete replacement list; use a local JSON input file, never command-line email values",
+            "items": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 254
+            }
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "confirm": {
+            "type": "boolean",
+            "const": true,
+            "description": "Confirm native Photos, DS file and Drive clients cannot use this address; browser login does not authorize them"
+          }
+        }
+      },
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "method",
+          "effect",
+          "requiresConfirmation"
+        ],
+        "properties": {
+          "method": {
+            "const": "ctl.cloudflare.access.set"
+          },
+          "effect": {
+            "const": "write"
+          },
+          "requiresConfirmation": {
+            "const": true
+          }
+        }
+      },
+      "examples": [
+        {
+          "emails": [],
+          "revision": 0,
+          "confirm": true
+        }
+      ]
+    },
+    "ctl.cloudflare.access.sync.preview": {
+      "summary": "Preview check and repair owned Access apps without changing foreign settings; no state is changed",
+      "cli": [
+        "cloudflare",
+        "access",
+        "sync",
+        "preview"
+      ],
+      "effect": "read",
+      "permission": "administrators",
+      "ai": "preview",
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.cloudflare.access.sync.preview"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "method",
+          "effect",
+          "requiresConfirmation"
+        ],
+        "properties": {
+          "method": {
+            "const": "ctl.cloudflare.access.sync"
+          },
+          "effect": {
+            "const": "write"
+          },
+          "requiresConfirmation": {
+            "const": true
+          }
+        }
+      },
+      "examples": [
+        {}
+      ]
+    },
+    "ctl.ports.upsert.preview": {
+      "summary": "Preview add or edit a custom local service; enabling requires explicit exposure consent; no state is changed",
+      "cli": [
+        "ports",
+        "upsert",
+        "preview"
+      ],
+      "effect": "read",
+      "permission": "administrators",
+      "ai": "preview",
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.ports.upsert.preview"
+      },
+      "paramsSchema": {
+        "allOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Custom service ID from ports list; omit when adding a service",
+                "pattern": "^custom-[a-f0-9]{32}$"
+              },
+              "name": {
+                "type": "string",
+                "description": "Service display name; keep private text in a local JSON input file",
+                "minLength": 1,
+                "maxLength": 80,
+                "writeOnly": true
+              },
+              "protocol": {
+                "type": "string",
+                "description": "Local TCP service protocol",
+                "enum": [
+                  "http",
+                  "https",
+                  "tcp"
+                ]
+              },
+              "port": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 65535,
+                "description": "TCP port number"
+              },
+              "enabled": {
+                "type": "boolean",
+                "description": "Whether providers may expose this service"
+              },
+              "confirmExposure": {
+                "type": "boolean",
+                "description": "Explicit exposure consent for enabled service"
+              }
+            },
+            "required": [
+              "name",
+              "protocol",
+              "port",
+              "enabled"
+            ]
+          },
+          {
+            "if": {
+              "properties": {
+                "enabled": {
+                  "const": true
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            },
+            "then": {
+              "properties": {
+                "confirmExposure": {
+                  "const": true
+                }
+              },
+              "required": [
+                "confirmExposure"
+              ]
+            }
+          }
+        ]
+      },
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "method",
+          "effect",
+          "requiresConfirmation"
+        ],
+        "properties": {
+          "method": {
+            "const": "ctl.ports.upsert"
+          },
+          "effect": {
+            "const": "write"
+          },
+          "requiresConfirmation": {
+            "const": true
+          }
+        }
+      },
+      "examples": [
+        {
+          "name": "Example service",
+          "protocol": "https",
+          "port": 7443,
+          "enabled": false
+        }
+      ]
+    },
+    "ctl.ports.delete.preview": {
+      "summary": "Preview delete one custom service mapping; built-in DSM services cannot be deleted; no state is changed",
+      "cli": [
+        "ports",
+        "delete",
+        "preview"
+      ],
+      "effect": "read",
+      "permission": "administrators",
+      "ai": "preview",
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.ports.delete.preview"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Custom service ID from ports list; omit when adding a service",
+            "pattern": "^custom-[a-f0-9]{32}$"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "method",
+          "effect",
+          "requiresConfirmation"
+        ],
+        "properties": {
+          "method": {
+            "const": "ctl.ports.delete"
+          },
+          "effect": {
+            "const": "destructive"
+          },
+          "requiresConfirmation": {
+            "const": true
+          }
+        }
+      },
+      "examples": [
+        {
+          "id": "custom-00000000000000000000000000000000"
+        }
+      ]
+    },
+    "ctl.ports.dsmset.preview": {
+      "summary": "Preview enable or disable a detected DSM service mapping; does not change DSM settings; no state is changed",
+      "cli": [
+        "ports",
+        "dsmset",
+        "preview"
+      ],
+      "effect": "read",
+      "permission": "administrators",
+      "ai": "preview",
+      "flow": {
+        "type": "invoke",
+        "method": "ctl.ports.dsmset.preview"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Detected DSM service",
+            "enum": [
+              "dsm-http",
+              "dsm-https"
+            ]
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether providers may expose the detected DSM service"
+          },
+          "confirmExposure": {
+            "type": "boolean",
+            "description": "Explicit exposure consent when enabling"
+          }
+        },
+        "required": [
+          "id",
+          "enabled"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "enabled": {
+                  "const": true
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            },
+            "then": {
+              "properties": {
+                "confirmExposure": {
+                  "const": true
+                }
+              },
+              "required": [
+                "confirmExposure"
+              ]
+            }
+          }
+        ]
+      },
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "method",
+          "effect",
+          "requiresConfirmation"
+        ],
+        "properties": {
+          "method": {
+            "const": "ctl.ports.dsmset"
+          },
+          "effect": {
+            "const": "write"
+          },
+          "requiresConfirmation": {
+            "const": true
+          }
+        }
+      },
+      "examples": [
+        {
+          "id": "dsm-https",
+          "enabled": true,
+          "confirmExposure": true
+        },
+        {
+          "id": "dsm-http",
+          "enabled": false
+        }
+      ]
+    },
+    "binaries.check.preview": {
+      "summary": "Preview request an asynchronous upstream update check; query binaries status until busy=false; no state is changed",
+      "cli": [
+        "binaries",
+        "check",
+        "preview"
+      ],
+      "effect": "read",
+      "permission": "administrators",
+      "ai": "preview",
+      "flow": {
+        "type": "invoke",
+        "method": "binaries.check.preview"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "product": {
+            "type": "string",
+            "description": "Official connector binary managed by Syno Connect Center",
+            "enum": [
+              "cloudflared",
+              "tailscale",
+              "netbird"
+            ]
+          }
+        },
+        "required": [
+          "product"
+        ]
+      },
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "method",
+          "effect",
+          "requiresConfirmation"
+        ],
+        "properties": {
+          "method": {
+            "const": "binaries.check"
+          },
+          "effect": {
+            "const": "write"
+          },
+          "requiresConfirmation": {
+            "const": true
+          }
+        }
+      },
+      "examples": [
+        {
+          "product": "tailscale"
+        }
+      ]
+    },
+    "binaries.update.preview": {
+      "summary": "Preview request a verified connector update in the daemon; query binaries status until busy=false; do not blindly retry; no state is changed",
+      "cli": [
+        "binaries",
+        "update",
+        "preview"
+      ],
+      "effect": "read",
+      "permission": "administrators",
+      "ai": "preview",
+      "flow": {
+        "type": "invoke",
+        "method": "binaries.update.preview"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "product": {
+            "type": "string",
+            "description": "Official connector binary managed by Syno Connect Center",
+            "enum": [
+              "cloudflared",
+              "tailscale",
+              "netbird"
+            ]
+          }
+        },
+        "required": [
+          "product"
+        ]
+      },
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "method",
+          "effect",
+          "requiresConfirmation"
+        ],
+        "properties": {
+          "method": {
+            "const": "binaries.update"
+          },
+          "effect": {
+            "const": "write"
+          },
+          "requiresConfirmation": {
+            "const": true
+          }
+        }
+      },
+      "examples": [
+        {
+          "product": "tailscale"
+        }
+      ]
+    },
+    "binaries.rollback.preview": {
+      "summary": "Preview request restoration of the retained previous connector binary; query binaries status until busy=false; no state is changed",
+      "cli": [
+        "binaries",
+        "rollback",
+        "preview"
+      ],
+      "effect": "read",
+      "permission": "administrators",
+      "ai": "preview",
+      "flow": {
+        "type": "invoke",
+        "method": "binaries.rollback.preview"
+      },
+      "paramsSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "product": {
+            "type": "string",
+            "description": "Official connector binary managed by Syno Connect Center",
+            "enum": [
+              "cloudflared",
+              "tailscale",
+              "netbird"
+            ]
+          }
+        },
+        "required": [
+          "product"
+        ]
+      },
+      "resultSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "method",
+          "effect",
+          "requiresConfirmation"
+        ],
+        "properties": {
+          "method": {
+            "const": "binaries.rollback"
+          },
+          "effect": {
+            "const": "write"
+          },
+          "requiresConfirmation": {
+            "const": true
+          }
+        }
+      },
+      "examples": [
+        {
+          "product": "tailscale"
+        }
+      ]
+    }
+  }
+}

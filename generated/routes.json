@@ -1,0 +1,346 @@
+{
+  "advisor.recommend": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "app.status": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "apps.cleanuporphans": {
+    "permission": "administrators",
+    "effect": "destructive"
+  },
+  "apps.clear": {
+    "permission": "administrators",
+    "effect": "destructive"
+  },
+  "apps.cleardsm": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "apps.cloudflareconnect": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "apps.cloudflaredisconnect": {
+    "permission": "administrators",
+    "effect": "destructive"
+  },
+  "apps.customadd": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "apps.customcandidates": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "apps.customedit": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "apps.custompause": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "apps.customremove": {
+    "permission": "administrators",
+    "effect": "destructive"
+  },
+  "apps.inspect": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "apps.inspectdsm": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "apps.list": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "apps.reenable": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "apps.relayconnect": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "apps.relaydisconnect": {
+    "permission": "administrators",
+    "effect": "destructive"
+  },
+  "apps.resetstate": {
+    "permission": "administrators",
+    "effect": "destructive"
+  },
+  "apps.setdsm": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "apps.setprivate": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "apps.setpublic": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "apps.setrelay": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "apps.workersconnect": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "apps.workersdisconnect": {
+    "permission": "administrators",
+    "effect": "destructive"
+  },
+  "apps.workerspublishdsm": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "apps.workersstatus": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "binaries.check": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "binaries.check.preview": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "binaries.rollback": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "binaries.rollback.preview": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "binaries.status": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "binaries.update": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "binaries.update.preview": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "cloudflare.access.get": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "cloudflare.access.set": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "cloudflare.access.sync": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "cloudflare.access.token": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "connection.check": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "connection.connect": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "connection.disconnect": {
+    "permission": "administrators",
+    "effect": "destructive"
+  },
+  "connection.forget": {
+    "permission": "administrators",
+    "effect": "destructive"
+  },
+  "connection.status": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "ctl.cloudflare.access.set": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "ctl.cloudflare.access.set.preview": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "ctl.cloudflare.access.status": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "ctl.cloudflare.access.sync": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "ctl.cloudflare.access.sync.preview": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "ctl.connection.connect": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "ctl.connection.connect.preview": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "ctl.connection.disconnect": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "ctl.connection.disconnect.preview": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "ctl.connection.forget": {
+    "permission": "administrators",
+    "effect": "destructive"
+  },
+  "ctl.connection.forget.preview": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "ctl.connection.status": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "ctl.diagnose": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "ctl.ipv6.status": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "ctl.ports.delete": {
+    "permission": "administrators",
+    "effect": "destructive"
+  },
+  "ctl.ports.delete.preview": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "ctl.ports.dsmset": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "ctl.ports.dsmset.preview": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "ctl.ports.followset": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "ctl.ports.followset.preview": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "ctl.ports.list": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "ctl.ports.upsert": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "ctl.ports.upsert.preview": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "external.get": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "external.set": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "external.set.preview": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "external.status": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "github.token.remove": {
+    "permission": "administrators",
+    "effect": "destructive"
+  },
+  "github.token.set": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "github.token.status": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "integration.status": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "ipv6.status": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "netbirdserver.credentials": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "netbirdserver.disable": {
+    "permission": "administrators",
+    "effect": "destructive"
+  },
+  "netbirdserver.setup": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "netbirdserver.status": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "phone.addnas": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "ports.delete": {
+    "permission": "administrators",
+    "effect": "destructive"
+  },
+  "ports.dsmset": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "ports.followset": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "ports.list": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "ports.upsert": {
+    "permission": "administrators",
+    "effect": "write"
+  },
+  "security.status": {
+    "permission": "administrators",
+    "effect": "read"
+  }
+}

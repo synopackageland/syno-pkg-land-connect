@@ -1,0 +1,9 @@
+{
+  "status": "概要",
+  "apps": "App の URL",
+  "cloudflare": "Cloudflare",
+  "tailscale": "Tailscale",
+  "ipv6": "IPv6 直接接続",
+  "netbird": "NetBird",
+  "settings": "設定"
+}

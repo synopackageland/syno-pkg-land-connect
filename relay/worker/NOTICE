@@ -1,0 +1,9 @@
+Syno Connect Center relay includes code from hostc by akazwz and contributors
+https://github.com/akazwz/hostc
+Upstream revision: 88cdb41cb837cf81b7a5180916839348c1989bbf
+Licensed under the Apache License, Version 2.0 (see LICENSE)
+
+Derived files: src/tunnel.ts, src/token.ts, src/pages.ts, src/protocol/*,
+test/helpers.ts, test/tunnel.test.ts, test/protocol.test.ts
+Syno Connect Center changes: fixed permanent per-Worker tunnel, per-Worker secret, reserved
+connector endpoint, FixedLengthStream responses, protocol bounds and tests

@@ -1,0 +1,10 @@
+dist/
+node_modules/
+.cache/
+__pycache__/
+*.pyc
+/build/
+.env
+.e2e/
+# The vendored phone browser page keeps Expo's asset paths as built
+!/vendor/mobile-web/assets/node_modules/

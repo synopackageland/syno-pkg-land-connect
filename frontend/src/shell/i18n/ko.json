@@ -1,0 +1,9 @@
+{
+  "status": "개요",
+  "apps": "App URL",
+  "cloudflare": "Cloudflare",
+  "tailscale": "Tailscale",
+  "ipv6": "IPv6 직접 연결",
+  "netbird": "NetBird",
+  "settings": "설정"
+}
