@@ -4,8 +4,8 @@ import {readFileSync, existsSync} from 'node:fs';
 import YAML from 'yaml';
 // Published on registry.npmjs.org; the integrity is the npm dist.integrity pin.
 const PINS={
- "@synopackageland/ui": ["0.25.29", "sha512-8Ikln46M/uLZekPkKYUKZLTha+hAlclaWuORnjmthadqgdq02lEV6JZAAHjmI0TdTa8kezXjLv8jTaMMIf/w/g=="],
- "@synopackageland/sdk": ["0.53.49", "sha512-sfnOC+e0twyspamRqNgYCYhN2wtt8cd1CZ89tvLDkxmvMd7zdqMiP9GedcBCu2L27R0FC43f+hRNVPEEFN+BYQ=="]
+ "@synopackageland/ui": ["0.25.30", "sha512-tSZNGlc7OptTkuWhIUvk5szCr5YHQJ82narhgmwL6JNQL0Fd2hCkqLlaR8/yJMgMMxo0SUkKlo+9jv6wOIYywQ=="],
+ "@synopackageland/sdk": ["0.53.52", "sha512-P7QAXnlHkRIyHQn0MF0EymXea2q79FbZdR3pAmF/ga+3gKEEqDV37yiygg5Fayij8syfT11TexIVR+1xvMdv6Q=="]
 };
 test('native Vue scaffold ships a non-root package with public pinned UI and MIT license', () => {
  for (const file of ['dsm-package.yaml','backend/cmd/app/main.go','frontend/src/main.ts','LICENSE']) assert.ok(existsSync(file), file);
