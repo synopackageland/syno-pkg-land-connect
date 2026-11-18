@@ -63,12 +63,15 @@ test('the self-test checks a phone has IPv6 first, and a private network needs i
  expect(TEST_SITES.phoneIpv6).toBe('https://test-ipv6.com/')
 })
 
-test('the first visit shows three ways side by side with the same facts, the Free link first',async()=>{
+test('the first visit shows every way as a card with the same facts, the Free link first',async()=>{
  env=fixture([],{'apps.workersstatus':()=>({connected:false})});await settle();await openWizard()
  expect(wizard().dataset.wizardStep).toBe('choose')
  expect(q('[data-wizard-heading]')!.textContent).toContain(t('wizard.step.choose'))
  const cards=[...wizard().querySelectorAll<HTMLElement>('[data-wizard-choose] > [role="radiogroup"] > [data-wizard-way]')].map(c=>c.dataset.wizardWay)
- expect(cards).toEqual(['workers','cloudflare-domain','tailscale'])
+ expect(cards).toEqual(['workers','cloudflare-domain','tailscale','netbird','ipv6'])
+ // Every way shows at once: no More ways to unfold.
+ expect(q('[data-wizard-choose] [data-use-more]')).toBeNull()
+ expect(wizard().querySelectorAll('[data-wizard-choose] [role="radiogroup"]')).toHaveLength(1)
  for(const way of cards)expect(q(`[data-wizard-way="${way}"]`)!.querySelectorAll('[data-wizard-fact]')).toHaveLength(5)
  expect(q('[data-wizard-way="workers"] [data-wizard-recommended]')).toBeTruthy()
  // Each card is drawn with the shared path, never text inside the picture.
@@ -87,10 +90,21 @@ test('the cards are one radio group: the Free link starts selected and the foote
  // Only the selected card is a tab stop; the arrows move the selection.
  expect(card('workers').tabIndex).toBe(0)
  expect(card('tailscale').tabIndex).toBe(-1)
+ // The arrows cycle through all five cards, wrapping at either end.
  card('workers').dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowLeft',bubbles:true}));await settle()
+ expect(checked()).toEqual(['ipv6'])
+ expect(document.activeElement).toBe(card('ipv6'))
+ expect(card('ipv6').tabIndex).toBe(0)
+ expect(card('workers').tabIndex).toBe(-1)
+ card('ipv6').dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowUp',bubbles:true}));await settle()
+ expect(checked()).toEqual(['netbird'])
+ card('netbird').dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowLeft',bubbles:true}));await settle()
  expect(checked()).toEqual(['tailscale'])
- expect(document.activeElement).toBe(card('tailscale'))
  card('tailscale').dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true}));await settle()
+ expect(checked()).toEqual(['netbird'])
+ expect(document.activeElement).toBe(card('netbird'))
+ card('netbird').dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true}));await settle()
+ card('ipv6').dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true}));await settle()
  expect(checked()).toEqual(['workers'])
  card('cloudflare-domain').dispatchEvent(new KeyboardEvent('keydown',{key:' ',bubbles:true}));await settle()
  expect(checked()).toEqual(['cloudflare-domain'])
@@ -103,14 +117,17 @@ test('the cards are one radio group: the Free link starts selected and the foote
  expect(wizard().dataset.wizardCurrent).toBe('cloudflare-domain')
 })
 
-test('More ways holds NetBird and IPv6, and IPv6 needs the risk acknowledged',async()=>{
+test('IPv6 needs the risk acknowledged, and only while IPv6 is selected',async()=>{
  env=fixture([],{'apps.workersstatus':()=>({connected:false})});await settle();await openWizard()
- expect(q('[data-wizard-way="ipv6"]')).toBeNull()
- q('[data-wizard-choose] [data-use-more]')!.click();await settle()
+ expect(q('[data-wizard-ipv6-ack]')).toBeNull()
+ card('netbird').click();await settle()
  expect(q('[data-wizard-ipv6-ack]')).toBeNull()
  card('ipv6').click();await settle()
  expect(card('ipv6').getAttribute('aria-checked')).toBe('true')
  expect(next().disabled).toBe(true)
+ // The checkbox sits right under the cards.
+ const choose=[...q('[data-wizard-choose]')!.children]
+ expect(choose.findIndex(c=>c.contains(q('[data-wizard-ipv6-ack]')))).toBe(choose.indexOf(q('[data-wizard-choose] [role="radiogroup"]')!)+1)
  q('[data-wizard-ipv6-ack]')!.click();await settle()
  expect(next().disabled).toBe(false)
  next().click();await settle()
@@ -211,7 +228,6 @@ test('the Free link Apps step: video unticked, DSM goes with the Apps, one appro
 test('IPv6 that is on ends with the phone IPv6 check and the outside check',async()=>{
  env=fixture([connected('ipv6',{endpoints:[{url:'https://[2001:db8::10]:5001',public:true,localPort:5001}]})],{'apps.workersstatus':()=>({connected:false})});await settle()
  await openWizard()
- q('[data-wizard-choose] [data-use-more]')!.click();await settle()
  // A way already on needs no acknowledgement to continue.
  expect(q('[data-wizard-ipv6-ack]')).toBeNull()
  await use('ipv6')
@@ -254,7 +270,7 @@ test('App URLs Set up a way opens the same wizard',async()=>{
 test('the temporary address is one quiet row under the cards: confirm, Start, then its address and the Free link',async()=>{
  env=fixture([],{'apps.workersstatus':()=>({connected:false}),'connection.check':p=>({provider:p.provider,state:'ok',externalVerified:true,checkedAt:'2026-10-26T08:00:00Z'})});await settle();await openWizard()
  const row=q('[data-wizard-temporary]')!
- // Under the three cards, above More ways, and never a card or a recommendation.
+ // Right under the cards, and never a card or a recommendation.
  const choose=q('[data-wizard-choose]')!
  const order=[...choose.children]
  expect(order.indexOf(row)).toBe(order.indexOf(choose.querySelector('[role="radiogroup"]')!)+1)

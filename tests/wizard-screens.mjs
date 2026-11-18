@@ -1,10 +1,12 @@
 // Local-only screenshots of the setup wizard dialog with mocked answers:
-// the Overview's first visit (a picture and Set up), Choose (en, zh-TW, More
-// ways, a way already on, at 1100/820/640), Connect for three ways, Choose
+// the Overview's first visit (a picture and Set up), Choose (en, zh-TW, IPv6
+// selected with its risk checkbox, a way already on, at 1100/820/640, and at
+// DSM's default window and a phone width with the last card selected), Connect for three ways, Choose
 // what opens with it, the approval, Ready for the Free link and IPv6, Choose
 // at 640x420, the window sizes (DSM's default 960x640 window leaves 960x600
 // for the app, 1280x800, 640x600) without page scroll, Choose's selected card
-// and footer action in view at those sizes in all nine languages, opened from
+// and footer action in view at those sizes in all nine languages (also for
+// the second row's cards, selected by click and by the arrow keys), opened from
 // the Overview and from App URLs, the temporary address (its row under the
 // cards, its confirm, the address it gives and the Overview's note), light
 // and dark at 960x600, and the returning Home's lanes with a long workers.dev
@@ -73,8 +75,8 @@ const dark=p=>p.evaluate(()=>{for(const n of [document.documentElement,...docume
 // or from App URLs (Set up a way while nothing is set up).
 async function open(scenario,locale='en',viewport={width:1100,height:900},from='home',scheme='light'){
  const p=await page(scenario,locale,viewport,scheme)
- // A narrow window folds the sidebar away: its item is clicked in the DOM.
- if(from==='apps'){await p.locator('[data-nav-item]').nth(1).evaluate(e=>e.click());await p.locator('[data-page="apps"] [data-apps-setup]').click()}
+ // A narrow window folds the sidebar into the mobile menu: it opens first.
+ if(from==='apps'){if(!await p.locator('[data-nav-item]').count())await p.locator('[data-ui-mobile-menu]').click();await p.locator('[data-nav-item]').nth(1).evaluate(e=>e.click());await p.locator('[data-page="apps"] [data-apps-setup]').click()}
  else await p.locator('[data-page="status"]').locator('[data-home-set-up],[data-home-add-way]').first().click()
  await p.locator('[data-setup-wizard]').waitFor()
  if(scheme==='dark')await dark(p)
@@ -144,7 +146,27 @@ const click=(p,sel)=>p.locator(sel).first().click()
 for(const locale of ['en','zh-TW']){
  const p=await open('first',locale)
  await shot(p,`01-choose-${locale}`)
- await click(p,'[data-wizard-choose] [data-use-more]');await shot(p,`02-more-ways-${locale}`)
+ await click(p,'[data-wizard-way="ipv6"]');await shot(p,`02-choose-ipv6-${locale}`)
+ await p.close()
+}
+// Every way shows at once. In DSM's default window (960x600 for the app) and
+// at a phone's width, IPv6 (the last card) selected: the card, its risk
+// checkbox and the footer's button are each reachable, the step body
+// scrolling to them while the footer stays put. The window view is the one
+// the user sees; the full-page shot is not used since only the step scrolls.
+for(const locale of ['en','zh-TW'])for(const [kind,width,height] of [['window',960,600],['phone',390,844]]){
+ const p=await open('first',locale,{width,height})
+ const name=`80-${kind}-${locale}`
+ await p.screenshot({path:`${out}/${name}-top.png`});console.log(`${name}-top`)
+ await click(p,'[data-wizard-way="ipv6"]');await p.waitForTimeout(200)
+ await inView(p,'[data-wizard-way="ipv6"]',`${name}-ipv6-card`)
+ await p.locator('[data-wizard-ipv6-ack]').scrollIntoViewIfNeeded()
+ await inView(p,'[data-wizard-ipv6-ack]',`${name}-ipv6-ack`)
+ await inView(p,'[data-wizard-footer] [data-wizard-next]',`${name}-next`)
+ await p.screenshot({path:`${out}/${name}-ipv6.png`});console.log(`${name}-ipv6`)
+ await p.locator('[data-wizard-ipv6-ack]').click();await p.waitForTimeout(100)
+ await choosable(p,`${name}-ipv6-ack-choose`)
+ await p.screenshot({path:`${out}/${name}-ipv6-ack.png`});console.log(`${name}-ipv6-ack`)
  await p.close()
 }
 // Step 1 at three widths: the three cards keep their compact topology on one line.
@@ -170,19 +192,22 @@ for(const [width,height] of [[960,600],[1280,800],[640,600]]){
 }
 // Choosing needs no scroll at the window sizes in every language, opened
 // from the Overview and from App URLs, with the Free link preselected and
-// with another card selected. The temporary address row shows with them in
-// DSM's default window and larger; at 640 wide the cards stack and the row
-// follows them, one scroll down, never folded.
+// with another card selected. The temporary address row follows all five
+// cards: one scroll down of the step body at every size, never folded.
 for(const locale of ['en','zh-TW','zh-CN','ja','ko','de','fr','es','it']){
  for(const [width,height] of [[960,600],[1280,800],[640,600]]){
   for(const from of ['home','apps']){
    const p=await open('first',locale,{width,height},from)
    await fits(p,`09-fit-${from}-${locale}-${width}x${height}`)
    await choosable(p,`09-choose-${from}-${locale}-${width}x${height}`)
-   if(width>=960)await inView(p,'[data-wizard-temporary]',`09-temporary-row-${from}-${locale}-${width}x${height}`)
-   else if(!await p.locator('[data-wizard-temporary]').isVisible()){console.log(`09-temporary-row-${from}-${locale}-${width}x${height} hidden`);process.exitCode=1}
+   await p.locator('[data-wizard-temporary]').scrollIntoViewIfNeeded()
+   await inView(p,'[data-wizard-temporary]',`09-temporary-row-${from}-${locale}-${width}x${height}`)
+   await fits(p,`09-fit-scrolled-${from}-${locale}-${width}x${height}`)
    await p.locator('[data-wizard-way="tailscale"]').click();await p.waitForTimeout(100)
    await choosable(p,`09-choose-${from}-${locale}-${width}x${height}-tailscale`)
+   // The arrow keys reach the second row and bring its card into view.
+   await p.locator('[data-wizard-way="tailscale"]').press('ArrowRight');await p.waitForTimeout(100)
+   await choosable(p,`09-choose-${from}-${locale}-${width}x${height}-netbird-key`)
    await p.close()
   }
  }
@@ -222,7 +247,6 @@ for(const scheme of ['light','dark']){
 // has no Close: the wizard closes from its header.
 for(const [width,height] of [[960,600],[1280,800],[640,600]]){
  const p=await open('first','en',{width,height})
- await click(p,'[data-wizard-choose] [data-use-more]');await p.waitForTimeout(300)
  const m=await p.evaluate(async()=>{
   const box=sel=>document.querySelector(sel)?.getBoundingClientRect()
   const body=document.querySelector('[data-setup-wizard] [data-wizard-body]')
@@ -315,7 +339,7 @@ for(const locale of ['en','zh-TW','zh-CN','ja','ko','de','fr','es','it']){
 }
 {
  const p=await open('ipv6')
- await click(p,'[data-wizard-choose] [data-use-more]');await use(p,'ipv6')
+ await use(p,'ipv6')
  await shot(p,'31-ready-ipv6')
  await p.close()
 }

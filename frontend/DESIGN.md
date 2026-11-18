@@ -144,30 +144,35 @@ Apps). The dialog fits the window: at 960×600, 1280×800 and 640×600 the band,
 the footer and its one primary button stay in view and only the step body
 scrolls; the page itself never scrolls for it.
 
-1. Choose how: three cards side by side from the default window (one
-   column under 615px of step width, where each card puts its path beside its
-   words), Free link (workers.dev, preselected, a star with "Recommended"), My
-   own domain and Only my devices (Tailscale). The cards are one radio group
-   (`WizardWay`): a click anywhere on a card or the arrow keys select it (a
+1. Choose how: every way is a card, shown at once with nothing to unfold:
+   Free link (workers.dev, preselected, a star with "Recommended"), My own
+   domain and Only my devices (Tailscale), then NetBird and IPv6. Three sit
+   side by side from the default window, the last two on a second row (one
+   column under 615px of step width, where each card puts its path beside
+   its words). The cards are one radio group (`WizardWay`): a click anywhere
+   on a card or the arrow keys (which cycle through all five) select it (a
    primary border and a filled mark on the title row), and the wizard
    footer's one primary button goes on with it ("Use Free link", or
-   "Continue with …" for a way already on). So at 960×600, 1280×800 and
-   640×600 the selected card and that button show whole without scrolling,
-   in every language (`tests/wizard-screens.mjs` asserts it). Each card has
+   "Continue with …" for a way already on). At 960×600, 1280×800 and
+   640×600 the preselected card and that button show whole without
+   scrolling, in every language; a second-row card selected by click or by
+   the keys is brought into view by the step body's scroll while the footer
+   stays put (`tests/wizard-screens.mjs` asserts both). Each card has
    its `WayPath` (one row of nodes, two lines under each), the way's one line
    (from 320px of card width; narrower, as in the dialog, it is the path's
    tooltip and the card's description) and the same five facts (cost, who can open it,
    install, video, safety), each one line: the fact's icon (its name as
    tooltip), a `StatusDot` (good, watch out or risk) and words that wrap. The
    badge sits on the title row and drops to its icon when the row is short;
-   every title row in a group takes the tallest one's height, so the paths
-   and the text below them line up. Directly under the cards, one quiet row
+   every title row, across both rows, takes the tallest one's height, so the paths
+   and the text below them line up. Under the cards, one quiet row
    (not a card: no star, no colour) reads "Just trying it? Get a temporary
    address" with a secondary "Get one"; it shows while Cloudflare is free for
-   it (nothing set up there, or a temporary address already). It opens the
-   temporary address's Connect step. "More ways" unfolds NetBird and IPv6 as
-   a second group of the same choice; IPv6 selected shows its risk checkbox
-   under the cards, and the footer button waits for it. "Compare all ways"
+   it (nothing set up there, or a temporary address already), one scroll
+   down of the step body in the default window. It opens the
+   temporary address's Connect step. IPv6 selected (and not yet on) shows
+   its risk checkbox right under the cards, and the footer button waits for
+   it. "Compare all ways"
    opens the folded comparison. A way already on says "Already set up" and
    continues to its Apps. Nothing is written in this step.
 2. Connect: the way's own connect form, the same component its page shows

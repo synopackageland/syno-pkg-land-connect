@@ -17,7 +17,7 @@ import {computed,ref,watch} from 'vue'
 import {Button,WizardDialog,WizardStep} from '@synopackageland/ui'
 import {useConnectState} from '../../connect/state'
 import {appsApi} from '../../connect/appUrls'
-import {APP_SCOPE,MAIN_WAYS,MORE_WAYS,connectFailed,connectPhase,connectReady,pathWay,resume,stepAfterConnect,startTemporary,stepFor,temporaryAvailable,wayState,type WayState,type WizardStep as Step,type WizardWay} from '../../connect/wizard'
+import {APP_SCOPE,CARD_WAYS,connectFailed,connectPhase,connectReady,pathWay,resume,stepAfterConnect,startTemporary,stepFor,temporaryAvailable,wayState,type WayState,type WizardStep as Step,type WizardWay} from '../../connect/wizard'
 import type {RelayStatus} from '../../connect/topology'
 import type {CheckResult} from '../../connect/checks'
 import {translate} from '../../i18n'
@@ -40,7 +40,7 @@ async function readRelay(){
 }
 watch(s.refreshes,()=>{if(open.value)void readRelay()})
 
-const ways=[...MAIN_WAYS,...MORE_WAYS,'temporary'] as WizardWay[]
+const ways=[...CARD_WAYS,'temporary'] as WizardWay[]
 const states=computed(()=>Object.fromEntries(ways.map(w=>[w,wayState(w,s.connections.value,relay.value)])) as Record<WizardWay,WayState>)
 const temporaryShown=computed(()=>temporaryAvailable(s.connections.value))
 
