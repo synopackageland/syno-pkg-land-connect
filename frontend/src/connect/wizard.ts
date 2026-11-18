@@ -16,9 +16,9 @@ export type WizardWay='workers'|'cloudflare-domain'|'tailscale'|'netbird'|'ipv6'
 export type CardWay=Exclude<WizardWay,'temporary'>
 export type WizardStep='choose'|'connect'|'apps'|'done'
 export const STEPS:readonly WizardStep[]=['choose','connect','apps','done']
-// The three ways most users need; the others wait behind "More ways".
-export const MAIN_WAYS=['workers','cloudflare-domain','tailscale'] as const
-export const MORE_WAYS=['netbird','ipv6'] as const
+// The ways with a card on Choose, in the order they show: the three most
+// users need first, then NetBird and IPv6.
+export const CARD_WAYS=['workers','cloudflare-domain','tailscale','netbird','ipv6'] as const satisfies readonly CardWay[]
 
 // The connect form a way uses; the Free link has its own, on the Cloudflare page.
 export const FORM:Record<Exclude<CardWay,'workers'>,ConnectFormProvider>={'cloudflare-domain':'cloudflare',tailscale:'tailscale',netbird:'netbird',ipv6:'ipv6'}
@@ -92,7 +92,7 @@ export const stepFor=(way:WizardWay,state:WayState):WizardStep=>state==='on'?ste
 // Where the wizard opens: a way already started resumes at Connect;
 // otherwise it starts by choosing, with Free link selected.
 export function resume(states:Record<WizardWay,WayState>):{way:WizardWay;step:WizardStep} {
- const way=([...MAIN_WAYS,...MORE_WAYS,'temporary'] as WizardWay[]).find(w=>states[w]==='started')
+ const way=([...CARD_WAYS,'temporary'] as WizardWay[]).find(w=>states[w]==='started')
  return way?{way,step:'connect'}:{way:'workers',step:'choose'}
 }
 

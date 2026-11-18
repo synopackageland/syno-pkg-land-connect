@@ -3,7 +3,7 @@
 // row carries the radio mark, the name and "Recommended" or "Already set up";
 // when the row cannot hold the badge's words (an unseen copy of the row is
 // measured), only its icon stays, with the words as its tooltip. WizardChoose
-// gives every title row of a group the tallest one's height, so the paths
+// gives every title row the tallest one's height, so the paths
 // below stay level when a long name wraps. The way's one line shows from 320px
 // of card width; a narrower card (three side by side in the wizard dialog)
 // keeps it as the path's tooltip and the card's description, so the card and
