@@ -155,21 +155,31 @@ func (t *Tunnel) deleteRouted(ctx context.Context, d domain, hostname string) er
 	if err != nil {
 		return errReconnect
 	}
-	row, found, err := t.cfg.API.FindRoute(ctx, signed, hostname, d.TunnelID)
+	ledger, err := t.ownership(signed.accountID)
+	if err != nil {
+		return err
+	}
+	tunnelID := d.TunnelID
+	// A tunnel recreation re-routes only active names, so a withdrawn name can
+	// still point at the replaced tunnel. Its exact, marked receipt for a tunnel
+	// this installation owned identifies that tunnel; anything else fails closed.
+	if expected, ok := ledger.DNS[hostname]; ok {
+		owner := strings.TrimSuffix(strings.TrimSuffix(expected.Content, "."), ".cfargotunnel.com")
+		if owner != d.TunnelID && ledger.Tunnels[owner] && tunnelUUID.MatchString(owner) && expected.Comment == dnsMarker(owner) {
+			tunnelID = owner
+		}
+	}
+	row, found, err := t.cfg.API.FindRoute(ctx, signed, hostname, tunnelID)
 	if err != nil {
 		return err
 	}
 	if found {
-		ledger, e := t.ownership(signed.accountID)
-		if e != nil {
-			return e
-		}
 		if expected, ok := ledger.DNS[hostname]; ok && expected != row {
 			return t.cfg.API.conflict(ctx, signed, nameClaim{name: hostname, record: row, reason: "other", found: true})
 		}
 	}
 	if found {
-		if err = t.cfg.API.DeleteRoute(ctx, signed, row, d.TunnelID); err != nil {
+		if err = t.cfg.API.DeleteRoute(ctx, signed, row, tunnelID); err != nil {
 			return err
 		}
 	}
