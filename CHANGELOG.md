@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.0-0186
+
+- Phone page: text fields highlight their whole rounded field on focus, and dashboard cards, card headers and toolbars in DSM Apps fit the phone
+
 ## 0.1.0-0185
 
 - Phone page: adding a NAS asks you to trust its certificate when needed; Apps open at once with a launch screen, and Surveillance Station sub-Apps fit the phone
