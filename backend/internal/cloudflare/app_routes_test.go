@@ -189,6 +189,72 @@ func TestAppRouteLedgerReclaimsAnOrphanAndForgetsOwnership(t *testing.T) {
 	}
 }
 
+// Tunnel recreation re-routes only active App names. A route withdrawn before
+// the recreation still points at the replaced tunnel and must not block every
+// later reconciliation; only its exact, marked receipt grants the delete.
+func TestWithdrawnRouteOfARecreatedTunnelIsReclaimedOnlyWithItsReceipt(t *testing.T) {
+	for _, changed := range []bool{false, true} {
+		t.Run(map[bool]string{false: "receipt", true: "changed"}[changed], func(t *testing.T) {
+			f, cloud := recoveryFixture(t)
+			missing := f.launcher.onStart
+			f.launcher.onStart = nil
+			a := installTargets(f)
+			ctx := context.Background()
+			if _, err := f.tunnel.PublishApps(ctx, []AppRoute{appTarget("ExampleOne", "one.example.com", "one")}); err != nil {
+				t.Fatal(err)
+			}
+			f.waitState("connected")
+			f.tunnel.Stop()
+			if err := a.store.Update(ctx, func(state *apps.State) error {
+				delete(state.Apps, "ExampleOne")
+				return nil
+			}); err != nil {
+				t.Fatal(err)
+			}
+			f.launcher.mu.Lock()
+			f.launcher.onStart = missing
+			f.launcher.mu.Unlock()
+			if err := f.tunnel.Domain(ctx, ""); err != nil {
+				t.Fatal(err)
+			}
+			waitRecreated(t, f)
+			cloud.mu.Lock()
+			stale := cloud.records["one.example.com"]
+			if stale.Content != tunnelID+".cfargotunnel.com" {
+				cloud.mu.Unlock()
+				t.Fatal("withdrawn route was re-pointed by recreation", stale)
+			}
+			if changed {
+				stale.Comment = "edited elsewhere"
+				cloud.records["one.example.com"] = stale
+			}
+			deletes := cloud.deletes
+			cloud.mu.Unlock()
+			err := f.tunnel.ReconcileAppRoutes(ctx)
+			d, derr := f.tunnel.savedDomain()
+			if derr != nil {
+				t.Fatal(derr)
+			}
+			cloud.mu.Lock()
+			defer cloud.mu.Unlock()
+			_, kept := cloud.records["one.example.com"]
+			if changed {
+				if err == nil || !kept || cloud.deletes != deletes || d.AppRoutes["ExampleOne"] == "" {
+					t.Fatal("changed record was deleted or forgotten", err, cloud.records, d.AppRoutes)
+				}
+				return
+			}
+			if err != nil || kept || containsName(d.Routed, "one.example.com") || d.AppRoutes["ExampleOne"] != "" {
+				t.Fatal("retired-tunnel orphan retained", err, cloud.records, d)
+			}
+			owned, err := f.tunnel.ownership(testAccount)
+			if err != nil || owned.DNS["one.example.com"].ID != "" {
+				t.Fatal("retired-tunnel ownership retained", owned.DNS, err)
+			}
+		})
+	}
+}
+
 func TestOwnershipReceiptWithoutRouteLedgerIsReclaimed(t *testing.T) {
 	f, cloud := recoveryFixture(t)
 	a := installTargets(f)
