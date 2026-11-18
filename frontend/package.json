@@ -11,7 +11,7 @@
   "dependencies": {
     "@lucide/vue": "1.48.0",
     "@synopackageland/sdk": "0.53.52",
-    "@synopackageland/ui": "~0.25.30",
+    "@synopackageland/ui": "~0.25.31",
     "uqr": "0.1.3",
     "vue": "3.5.43"
   },

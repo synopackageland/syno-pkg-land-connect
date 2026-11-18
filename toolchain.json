@@ -3,7 +3,7 @@
   "templates": "0.42.1",
   "sdk": "0.53.52",
   "app": "0.53.52",
-  "ui": "0.25.30",
+  "ui": "0.25.31",
   "executorTag": "executor/v0.53.5",
   "goToolchain": "go1.26.10"
 }
