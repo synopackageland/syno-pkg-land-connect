@@ -1,7 +1,7 @@
 github.com/gorilla/websocket v1.5.3 h1:saDtZ6Pbx/0u+bgYQ3q96pZgCzfhKXGPqt7kZ72aNNg=
 github.com/gorilla/websocket v1.5.3/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
-github.com/synopackageland/syno-pkg-land-sdk v0.53.49 h1:CRK6QgZQEWXupy6wVSnAMj0f2JGC/EjeAzVE17TmRx8=
-github.com/synopackageland/syno-pkg-land-sdk v0.53.49/go.mod h1:mmtgnyafLwci1588LJFpRIsWflHwjaHJoDm7grXFh8A=
+github.com/synopackageland/syno-pkg-land-sdk v0.53.52 h1:bDDSj5inqndsPmsNaBHx6kSgvpz2EY3Lew2Y9GmdGF4=
+github.com/synopackageland/syno-pkg-land-sdk v0.53.52/go.mod h1:mmtgnyafLwci1588LJFpRIsWflHwjaHJoDm7grXFh8A=
 golang.org/x/crypto v0.36.0 h1:AnAEvhDddvBdpY+uR+MyHmuZzzNqXSe/GvuDeob5L34=
 golang.org/x/crypto v0.36.0/go.mod h1:Y4J0ReaxCR1IMaabaSMugxJES1EpwhBHhv2bDHklZvc=
 golang.org/x/crypto/x509roots/fallback v0.0.0-20261020153306-9f2b28d4331a h1:V5oicZXS0oqZx30gY/apgSVD7YvNBfrIOdcMnlelJY4=

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.0-0184
+
+- Updated to the latest UI kit and SDK
+
 ## 0.1.0-0183
 
 - Phone page: pull down on Home, Apps and Notifications to refresh

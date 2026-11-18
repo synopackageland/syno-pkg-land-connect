@@ -33,11 +33,11 @@ test('CLI and templates 0.54.8/0.42.1 are pinned to the public registry and sche
 // The shared supervision SDK is pinned to its published release and module sum.
 test('backend pins the shared supervision SDK without copying packages',()=>{
  const gomod=readFileSync('backend/go.mod','utf8');
- const version='v0.53.49';
+ const version='v0.53.52';
  assert.match(gomod,new RegExp('github\\.com/synopackageland/syno-pkg-land-sdk\\s+'+version.replaceAll('.','\\.')+'(?:\\s|$)'));
  assert.doesNotMatch(gomod,/^replace\b/m);
  const gosum=readFileSync('backend/go.sum','utf8');
- assert.ok(gosum.split('\n').includes('github.com/synopackageland/syno-pkg-land-sdk v0.53.49 h1:CRK6QgZQEWXupy6wVSnAMj0f2JGC/EjeAzVE17TmRx8='));
+ assert.ok(gosum.split('\n').includes('github.com/synopackageland/syno-pkg-land-sdk v0.53.52 h1:bDDSj5inqndsPmsNaBHx6kSgvpz2EY3Lew2Y9GmdGF4='));
  for(const dir of ['dsm','jsonlimits','dsmservices'])assert.equal(existsSync(`backend/internal/${dir}`),false,dir);
  assert.deepEqual(readdirSync('backend/internal/api').sort(),['operations.json','permissions.go','permissions.json','permissions_test.go']);
 });
