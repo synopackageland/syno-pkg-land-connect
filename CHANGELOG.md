@@ -2,6 +2,7 @@
 
 ## 0.1.0-0187
 
+- Phone page: Home shows the DSM version on its own line, with an "Update available" tag that opens Update & Restore when DSM has an update waiting (administrators)
 - Phone page: the browser tab, the home screen icon and the Add to Home Screen card show DSM's own icon instead of Package Land's
 - Cloudflare: own domain, Free link and temporary address show that uploads are limited to 100 MB per file and downloads have no limit
 
