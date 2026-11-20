@@ -1,15 +1,15 @@
 {
   "schema": 1,
   "version": "0.3.2",
-  "commit": "1f84cc5d026cb46ebb16376640c2b95aac72d629",
+  "commit": "4184948a9821b7ea49daf71700af5913292b8e65",
   "dirty": false,
   "base": "./",
   "files": {
+    "_expo/static/js/web/index-25712ec99752b9e421dad0da5f81b5ec.js": "877d78b92ac5c410d11d183ec05813c84f18bbf670281a05a068ed89356c8f40",
     "_expo/static/js/web/index-ca94c193286ae94d067f09285f8de3d8.js": "5dc3b96cf6cac7473f41d5492ccc357dffffd88da25aa650a3b227f7621e645a",
-    "_expo/static/js/web/index-ff1957a00ec283873a0383f1dd374d50.js": "a460ee8a76e3c981e462ec74f544606a90e22c9e921b719cc210d983312f3b17",
     "assets/assets/brand/package-land.035f4f2b43e69ed47c30cca81772eae5.png": "dc09e7c63a7ba259e74d513ba86de15df29bcd44536c2d59e634113b294b88e1",
     "assets/node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/MaterialIcons.4e85bc9ebe07e0340c9c4fc2f6c38908.ttf": "ef149f08bdd2ff09a4e2c8573476b7b0f3fbb15b623954ade59899e7175bedda",
-    "index.html": "711ea84f2f0ef20d84d44f1989c70e882a6d0be66169bc0e9e1bbd45b634bba3",
+    "index.html": "b3e2f07630f890254eadcc8d884df9500903fb1c1ed8a8f55f8aee1ffd7c3f3b",
     "manifest.webmanifest": "a467949c2df913d80390db4e4c1988f13fbb1b1558b6b7163672d0ac9739a6da"
   }
 }

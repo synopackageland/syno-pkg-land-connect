@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.0-0189
+
+- Phone page: Synology Photos, Drive, Chat, Calendar, Contacts, MailPlus and other Apps that DSM opens in a page of their own open at once and show as soon as they have drawn, instead of staying on Still opening until Reopen
+- Phone page: Still opening is only a hint with Back, and an App that is slow to build keeps opening and shows itself; Reopen shows only when the page failed to load
+
 ## 0.1.0-0188
 
 - Phone page: Security Advisor's overview and Security Baseline, Hyper Backup's task page and DSM grids fit the phone; grids scroll sideways as a whole, with no first column held in place
