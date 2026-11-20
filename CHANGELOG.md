@@ -1,19 +1,13 @@
 # Changelog
 
-## 0.1.0-0189
+## 0.1.0-0190
 
-- Phone page: Synology Photos, Drive, Chat, Calendar, Contacts, MailPlus and other Apps that DSM opens in a page of their own open at once and show as soon as they have drawn, instead of staying on Still opening until Reopen
-- Phone page: Still opening is only a hint with Back, and an App that is slow to build keeps opening and shows itself; Reopen shows only when the page failed to load
-
-## 0.1.0-0188
-
-- Phone page: Security Advisor's overview and Security Baseline, Hyper Backup's task page and DSM grids fit the phone; grids scroll sideways as a whole, with no first column held in place
-
-## 0.1.0-0187
-
-- Phone page: Home shows the DSM version on its own line, with an "Update available" tag that opens Update & Restore when DSM has an update waiting (administrators)
-- Phone page: the browser tab, the home screen icon and the Add to Home Screen card show DSM's own icon instead of Package Land's
+- Phone page: Photos, Drive, Chat, Calendar and other Apps that open in a page of their own open directly and much faster; Reopen shows only when loading failed
+- Phone page: Home shows the DSM version on its own line, with an Update available tag that opens Update & Restore (administrators)
+- Phone page: Security Advisor and its Security Baseline, Hyper Backup's task page and DSM grids fit the phone; grids scroll sideways as a whole
+- Phone page: the browser tab, the home screen icon and the Add to Home Screen card show DSM's own icon
 - Cloudflare: own domain, Free link and temporary address show that uploads are limited to 100 MB per file and downloads have no limit
+- Cloudflare: an App address removed before the tunnel was recreated is now cleaned up, so later App address changes no longer fail
 
 ## 0.1.0-0186
 
