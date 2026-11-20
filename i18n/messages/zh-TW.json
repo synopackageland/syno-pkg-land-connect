@@ -244,6 +244,7 @@
   "advisor.limits.address-changes": "每次啟動網址都會改變",
   "advisor.limits.testing-only": "用於測試，不保證可用時間",
   "advisor.limits.upload-100mb": "每次上傳最多 100 MB",
+  "advisor.limits.upload-100s": "單一上傳需在 100 秒內完成",
   "advisor.limits.video-restricted": "影片串流受 Cloudflare 條款限制",
   "advisor.limits.https-needs-admin-console": "HTTPS 要在 Tailscale 管理主控台開啟",
   "advisor.limits.policy-required": "需要設定存取原則",
@@ -1151,7 +1152,18 @@
   "supervision.storage.unavailable.body": "無法安全讀取暫存空間。重新啟動會清除私有暫存檔，並再次嘗試連線",
   "cflimit.row": "檔案大小",
   "cflimit.upload": "上傳：每個檔案最多 {mb} MB（Cloudflare {plan}）",
+  "cflimit.uploadTime": "上傳：單一上傳需在 {s} 秒內完成，大檔可能失敗",
   "cflimit.download": "下載：無限制",
   "cflimit.detail": "超過上限的上傳會在 Cloudflare 邊緣以錯誤 413 拒絕，App 完全收不到。Business 方案為 200 MB，Enterprise 為 500 MB。大檔請改走私人網路（NetBird 或 Tailscale）或區域網路",
-  "cflimit.label": "Cloudflare 上傳上限"
+  "cflimit.detailTime": "臨時網址沒有檔案大小上限，但 Cloudflare 會中斷超過 {s} 秒的上傳，所以網路慢時大檔會失敗（約 5 MB/s 時，300 MB 就會失敗）。大檔請改走私人網路（NetBird 或 Tailscale）或區域網路",
+  "cflimit.label": "Cloudflare 上傳上限",
+  "lanswitch.row": "區域網路",
+  "lanswitch.label": "提供區域網路位址",
+  "lanswitch.detail": "預設關閉。開啟後，經 Cloudflare（自有網域、免費連結或臨時網址）開啟的頁面，會從訪客自己的瀏覽器確認能否直接連到區域網路上的 DSM，確定可連才提供 DSM 的區域網路位址。訪客在那裡要再登入一次；使用 HTTPS 時，瀏覽器會對 DSM 自己的憑證顯示警告。確認時使用 TCP 連接埠 {port}：若有開啟 DSM 防火牆，請允許區域網路連到這個連接埠",
+  "lanswitch.unavailable": "確認用的連接埠已被其他 App 使用，因此不會提供區域網路位址",
+  "lanswitch.unsaved": "無法儲存設定",
+  "lanswitch.found": "DSM 就在你的區域網路上",
+  "lanswitch.signin": "走區域網路位址比經過 Cloudflare 更快。到那裡要再登入一次。",
+  "lanswitch.certificate": "瀏覽器會對 DSM 自己的憑證顯示警告：請選「進階」，再選繼續前往。",
+  "lanswitch.open": "在區域網路開啟 DSM"
 }

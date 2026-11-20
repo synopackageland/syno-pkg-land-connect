@@ -299,6 +299,14 @@
     "permission": "administrators",
     "effect": "read"
   },
+  "lanswitch.get": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "lanswitch.set": {
+    "permission": "administrators",
+    "effect": "write"
+  },
   "netbirdserver.credentials": {
     "permission": "administrators",
     "effect": "read"
@@ -316,6 +324,10 @@
     "effect": "read"
   },
   "phone.addnas": {
+    "permission": "administrators",
+    "effect": "read"
+  },
+  "phone.lanprobe": {
     "permission": "administrators",
     "effect": "read"
   },

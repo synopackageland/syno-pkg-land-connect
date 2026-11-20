@@ -7,7 +7,7 @@ schema: 2
 package: SynoPkgConnect
 version: 0.1.0
 # Increase for every SPK you hand out with the same version (INFO 0.1.0-0001).
-build: 190
+build: 191
 displayname: Syno Connect Center
 maintainer: Syno Package Land
 metadata:
@@ -31,7 +31,7 @@ backend:
 # (vendor/mobile-web) holds the Material Icons glyph map, where "password" names
 # an icon code point; scripts/mobile_web.py update keeps the bundle's name here.
 ui_secret_ignores:
-  - file: "app/m/_expo/static/js/web/index-25712ec99752b9e421dad0da5f81b5ec.js"
+  - file: "app/m/_expo/static/js/web/index-5977409461eb3b6bb8dcc1e358e885dc.js"
     reason: "Material Icons glyph map entry for the password icon, not a credential"
     match:
       - "password:61506"
@@ -88,6 +88,14 @@ mobile:
 
 # No optional SDK capabilities: CGI and foreground daemon run as the package account.
 capabilities: {}
+
+# LAN switch: while its option is on, connect-worker answers signed ICE connectivity
+# checks here so a page reached through Cloudflare can prove it reaches the NAS
+# on the LAN. It answers nothing else.
+tcp_listeners:
+  lan_probe:
+    scope: all
+    port: 45001
 
 # Operation metadata is authored once; ctl generate owns the derived artifacts.
 ctl:

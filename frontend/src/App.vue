@@ -11,6 +11,8 @@ import BinariesPage from './pages/BinariesPage.vue'
 import ToastNotices from './components/ToastNotices.vue'
 import GitHubTokenAction from './components/GitHubTokenAction.vue'
 import DsmReview from './components/DsmReview.vue'
+import LanSwitchNotice from './components/LanSwitchNotice.vue'
+import {useLanFound} from './connect/useLanFound'
 import type {DsmReviewProvider} from './connect/dsmReview'
 import SetupWizard from './components/wizard/SetupWizard.vue'
 import CloudflarePage from './pages/CloudflarePage.vue'
@@ -22,6 +24,7 @@ import {shellCopy} from './shell/i18n'
 import type {ShellPage} from './shell/pages'
 
 const props = defineProps<{ctx: Context}>()
+const lanFound = useLanFound(props.ctx)
 const fullPage = isFullPage(props.ctx)
 // One provider binding per mount; a DSM subject/package switch remounts the app.
 const {busy, customAdd, error, dsmErrorProvider, page, pages, refresh, githubAction, openGitHubToken, phoneRequests} = provideConnectState(props.ctx)
@@ -62,6 +65,7 @@ function headerAction(key:string) {
     <template #notices>
       <DsmReview v-if="dsmErrorProvider" :key="dsmErrorProvider" global :provider="dsmErrorProvider as DsmReviewProvider" />
       <Callout v-else-if="error" :title="translate(ctx.locale, 'provider.attention')" tone="danger"><span role="alert">{{ error }}</span><template v-if="githubAction(error)" #actions><GitHubTokenAction :locale="ctx.locale" :code="githubAction(error)!" @open="openGitHubToken" /></template></Callout>
+      <LanSwitchNotice v-if="lanFound" :found="lanFound" :locale="ctx.locale" />
     </template>
     <ToastNotices>
     <!-- Every page stays mounted, so polling and drafts survive a page switch;

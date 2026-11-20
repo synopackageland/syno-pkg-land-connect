@@ -16,6 +16,7 @@ import (
 	"dsmapp/internal/dependency"
 	"dsmapp/internal/githubtoken"
 	"dsmapp/internal/ingress"
+	"dsmapp/internal/lanswitch"
 	"dsmapp/internal/nbserver"
 	"dsmapp/internal/ports"
 	"dsmapp/internal/provider"
@@ -476,8 +477,12 @@ func run() (runErr error) {
 	// Reads answer while the daemon restores; mutations wait on the barrier.
 	restored := make(chan struct{})
 	appOwner.SetRestoring(true)
+	// The LAN switch responder runs only while its option is on.
+	lanSwitch := &lanswitch.Service{Path: filepath.Join(dir, "lanswitch.json"), DSM: ports.DatastoreDetector{}.Redirect}
+	lanSwitch.Restore()
+	defer lanSwitch.Close()
 	server, e := control.Start(ctx, control.Config{
-		Apps: appAccess, Binaries: binaryService, NetBird: nbServer,
+		Apps: appAccess, Binaries: binaryService, NetBird: nbServer, LANSwitch: lanSwitch,
 		Controller: m, Shutdown: shutdown, Restored: restored, AfterApps: changed,
 	})
 	if e != nil {

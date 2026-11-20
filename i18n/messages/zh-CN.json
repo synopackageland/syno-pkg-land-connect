@@ -244,6 +244,7 @@
   "advisor.limits.address-changes": "每次启动网址都会改变",
   "advisor.limits.testing-only": "用于测试，不保证可用时间",
   "advisor.limits.upload-100mb": "每次上传最多 100 MB",
+  "advisor.limits.upload-100s": "单次上传需在 100 秒内完成",
   "advisor.limits.video-restricted": "视频串流受 Cloudflare 条款限制",
   "advisor.limits.https-needs-admin-console": "HTTPS 要在 Tailscale 管理控制台开启",
   "advisor.limits.policy-required": "需要设置访问策略",
@@ -1151,7 +1152,18 @@
   "supervision.storage.unavailable.body": "无法安全读取临时存储空间。重新启动会清除私有临时文件，并再次尝试连接",
   "cflimit.row": "文件大小",
   "cflimit.upload": "上传：每个文件最多 {mb} MB（Cloudflare {plan}）",
+  "cflimit.uploadTime": "上传：单次上传需在 {s} 秒内完成，大文件可能失败",
   "cflimit.download": "下载：无限制",
   "cflimit.detail": "超过上限的上传会在 Cloudflare 边缘以错误 413 拒绝，App 完全收不到。Business 套餐为 200 MB，Enterprise 为 500 MB。大文件请改走私人网络（NetBird 或 Tailscale）或局域网",
-  "cflimit.label": "Cloudflare 上传上限"
+  "cflimit.detailTime": "临时网址没有文件大小上限，但 Cloudflare 会中断超过 {s} 秒的上传，所以网络慢时大文件会失败（约 5 MB/s 时，300 MB 就会失败）。大文件请改走私人网络（NetBird 或 Tailscale）或局域网",
+  "cflimit.label": "Cloudflare 上传上限",
+  "lanswitch.row": "局域网",
+  "lanswitch.label": "提供局域网地址",
+  "lanswitch.detail": "默认关闭。开启后，经 Cloudflare（自有域名、免费链接或临时网址）打开的页面，会从访客自己的浏览器确认能否直接连到局域网上的 DSM，确定可连才提供 DSM 的局域网地址。访客在那里要再登录一次；使用 HTTPS 时，浏览器会对 DSM 自己的证书显示警告。确认时使用 TCP 端口 {port}：若开启了 DSM 防火墙，请允许局域网访问这个端口",
+  "lanswitch.unavailable": "确认用的端口已被其他应用使用，因此不会提供局域网地址",
+  "lanswitch.unsaved": "无法保存设置",
+  "lanswitch.found": "DSM 就在你的局域网上",
+  "lanswitch.signin": "走局域网地址比经过 Cloudflare 更快。到那里要再登录一次。",
+  "lanswitch.certificate": "浏览器会对 DSM 自己的证书显示警告：请选择“高级”，再选择继续访问。",
+  "lanswitch.open": "在局域网打开 DSM"
 }

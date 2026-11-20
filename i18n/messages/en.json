@@ -244,6 +244,7 @@
   "advisor.limits.address-changes": "The address changes on every start",
   "advisor.limits.testing-only": "Meant for testing, with no uptime guarantee",
   "advisor.limits.upload-100mb": "Uploads up to 100 MB per request",
+  "advisor.limits.upload-100s": "Each upload must finish within 100 seconds",
   "advisor.limits.video-restricted": "Video streaming is restricted by Cloudflare terms",
   "advisor.limits.https-needs-admin-console": "HTTPS must be turned on in the Tailscale admin console",
   "advisor.limits.policy-required": "Needs an access policy",
@@ -1151,7 +1152,18 @@
   "supervision.storage.unavailable.body": "Temporary storage could not be read safely. Restart clears private temporary files and tries the connection again",
   "cflimit.row": "File size",
   "cflimit.upload": "Uploads: up to {mb} MB per file (Cloudflare {plan})",
+  "cflimit.uploadTime": "Uploads: each must finish within {s} seconds, so large files may fail",
   "cflimit.download": "Downloads: no limit",
   "cflimit.detail": "Cloudflare refuses larger uploads at its edge with error 413, so the app never sees them. Business allows 200 MB, Enterprise 500 MB. For large files use the private network (NetBird or Tailscale) or the local network",
-  "cflimit.label": "Cloudflare upload limit"
+  "cflimit.detailTime": "The temporary address has no file size limit, but Cloudflare ends an upload that takes longer than {s} seconds, so a large file on a slow connection fails (at about 5 MB/s, 300 MB already does). For large files use the private network (NetBird or Tailscale) or the local network",
+  "cflimit.label": "Cloudflare upload limit",
+  "lanswitch.row": "Local network",
+  "lanswitch.label": "Offer the local network address",
+  "lanswitch.detail": "Off by default. When on, a page opened through Cloudflare (own domain, Free link or temporary address) checks from the visitor's own browser whether it reaches DSM directly on the local network, and only then offers DSM's local address. The visitor signs in again there; with HTTPS, the browser warns about DSM's own certificate. The check uses TCP port {port}: if the DSM firewall is on, allow it from the local network",
+  "lanswitch.unavailable": "Another app uses the check's port, so the local network is not offered",
+  "lanswitch.unsaved": "The setting could not be saved",
+  "lanswitch.found": "DSM is on your local network",
+  "lanswitch.signin": "Its local address is faster than going through Cloudflare. You sign in again there.",
+  "lanswitch.certificate": "The browser warns about DSM's own certificate: choose Advanced, then continue.",
+  "lanswitch.open": "Open DSM on the local network"
 }

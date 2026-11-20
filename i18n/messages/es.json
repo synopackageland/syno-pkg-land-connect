@@ -244,6 +244,7 @@
   "advisor.limits.address-changes": "La dirección cambia en cada inicio",
   "advisor.limits.testing-only": "Pensado para pruebas, sin garantía de disponibilidad",
   "advisor.limits.upload-100mb": "Subidas de hasta 100 MB por solicitud",
+  "advisor.limits.upload-100s": "Cada subida debe terminar en 100 segundos",
   "advisor.limits.video-restricted": "La transmisión de vídeo está restringida por las condiciones de Cloudflare",
   "advisor.limits.https-needs-admin-console": "HTTPS debe activarse en la consola de administración de Tailscale",
   "advisor.limits.policy-required": "Requiere una política de acceso",
@@ -1151,7 +1152,18 @@
   "supervision.storage.unavailable.body": "No se pudo leer el almacenamiento temporal de forma segura. Reiniciar borra los archivos temporales privados e intenta conectar de nuevo",
   "cflimit.row": "Tamaño de archivo",
   "cflimit.upload": "Subidas: hasta {mb} MB por archivo (Cloudflare {plan})",
+  "cflimit.uploadTime": "Subidas: cada una debe terminar en {s} segundos, así que los archivos grandes pueden fallar",
   "cflimit.download": "Descargas: sin límite",
   "cflimit.detail": "Cloudflare rechaza las subidas mayores en su borde con el error 413, así que la app nunca las recibe. Business permite 200 MB y Enterprise 500 MB. Para archivos grandes usa la red privada (NetBird o Tailscale) o la red local",
-  "cflimit.label": "Límite de subida de Cloudflare"
+  "cflimit.detailTime": "La dirección temporal no tiene límite de tamaño de archivo, pero Cloudflare corta las subidas que tardan más de {s} segundos, así que un archivo grande con una conexión lenta falla (a unos 5 MB/s, ya fallan 300 MB). Para archivos grandes usa la red privada (NetBird o Tailscale) o la red local",
+  "cflimit.label": "Límite de subida de Cloudflare",
+  "lanswitch.row": "Red local",
+  "lanswitch.label": "Ofrecer la dirección de la red local",
+  "lanswitch.detail": "Desactivado de forma predeterminada. Al activarlo, una página abierta a través de Cloudflare (dominio propio, enlace gratuito o dirección temporal) comprueba desde el navegador del visitante si llega a DSM directamente en la red local y solo entonces ofrece la dirección local de DSM. Allí el visitante vuelve a iniciar sesión; con HTTPS, el navegador advierte sobre el certificado propio de DSM. La comprobación usa el puerto TCP {port}: si el firewall de DSM está activado, permítalo desde la red local",
+  "lanswitch.unavailable": "Otra aplicación usa el puerto de la comprobación, así que no se ofrece la red local",
+  "lanswitch.unsaved": "No se pudo guardar el ajuste",
+  "lanswitch.found": "DSM está en su red local",
+  "lanswitch.signin": "Su dirección local es más rápida que pasar por Cloudflare. Allí vuelve a iniciar sesión.",
+  "lanswitch.certificate": "El navegador advierte sobre el certificado propio de DSM: elija Configuración avanzada y continúe.",
+  "lanswitch.open": "Abrir DSM en la red local"
 }

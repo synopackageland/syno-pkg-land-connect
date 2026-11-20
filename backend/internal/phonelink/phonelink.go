@@ -105,6 +105,31 @@ func (s Source) now() time.Time {
 	return time.Now()
 }
 
+// LiveInterfaces lists the system's up, non-loopback interfaces.
+func LiveInterfaces() ([]Interface, error) { return liveInterfaces() }
+
+// LANAddresses returns the private IPv4 addresses, and the IPv6 ULA addresses
+// when v6 is set, of the interfaces a device on the LAN could reach, in
+// interface order and without duplicates.
+func LANAddresses(list []Interface, v6 bool) []netip.Addr {
+	var out []netip.Addr
+	seen := map[netip.Addr]bool{}
+	for _, i := range list {
+		if skippedInterface(i.Name) {
+			continue
+		}
+		for _, a := range i.Addrs {
+			a = a.Unmap()
+			if seen[a] || !lanAddr(a) || (a.Is6() && !v6) || a.Zone() != "" {
+				continue
+			}
+			seen[a] = true
+			out = append(out, a)
+		}
+	}
+	return out
+}
+
 func liveInterfaces() ([]Interface, error) {
 	list, err := net.Interfaces()
 	if err != nil {

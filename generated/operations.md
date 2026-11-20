@@ -627,6 +627,22 @@ AI: hidden; effect: read; permission: administrators; flow: invoke
 
 No ctl or AI exposure.
 
+## lanswitch.get
+
+Browser-only lanswitch get operation: read the option that offers a switch from Cloudflare to the DSM LAN address
+
+AI: hidden; effect: read; permission: administrators; flow: invoke
+
+No ctl or AI exposure.
+
+## lanswitch.set
+
+Browser-only lanswitch set operation: turn the switch to the DSM LAN address on or off
+
+AI: hidden; effect: write; permission: administrators; flow: invoke
+
+No ctl or AI exposure.
+
 ## netbirdserver.credentials
 
 Browser-only netbirdserver credentials operation; retain the existing UI authorization and response
@@ -662,6 +678,14 @@ No ctl or AI exposure.
 ## phone.addnas
 
 Browser-only phone addnas operation: list DSM's name and LAN addresses for the add-to-phone QR code
+
+AI: hidden; effect: read; permission: administrators; flow: invoke
+
+No ctl or AI exposure.
+
+## phone.lanprobe
+
+Browser-only phone lanprobe operation: one-use ICE credentials and the LAN addresses a signed-in page checks before offering to switch to the DSM LAN address
 
 AI: hidden; effect: read; permission: administrators; flow: invoke
 

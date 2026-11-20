@@ -4,7 +4,7 @@
   "payload": {
     "package": {
       "id": "SynoPkgConnect",
-      "version": "0.1.0-0190",
+      "version": "0.1.0-0191",
       "displayName": "Syno Connect Center"
     },
     "aliases": [
@@ -4988,6 +4988,48 @@
           "type": "object"
         }
       },
+      "lanswitch.get": {
+        "summary": "Browser-only lanswitch get operation: read the option that offers a switch from Cloudflare to the DSM LAN address",
+        "cli": [
+          "internal",
+          "lanswitch",
+          "get"
+        ],
+        "effect": "read",
+        "permission": "administrators",
+        "ai": "hidden",
+        "flow": {
+          "type": "invoke",
+          "method": "lanswitch.get"
+        },
+        "paramsSchema": {
+          "type": "object"
+        },
+        "resultSchema": {
+          "type": "object"
+        }
+      },
+      "lanswitch.set": {
+        "summary": "Browser-only lanswitch set operation: turn the switch to the DSM LAN address on or off",
+        "cli": [
+          "internal",
+          "lanswitch",
+          "set"
+        ],
+        "effect": "write",
+        "permission": "administrators",
+        "ai": "hidden",
+        "flow": {
+          "type": "invoke",
+          "method": "lanswitch.set"
+        },
+        "paramsSchema": {
+          "type": "object"
+        },
+        "resultSchema": {
+          "type": "object"
+        }
+      },
       "phone.addnas": {
         "summary": "Browser-only phone addnas operation: list DSM's name and LAN addresses for the add-to-phone QR code",
         "cli": [
@@ -5001,6 +5043,27 @@
         "flow": {
           "type": "invoke",
           "method": "phone.addnas"
+        },
+        "paramsSchema": {
+          "type": "object"
+        },
+        "resultSchema": {
+          "type": "object"
+        }
+      },
+      "phone.lanprobe": {
+        "summary": "Browser-only phone lanprobe operation: one-use ICE credentials and the LAN addresses a signed-in page checks before offering to switch to the DSM LAN address",
+        "cli": [
+          "internal",
+          "phone",
+          "lanprobe"
+        ],
+        "effect": "read",
+        "permission": "administrators",
+        "ai": "hidden",
+        "flow": {
+          "type": "invoke",
+          "method": "phone.lanprobe"
         },
         "paramsSchema": {
           "type": "object"
@@ -11641,7 +11704,19 @@
         "effect": "write",
         "permission": "administrators"
       },
+      "lanswitch.get": {
+        "effect": "read",
+        "permission": "administrators"
+      },
+      "lanswitch.set": {
+        "effect": "write",
+        "permission": "administrators"
+      },
       "phone.addnas": {
+        "effect": "read",
+        "permission": "administrators"
+      },
+      "phone.lanprobe": {
         "effect": "read",
         "permission": "administrators"
       },
@@ -11711,5 +11786,5 @@
       }
     }
   },
-  "sha256": "b451c6d6c62896d4a97382ce8b6981729a1ad4e092d72d4e10fe0ade3277832b"
+  "sha256": "e3bfaee6a259eb000b1299d43fb4430648bb2896c99b669d6e84d1059ddfb3a5"
 }

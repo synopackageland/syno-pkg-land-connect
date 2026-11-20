@@ -244,6 +244,7 @@
   "advisor.limits.address-changes": "L’indirizzo cambia a ogni avvio",
   "advisor.limits.testing-only": "Pensato per i test, senza garanzia di disponibilità",
   "advisor.limits.upload-100mb": "Caricamenti fino a 100 MB per richiesta",
+  "advisor.limits.upload-100s": "Ogni caricamento deve finire entro 100 secondi",
   "advisor.limits.video-restricted": "Lo streaming video è limitato dai termini di Cloudflare",
   "advisor.limits.https-needs-admin-console": "HTTPS deve essere attivato nella console di amministrazione di Tailscale",
   "advisor.limits.policy-required": "Richiede una policy di accesso",
@@ -1151,7 +1152,18 @@
   "supervision.storage.unavailable.body": "Impossibile leggere lo spazio temporaneo in sicurezza. Il riavvio elimina i file temporanei privati e riprova la connessione",
   "cflimit.row": "Dimensione file",
   "cflimit.upload": "Caricamenti: fino a {mb} MB per file (Cloudflare {plan})",
+  "cflimit.uploadTime": "Caricamenti: ognuno deve finire entro {s} secondi, i file grandi possono non riuscire",
   "cflimit.download": "Download: nessun limite",
   "cflimit.detail": "Cloudflare rifiuta i caricamenti più grandi al suo edge con l’errore 413, quindi l’app non li riceve mai. Business consente 200 MB, Enterprise 500 MB. Per i file grandi usa la rete privata (NetBird o Tailscale) o la rete locale",
-  "cflimit.label": "Limite di caricamento Cloudflare"
+  "cflimit.detailTime": "L’indirizzo temporaneo non ha limiti di dimensione, ma Cloudflare interrompe i caricamenti che durano più di {s} secondi, quindi con una connessione lenta un file grande non riesce (a circa 5 MB/s già 300 MB). Per i file grandi usa la rete privata (NetBird o Tailscale) o la rete locale",
+  "cflimit.label": "Limite di caricamento Cloudflare",
+  "lanswitch.row": "Rete locale",
+  "lanswitch.label": "Proponi l'indirizzo della rete locale",
+  "lanswitch.detail": "Disattivato per impostazione predefinita. Se attivo, una pagina aperta tramite Cloudflare (dominio personale, link gratuito o indirizzo temporaneo) verifica dal browser del visitatore se raggiunge DSM direttamente sulla rete locale e solo allora propone l'indirizzo locale di DSM. Lì il visitatore accede di nuovo; con HTTPS il browser avvisa del certificato proprio di DSM. La verifica usa la porta TCP {port}: se il firewall di DSM è attivo, consentila dalla rete locale",
+  "lanswitch.unavailable": "Un'altra app usa la porta della verifica, quindi la rete locale non viene proposta",
+  "lanswitch.unsaved": "Impossibile salvare l'impostazione",
+  "lanswitch.found": "DSM è sulla tua rete locale",
+  "lanswitch.signin": "Il suo indirizzo locale è più veloce del passaggio da Cloudflare. Lì accedi di nuovo.",
+  "lanswitch.certificate": "Il browser avvisa del certificato proprio di DSM: scegli Avanzate, poi continua.",
+  "lanswitch.open": "Apri DSM sulla rete locale"
 }

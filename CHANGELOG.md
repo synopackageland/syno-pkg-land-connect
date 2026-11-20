@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.0-0191
+
+- Cloudflare: a new Local network option (off by default) lets a page opened through the own domain, Free link or temporary address offer DSM's local address when this browser is shown to reach it on the local network
+- Phone page: Home offers Switch to local network in the same case; you sign in again there
+- Cloudflare: the temporary address now says each upload must finish within 100 seconds, so large files may fail; the own domain and Free link keep the 100 MB per file limit
+- Cloudflare: on narrow screens the upload limit line no longer starts a line with "·"
+
 ## 0.1.0-0190
 
 - Phone page: Photos, Drive, Chat, Calendar and other Apps that open in a page of their own open directly and much faster; Reopen shows only when loading failed
