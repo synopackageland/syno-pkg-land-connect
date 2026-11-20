@@ -4,7 +4,7 @@
   "payload": {
     "package": {
       "id": "SynoPkgConnect",
-      "version": "0.1.0-0186",
+      "version": "0.1.0-0187",
       "displayName": "Syno Connect Center"
     },
     "aliases": [
@@ -11711,5 +11711,5 @@
       }
     }
   },
-  "sha256": "35e5e367d6557b42cdfbec4cf6d9203d4213412c7b8815a7c4311dfce0baf0fd"
+  "sha256": "41235f566457888cbe60d21c74f1fd3480fc05ffead9dff5c52f646eaa663456"
 }
