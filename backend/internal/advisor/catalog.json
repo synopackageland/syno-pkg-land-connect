@@ -26,7 +26,7 @@
       "limits": [
         "address-changes",
         "testing-only",
-        "upload-100mb"
+        "upload-100s"
       ],
       "who": "anyone-with-link",
       "via": "cloudflare",
@@ -47,13 +47,12 @@
       "pricing": {
         "limits": [
           "quick-testing-only",
-          "upload-100mb"
+          "upload-100s"
         ],
         "links": {
-          "terms": "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/do-more-with-tunnels/trycloudflare/",
-          "upload": "https://developers.cloudflare.com/support/troubleshooting/http-status-codes/4xx-client-error/error-413/"
+          "terms": "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/do-more-with-tunnels/trycloudflare/"
         },
-        "checked": "2026-10"
+        "checked": "2026-11"
       },
       "guide": [
         "consent-start",

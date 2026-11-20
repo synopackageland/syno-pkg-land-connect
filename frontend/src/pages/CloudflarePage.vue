@@ -20,6 +20,7 @@ import CloudflareApps from '../components/CloudflareApps.vue'
 import FreeLink from '../components/FreeLink.vue'
 import TemporaryAddress from '../components/TemporaryAddress.vue'
 import UploadLimit from '../components/UploadLimit.vue'
+import type {CloudflareWayId} from '../connect/uploadLimit'
 import LanSwitchSetting from '../components/LanSwitchSetting.vue'
 import ReadyGate from './ReadyGate.vue'
 import {useConnectState} from '../connect/state'
@@ -68,6 +69,12 @@ const freeApps=computed(()=>wayApps(view.value,'relay',dsmOnFreeLink.value))
 // address DSM opens at with copy, Open and QR code, then the connection check
 // (through that address). On without DSM it names the account's name only.
 const freeStatus=computed(()=>status.value?.state!=='connected'&&freeAvailable.value&&!!workers.value&&freeLinkState(workers.value)!=='off')
+// The Connection tab's upload line follows the ways in use: the temporary
+// address's per-upload time limit while it runs (beside the Free link's size
+// limit when that is on too), otherwise the 100 MB of the own domain and Free link.
+const limitWays=computed<CloudflareWayId[]>(()=>status.value?.state==='connected'&&status.value?.mode==='quick'
+ ?['cloudflare-quick',...(workers.value&&freeLinkState(workers.value)!=='off'?['cloudflare-workers' as const]:[])]
+ :['cloudflare-domain'])
 const freeWord=computed(()=>{if(!freeAvailable.value||!workers.value)return undefined;const state=freeLinkState(workers.value);return state==='on'?'on' as const:state==='off'?undefined:'attention' as const})
 
 const tabs=computed<PageTab[]>(()=>[
@@ -94,8 +101,8 @@ watch(workers,w=>{if(!landing.value&&w)landing.value=freeLinkState(w)!=='off'&&o
     </KeyValueRow>
     <ConnectionCheck v-if="dsmOnFreeLink" :key="workers!.dsm!.url" provider="workers" :relay-state="workers?.relayState" />
    </template>
-   <!-- Every way through Cloudflare shares the upload limit: it stays on the Connection tab whatever runs. -->
-   <KeyValueRow :label="t('cflimit.row')" data-cf-limit-status><UploadLimit :locale="s.ctx.locale" /></KeyValueRow>
+   <!-- The upload limit stays on the Connection tab whatever runs; its words follow the ways in use. -->
+   <KeyValueRow :label="t('cflimit.row')" data-cf-limit-status><Space direction="column" spacing="dense"><UploadLimit v-for="way in limitWays" :key="way" :locale="s.ctx.locale" :way="way" /></Space></KeyValueRow>
    <!-- Switching to the local network also covers every way through Cloudflare. -->
    <KeyValueRow :label="t('lanswitch.row')" data-cf-lan-switch><LanSwitchSetting :ctx="s.ctx" /></KeyValueRow>
   </template>
