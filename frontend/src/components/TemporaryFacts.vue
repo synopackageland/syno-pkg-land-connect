@@ -1,10 +1,11 @@
 <script setup lang="ts">
 // What a temporary address is, drawn before words: an address chip whose
 // arrow turns once (it changes when the NAS or Connect restarts), then the
-// two facts, one line each with its icon. The wizard's confirm and the
+// two facts, one line each with its icon, and Cloudflare's upload limit. The wizard's confirm and the
 // Cloudflare page show the same; the chip's words are an example, so it is
 // hidden from screen readers, which read the two lines.
 import {Link2,RotateCw,Users} from '@lucide/vue'
+import UploadLimit from './UploadLimit.vue'
 import {translate} from '../i18n'
 const props=defineProps<{locale:string}>()
 const t=(key:string)=>translate(props.locale,'temporary.'+key)
@@ -16,6 +17,7 @@ const t=(key:string)=>translate(props.locale,'temporary.'+key)
    <li data-temporary-fact="changes"><RotateCw :size="16" aria-hidden="true" /><span>{{t('changes')}}</span></li>
    <li data-temporary-fact="anyone"><Users :size="16" aria-hidden="true" /><span>{{t('anyone')}}</span></li>
   </ul>
+  <UploadLimit :locale="locale" way="cloudflare-quick" />
  </div>
 </template>
 <style scoped>

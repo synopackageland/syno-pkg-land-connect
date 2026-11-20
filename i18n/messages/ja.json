@@ -1148,5 +1148,10 @@
   "supervision.storage.body": "キャッシュを削除しても一時ファイルが上限を超えています。再起動すると一時ファイルを削除し、保存された認証情報で再接続します",
   "supervision.storage.restart": "{provider} を再起動",
   "supervision.storage.unavailable.title": "{provider} が一時領域を確認できませんでした",
-  "supervision.storage.unavailable.body": "一時領域を安全に読み取れません。再起動すると専用の一時ファイルを削除し、接続を再試行します"
+  "supervision.storage.unavailable.body": "一時領域を安全に読み取れません。再起動すると専用の一時ファイルを削除し、接続を再試行します",
+  "cflimit.row": "ファイルサイズ",
+  "cflimit.upload": "アップロード：1 ファイル最大 {mb} MB（Cloudflare {plan}）",
+  "cflimit.download": "ダウンロード：制限なし",
+  "cflimit.detail": "上限を超えるアップロードは Cloudflare のエッジでエラー 413 として拒否され、アプリには届きません。Business は 200 MB、Enterprise は 500 MB。大きなファイルはプライベートネットワーク（NetBird または Tailscale）かローカルネットワークを使ってください",
+  "cflimit.label": "Cloudflare のアップロード上限"
 }

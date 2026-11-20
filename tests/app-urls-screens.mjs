@@ -105,6 +105,8 @@ const shots=[
  {name:'05-private-approval-W-with-DSM',q:'s=private',act:async p=>{await open(p,'SynoPkgConvertX');await p.locator('button[role="switch"][data-dialog-switch], [data-dialog-switch] button[role="switch"]').first().click();await p.locator('[data-dialog-save]').click();await p.locator('[data-apps-approval]').waitFor()},dialog:true},
  {name:'06-reenable-approval-S-fingerprint',q:'s=reenable',act:async p=>{await open(p,'SynoPkgVaultwarden');await p.locator('[data-dialog-reenable="private"]').click();await p.locator('[data-apps-approval]').waitFor()},dialog:true},
  {name:'07-public-approval-multi',q:'s=public',act:async p=>{for(const k of ['SynoPkgNavidrome','SynoPkgConvertX'])await p.locator(`[data-app-pick="${k}"]`).click();await p.locator('[data-apps-batch-create="public"]').click();await p.locator('[data-apps-approval]').waitFor()},dialog:true},
+// The approval's notes, Cloudflare's upload limit among them.
+ {name:'07b-public-approval-notes',q:'s=public',act:async p=>{for(const k of ['SynoPkgNavidrome','SynoPkgConvertX'])await p.locator(`[data-app-pick="${k}"]`).click();await p.locator('[data-apps-batch-create="public"]').click();await p.locator('[data-apps-approval]').waitFor();await p.locator('[data-approve-notes]').scrollIntoViewIfNeeded()},dialog:true},
  {name:'08-turn-off-public-confirm',q:'s=all',act:async p=>{await open(p,'SynoPkgHomeAssistant');await p.locator('[data-dialog-choice] label',{hasText:'Off'}).locator('[role="radio"]').click();await p.locator('[data-dialog-save]').click();await p.locator('[data-off-confirm]').waitFor()},dialog:true},
  {name:'10-unavailable-https-off-cf-invalid',q:'s=all&v=unavailable&nb=0'},
  {name:'11-nothing-set-up',q:'s=all&v=nodomain&nb=0'},

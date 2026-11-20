@@ -7,7 +7,9 @@ import ConnectionError from './ConnectionError.vue'
 // certificate SHA-256 a browser shows), with the comparison hint and the
 // first-use disclosure (v8 C11). A public approval adds Cloudflare's limits
 // (R32); a workers.dev one adds the free plan's daily quota instead of the
-// tunnel restart. The notes are at most four short lines; the rest is
+// tunnel restart, and the Cloudflare page's upload limit line in the same
+// words, DSM alone included (File Station uploads through it). The notes are
+// at most five short lines; the rest is
 // behind "Learn more". AppApproval puts it in a dialog; the App dialog shows it in place.
 // A custom app has no certificate to pin (mode C): it shows the URL Connect
 // forwards to and whether DSM sign-in comes first.
@@ -15,10 +17,11 @@ import type {NameConflict} from '../connect/nameConflict'
 import HostnameInput from './HostnameInput.vue'
 import NameConflictRow from './NameConflictRow.vue'
 import {computed,inject} from 'vue'
-import {Film,KeyRound,Plug,RotateCw,ShieldCheck,Timer} from '@lucide/vue'
+import {Film,KeyRound,Plug,RotateCw,ShieldCheck,Timer,Upload} from '@lucide/vue'
 import {CellText,FormItem,FormNote,KeyValueRow,Link,SettingsSection,Space} from '@synopackageland/ui'
 import {fingerprint,protectionLines,type Inspection,type PinView,type Scope} from '../connect/appUrls'
 import {learnMoreKey} from '../connect/pageTabs'
+import {uploadLimitText} from '../connect/uploadLimit'
 import {translate} from '../i18n'
 const props=defineProps<{locale:string;scope:Scope;items:Inspection[];reenable?:boolean;busy?:boolean;hostnames?:Record<string,string>;error?:string;conflict?:NameConflict;dsmReason?:string;dsmOnly?:{hostname?:string;port:number;pin:PinView}}>()
 const emit=defineEmits<{recover:[action:'reuse'|'use'|'check',name?:string];hostname:[pkg:string,value:string]}>()
@@ -36,10 +39,13 @@ const docs=computed(()=>pub.value?'https://developers.cloudflare.com/cloudflare-
 const notes=computed(()=>[
  ...(certs.value?[{key:'cert',icon:ShieldCheck}]:[]),
  ...(pub.value?[{key:'signIn',icon:KeyRound}]:[]),
+ ...(pub.value?[{key:'upload',icon:Upload}]:[]),
  ...(pub.value&&props.items.length?[{key:'media',icon:Film}]:[]),
  ...(props.scope==='relay'?[{key:'quota',icon:Timer}]:pub.value?[{key:'restart',icon:RotateCw}]:[]),
  ...(!pub.value&&props.items.length?[{key:'port',icon:Plug}]:[]),
 ])
+// Cloudflare's upload limit follows the way: its line is the Cloudflare page's, word for word.
+const noteTexts=computed(()=>notes.value.map(note=>note.key==='upload'?uploadLimitText(props.locale,props.scope==='relay'?'cloudflare-workers':'cloudflare-domain'):t('note.'+note.key)))
 const pins=(pin:PinView)=>pin.mode==='C'?[]:pin.mode==='W'?[
  ...(pin.previousNames?.length?[{label:t('cert.previousNames'),value:pin.previousNames.join(', '),key:'previous'}]:[]),
  {label:t('cert.names'),value:pin.names.join(', '),key:'names'},
@@ -80,7 +86,7 @@ const pins=(pin:PinView)=>pin.mode==='C'?[]:pin.mode==='W'?[
   </SettingsSection>
   <ConnectionError v-if="!conflict&&!['required','length','format'].some(key=>error===t('hostname.'+key))" :message="error" :scope="scope" data-approve-error />
   <Space v-if="!dsmOnly&&notes.length" direction="column" spacing="dense" align-items="start" data-approve-notes>
-   <FormNote :title="t('approve.check')" :items="notes.map(note=>t('note.'+note.key))" />
+   <FormNote :title="t('approve.check')" :items="noteTexts" />
    <Link v-if="docs" :href="docs" external data-approve-more>{{translate(locale,'ux.learnMore')}}</Link>
   </Space>
  </Space>

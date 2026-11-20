@@ -1148,5 +1148,10 @@
   "supervision.storage.body": "Temporary files still exceed the limit after cache cleanup. Restart clears temporary files and reconnects using the saved sign-in",
   "supervision.storage.restart": "Restart {provider}",
   "supervision.storage.unavailable.title": "{provider} could not check temporary storage",
-  "supervision.storage.unavailable.body": "Temporary storage could not be read safely. Restart clears private temporary files and tries the connection again"
+  "supervision.storage.unavailable.body": "Temporary storage could not be read safely. Restart clears private temporary files and tries the connection again",
+  "cflimit.row": "File size",
+  "cflimit.upload": "Uploads: up to {mb} MB per file (Cloudflare {plan})",
+  "cflimit.download": "Downloads: no limit",
+  "cflimit.detail": "Cloudflare refuses larger uploads at its edge with error 413, so the app never sees them. Business allows 200 MB, Enterprise 500 MB. For large files use the private network (NetBird or Tailscale) or the local network",
+  "cflimit.label": "Cloudflare upload limit"
 }

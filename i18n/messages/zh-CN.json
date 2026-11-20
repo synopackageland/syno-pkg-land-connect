@@ -1148,5 +1148,10 @@
   "supervision.storage.body": "清理缓存后，临时文件仍超过上限。重新启动会清除临时文件，并使用已保存的登录身份重新连接",
   "supervision.storage.restart": "重新启动 {provider}",
   "supervision.storage.unavailable.title": "{provider} 无法检查临时存储空间",
-  "supervision.storage.unavailable.body": "无法安全读取临时存储空间。重新启动会清除私有临时文件，并再次尝试连接"
+  "supervision.storage.unavailable.body": "无法安全读取临时存储空间。重新启动会清除私有临时文件，并再次尝试连接",
+  "cflimit.row": "文件大小",
+  "cflimit.upload": "上传：每个文件最多 {mb} MB（Cloudflare {plan}）",
+  "cflimit.download": "下载：无限制",
+  "cflimit.detail": "超过上限的上传会在 Cloudflare 边缘以错误 413 拒绝，App 完全收不到。Business 套餐为 200 MB，Enterprise 为 500 MB。大文件请改走私人网络（NetBird 或 Tailscale）或局域网",
+  "cflimit.label": "Cloudflare 上传上限"
 }

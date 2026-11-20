@@ -25,7 +25,8 @@
       "https": "cloudflare-certificate",
       "limits": [
         "address-changes",
-        "testing-only"
+        "testing-only",
+        "upload-100mb"
       ],
       "who": "anyone-with-link",
       "via": "cloudflare",
@@ -45,10 +46,12 @@
       },
       "pricing": {
         "limits": [
-          "quick-testing-only"
+          "quick-testing-only",
+          "upload-100mb"
         ],
         "links": {
-          "terms": "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/do-more-with-tunnels/trycloudflare/"
+          "terms": "https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/do-more-with-tunnels/trycloudflare/",
+          "upload": "https://developers.cloudflare.com/support/troubleshooting/http-status-codes/4xx-client-error/error-413/"
         },
         "checked": "2026-10"
       },

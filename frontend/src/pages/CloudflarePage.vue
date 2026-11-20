@@ -19,6 +19,7 @@ import AccessEmailList from '../components/AccessEmailList.vue'
 import CloudflareApps from '../components/CloudflareApps.vue'
 import FreeLink from '../components/FreeLink.vue'
 import TemporaryAddress from '../components/TemporaryAddress.vue'
+import UploadLimit from '../components/UploadLimit.vue'
 import ReadyGate from './ReadyGate.vue'
 import {useConnectState} from '../connect/state'
 import {appsApi,type AppsView} from '../connect/appUrls'
@@ -92,6 +93,8 @@ watch(workers,w=>{if(!landing.value&&w)landing.value=freeLinkState(w)!=='off'&&o
     </KeyValueRow>
     <ConnectionCheck v-if="dsmOnFreeLink" :key="workers!.dsm!.url" provider="workers" :relay-state="workers?.relayState" />
    </template>
+   <!-- Every way through Cloudflare shares the upload limit: it stays on the Connection tab whatever runs. -->
+   <KeyValueRow :label="t('cflimit.row')" data-cf-limit-status><UploadLimit :locale="s.ctx.locale" /></KeyValueRow>
   </template>
 
   <template #tab-domain>
