@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.0-0188
+
+- Phone page: Security Advisor's overview and Security Baseline, Hyper Backup's task page and DSM grids fit the phone; grids scroll sideways as a whole, with no first column held in place
+
 ## 0.1.0-0187
 
 - Phone page: Home shows the DSM version on its own line, with an "Update available" tag that opens Update & Restore when DSM has an update waiting (administrators)
