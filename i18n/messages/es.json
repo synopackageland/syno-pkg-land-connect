@@ -1148,5 +1148,10 @@
   "supervision.storage.body": "Los archivos temporales siguen superando el límite tras limpiar la caché. Reiniciar los elimina y vuelve a conectar con la sesión guardada",
   "supervision.storage.restart": "Reiniciar {provider}",
   "supervision.storage.unavailable.title": "{provider} no pudo comprobar el almacenamiento temporal",
-  "supervision.storage.unavailable.body": "No se pudo leer el almacenamiento temporal de forma segura. Reiniciar borra los archivos temporales privados e intenta conectar de nuevo"
+  "supervision.storage.unavailable.body": "No se pudo leer el almacenamiento temporal de forma segura. Reiniciar borra los archivos temporales privados e intenta conectar de nuevo",
+  "cflimit.row": "Tamaño de archivo",
+  "cflimit.upload": "Subidas: hasta {mb} MB por archivo (Cloudflare {plan})",
+  "cflimit.download": "Descargas: sin límite",
+  "cflimit.detail": "Cloudflare rechaza las subidas mayores en su borde con el error 413, así que la app nunca las recibe. Business permite 200 MB y Enterprise 500 MB. Para archivos grandes usa la red privada (NetBird o Tailscale) o la red local",
+  "cflimit.label": "Límite de subida de Cloudflare"
 }

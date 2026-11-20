@@ -3,6 +3,7 @@
 ## 0.1.0-0187
 
 - Phone page: the browser tab, the home screen icon and the Add to Home Screen card show DSM's own icon instead of Package Land's
+- Cloudflare: own domain, Free link and temporary address show that uploads are limited to 100 MB per file and downloads have no limit
 
 ## 0.1.0-0186
 

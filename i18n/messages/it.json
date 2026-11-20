@@ -1148,5 +1148,10 @@
   "supervision.storage.body": "I file temporanei superano ancora il limite dopo la pulizia della cache. Il riavvio li elimina e riconnette con le credenziali salvate",
   "supervision.storage.restart": "Riavvia {provider}",
   "supervision.storage.unavailable.title": "{provider} non ha potuto controllare lo spazio temporaneo",
-  "supervision.storage.unavailable.body": "Impossibile leggere lo spazio temporaneo in sicurezza. Il riavvio elimina i file temporanei privati e riprova la connessione"
+  "supervision.storage.unavailable.body": "Impossibile leggere lo spazio temporaneo in sicurezza. Il riavvio elimina i file temporanei privati e riprova la connessione",
+  "cflimit.row": "Dimensione file",
+  "cflimit.upload": "Caricamenti: fino a {mb} MB per file (Cloudflare {plan})",
+  "cflimit.download": "Download: nessun limite",
+  "cflimit.detail": "Cloudflare rifiuta i caricamenti più grandi al suo edge con l’errore 413, quindi l’app non li riceve mai. Business consente 200 MB, Enterprise 500 MB. Per i file grandi usa la rete privata (NetBird o Tailscale) o la rete locale",
+  "cflimit.label": "Limite di caricamento Cloudflare"
 }

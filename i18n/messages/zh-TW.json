@@ -1148,5 +1148,10 @@
   "supervision.storage.body": "清理快取後，暫存檔案仍超過上限。重新啟動會清除暫存檔，並使用已儲存的登入身分重新連線",
   "supervision.storage.restart": "重新啟動 {provider}",
   "supervision.storage.unavailable.title": "{provider} 無法檢查暫存空間",
-  "supervision.storage.unavailable.body": "無法安全讀取暫存空間。重新啟動會清除私有暫存檔，並再次嘗試連線"
+  "supervision.storage.unavailable.body": "無法安全讀取暫存空間。重新啟動會清除私有暫存檔，並再次嘗試連線",
+  "cflimit.row": "檔案大小",
+  "cflimit.upload": "上傳：每個檔案最多 {mb} MB（Cloudflare {plan}）",
+  "cflimit.download": "下載：無限制",
+  "cflimit.detail": "超過上限的上傳會在 Cloudflare 邊緣以錯誤 413 拒絕，App 完全收不到。Business 方案為 200 MB，Enterprise 為 500 MB。大檔請改走私人網路（NetBird 或 Tailscale）或區域網路",
+  "cflimit.label": "Cloudflare 上傳上限"
 }

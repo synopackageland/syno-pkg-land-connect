@@ -1148,5 +1148,10 @@
   "supervision.storage.body": "Les fichiers temporaires dépassent encore la limite après le nettoyage du cache. Le redémarrage les efface et rétablit la connexion avec les identifiants enregistrés",
   "supervision.storage.restart": "Redémarrer {provider}",
   "supervision.storage.unavailable.title": "{provider} n’a pas pu vérifier le stockage temporaire",
-  "supervision.storage.unavailable.body": "Le stockage temporaire n’a pas pu être lu en toute sécurité. Le redémarrage efface les fichiers temporaires privés et réessaie la connexion"
+  "supervision.storage.unavailable.body": "Le stockage temporaire n’a pas pu être lu en toute sécurité. Le redémarrage efface les fichiers temporaires privés et réessaie la connexion",
+  "cflimit.row": "Taille des fichiers",
+  "cflimit.upload": "Envois : jusqu’à {mb} Mo par fichier (Cloudflare {plan})",
+  "cflimit.download": "Téléchargements : sans limite",
+  "cflimit.detail": "Cloudflare refuse les envois plus gros dès sa périphérie avec l’erreur 413 ; l’app ne les reçoit jamais. Business autorise 200 Mo, Enterprise 500 Mo. Pour les gros fichiers, passez par le réseau privé (NetBird ou Tailscale) ou le réseau local",
+  "cflimit.label": "Limite d’envoi Cloudflare"
 }

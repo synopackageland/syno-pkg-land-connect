@@ -115,7 +115,8 @@ Each option also says what the user decides on:
   Only official pricing and terms pages are used; Tailscale's Personal plan is
   free for up to 6 users, NetBird's cloud free plan for 5 users and 100
   devices and Cloudflare's free plan uploads up to 100 MB per request (all
-  checked 2026-10).
+  checked 2026-10). The upload limit applies to every way through
+  Cloudflare's edge: own domain, workers.dev and the temporary address.
 - `guide`: the setup steps the Overview opens, as message keys; `guideFor`
   replaces them for one use.
 - Tailscale and NetBird `next` steps carry only the provider: tailnet and
