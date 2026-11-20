@@ -89,7 +89,7 @@ mobile:
 # No optional SDK capabilities: CGI and foreground daemon run as the package account.
 capabilities: {}
 
-# LAN switch: while its option is on, connectd answers signed ICE connectivity
+# LAN switch: while its option is on, connect-worker answers signed ICE connectivity
 # checks here so a page reached through Cloudflare can prove it reaches the NAS
 # on the LAN. It answers nothing else.
 tcp_listeners:

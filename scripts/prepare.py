@@ -12,12 +12,16 @@ if __name__ == '__main__':
     os.chdir(ROOT)
     from go_toolchain import pin_go_toolchain
     from verify_cli import verify_cli
+    from tcp_policy import flag as tcp_policy_flag
     verify_cli()
     pin_go_toolchain()
     for command in ['connectd', 'connect-worker', 'uninstall-reminder']:
         run(['node_modules/.bin/synopkgland', 'audit-entry', './cmd/' + command,
              '--dir', 'backend', '--arch', 'amd64,arm64,arm',
              '--permissions', 'internal/api/permissions.json', '--json'])
+    # The manifest's TCP listeners, linked in as the CLI does for its own builds:
+    # without it ipc.ListenTCP refuses every listener (the LAN switch's lan_probe).
+    policy = tcp_policy_flag((ROOT / 'dsm-package.yaml').read_text())
     # GOARM=7 as the CLI builds armv7: every DSM armv7 platform has VFPv3.
     for arch, goenv in [('x86_64', {'GOARCH': 'amd64'}), ('aarch64', {'GOARCH': 'arm64'}), ('armv7', {'GOARCH': 'arm', 'GOARM': '7'})]:
         bundle = ROOT / 'build' / ('daemon-' + arch)
@@ -27,7 +31,8 @@ if __name__ == '__main__':
         env = dict(os.environ, CGO_ENABLED='0', GOOS='linux', **goenv)
         for command in ['connectd', 'connect-worker', 'uninstall-reminder']:
             bindings = ('-s -w -X github.com/synopackageland/syno-pkg-land-sdk/ipc.packageID=SynoPkgConnect'
-                        ' -X github.com/synopackageland/syno-pkg-land-sdk/ipc.executorTier=none')
+                        ' -X github.com/synopackageland/syno-pkg-land-sdk/ipc.executorTier=none'
+                        + (' ' + policy if policy else ''))
             run(['go', 'build', '-trimpath', '-buildvcs=false', '-ldflags=' + bindings, '-o', str(bundle / 'connect' / command), './cmd/' + command], ROOT / 'backend', env)
     ui = ROOT / 'frontend/node_modules/@synopackageland/ui'
     shutil.copy(ui / 'LICENSE', ROOT / 'LICENSES/ui-MIT.txt')
