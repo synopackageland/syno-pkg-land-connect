@@ -1153,5 +1153,14 @@
   "cflimit.upload": "上傳：每個檔案最多 {mb} MB（Cloudflare {plan}）",
   "cflimit.download": "下載：無限制",
   "cflimit.detail": "超過上限的上傳會在 Cloudflare 邊緣以錯誤 413 拒絕，App 完全收不到。Business 方案為 200 MB，Enterprise 為 500 MB。大檔請改走私人網路（NetBird 或 Tailscale）或區域網路",
-  "cflimit.label": "Cloudflare 上傳上限"
+  "cflimit.label": "Cloudflare 上傳上限",
+  "lanswitch.row": "區域網路",
+  "lanswitch.label": "提供區域網路位址",
+  "lanswitch.detail": "預設關閉。開啟後，經 Cloudflare（自有網域、免費連結或臨時網址）開啟的頁面，會從訪客自己的瀏覽器確認能否直接連到區域網路上的 DSM，確定可連才提供 DSM 的區域網路位址。訪客在那裡要再登入一次；使用 HTTPS 時，瀏覽器會對 DSM 自己的憑證顯示警告。確認時使用 TCP 連接埠 {port}：若有開啟 DSM 防火牆，請允許區域網路連到這個連接埠",
+  "lanswitch.unavailable": "確認用的連接埠已被其他 App 使用，因此不會提供區域網路位址",
+  "lanswitch.unsaved": "無法儲存設定",
+  "lanswitch.found": "DSM 就在你的區域網路上",
+  "lanswitch.signin": "走區域網路位址比經過 Cloudflare 更快。到那裡要再登入一次。",
+  "lanswitch.certificate": "瀏覽器會對 DSM 自己的憑證顯示警告：請選「進階」，再選繼續前往。",
+  "lanswitch.open": "在區域網路開啟 DSM"
 }

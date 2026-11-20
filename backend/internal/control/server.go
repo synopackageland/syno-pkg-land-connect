@@ -8,6 +8,7 @@ import (
 	"dsmapp/internal/apps"
 	"dsmapp/internal/binaries"
 	"dsmapp/internal/connector"
+	"dsmapp/internal/lanswitch"
 	"dsmapp/internal/localipc"
 	"dsmapp/internal/nbserver"
 	"github.com/synopackageland/syno-pkg-land-sdk/ipc"
@@ -19,6 +20,7 @@ type Config struct {
 	Apps       apps.API
 	Binaries   *binaries.Service
 	NetBird    *nbserver.Server
+	LANSwitch  *lanswitch.Service
 	Controller connector.Controller
 	Shutdown   func()
 	Restored   <-chan struct{}
@@ -39,11 +41,14 @@ func handler(cfg Config) http.Handler {
 	mux.Handle("/apps/", AfterChange(apps.Handler(cfg.Apps), cfg.AfterApps))
 	mux.Handle("/binaries/", cfg.Binaries)
 	mux.Handle("/nbserver/", cfg.NetBird.Handler())
+	if cfg.LANSwitch != nil {
+		mux.Handle("/lanswitch/", cfg.LANSwitch.Handler())
+	}
 	mux.Handle("/", connector.Handler(cfg.Controller, cfg.Shutdown))
 	return UntilRestored(cfg.Restored, mux)
 }
 
-var restoreReads = map[string]bool{"/apps/accessget": true, "/ping": true, "/status": true, "/shutdown": true, "/apps/list": true, "/apps/inspect": true, "/apps/inspectdsm": true, "/apps/workersstatus": true, "/binaries/status": true, "/nbserver/status": true}
+var restoreReads = map[string]bool{"/apps/accessget": true, "/ping": true, "/status": true, "/shutdown": true, "/apps/list": true, "/apps/inspect": true, "/apps/inspectdsm": true, "/apps/workersstatus": true, "/binaries/status": true, "/nbserver/status": true, "/lanswitch/status": true, "/lanswitch/probe": true}
 
 func AfterChange(next http.Handler, changed func()) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

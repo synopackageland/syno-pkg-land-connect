@@ -300,6 +300,14 @@ export const sessionRetryOperations = {
     "effect": "read",
     "kind": "rpc"
   },
+  "lanswitch.get": {
+    "effect": "read",
+    "kind": "rpc"
+  },
+  "lanswitch.set": {
+    "effect": "write",
+    "kind": "rpc"
+  },
   "netbirdserver.credentials": {
     "effect": "read",
     "kind": "rpc"
@@ -317,6 +325,10 @@ export const sessionRetryOperations = {
     "kind": "rpc"
   },
   "phone.addnas": {
+    "effect": "read",
+    "kind": "rpc"
+  },
+  "phone.lanprobe": {
     "effect": "read",
     "kind": "rpc"
   },

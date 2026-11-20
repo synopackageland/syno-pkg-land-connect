@@ -17,8 +17,19 @@ const portConfigLimit = 65536
 type DatastoreDetector struct{ Path string }
 
 func (d DatastoreDetector) Detect(ctx context.Context) (DSMPorts, error) {
+	p, _, e := d.read(ctx)
+	return p, e
+}
+
+// Redirect returns DSM's ports and whether DSM redirects HTTP to HTTPS
+// ("Automatically redirect HTTP connections to HTTPS for DSM desktop").
+func (d DatastoreDetector) Redirect(ctx context.Context) (DSMPorts, bool, error) {
+	return d.read(ctx)
+}
+
+func (d DatastoreDetector) read(ctx context.Context) (DSMPorts, bool, error) {
 	if e := ctx.Err(); e != nil {
-		return DSMPorts{}, e
+		return DSMPorts{}, false, e
 	}
 	path := d.Path
 	if path == "" {
@@ -26,29 +37,30 @@ func (d DatastoreDetector) Detect(ctx context.Context) (DSMPorts, error) {
 	}
 	f, e := openPortConfig(path, portConfigLimit)
 	if e != nil {
-		return DSMPorts{}, ErrDetection
+		return DSMPorts{}, false, ErrDetection
 	}
 	defer f.Close()
 	raw, e := io.ReadAll(io.LimitReader(f, portConfigLimit+1))
 	if e != nil || len(raw) > portConfigLimit || ctx.Err() != nil {
-		return DSMPorts{}, ErrDetection
+		return DSMPorts{}, false, ErrDetection
 	}
 	var v struct {
 		MainApp *string `json:"mainApp"`
 		Version int     `json:"version"`
 		Port    int     `json:"port"`
 		SSL     struct {
-			Port int `json:"port"`
+			Port     int  `json:"port"`
+			Redirect bool `json:"redirect"`
 		} `json:"ssl"`
 	}
 	dec := json.NewDecoder(bytes.NewReader(raw))
 	var extra any
 	if dec.Decode(&v) != nil || dec.Decode(&extra) != io.EOF || (v.MainApp != nil && *v.MainApp != "DSM") || v.Version != 1 {
-		return DSMPorts{}, ErrDetection
+		return DSMPorts{}, false, ErrDetection
 	}
 	p := DSMPorts{HTTP: v.Port, HTTPS: v.SSL.Port}
 	if !validDSM(p) {
-		return DSMPorts{}, ErrDetection
+		return DSMPorts{}, false, ErrDetection
 	}
-	return p, nil
+	return p, v.SSL.Redirect, nil
 }

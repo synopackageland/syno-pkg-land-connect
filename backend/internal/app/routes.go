@@ -49,6 +49,8 @@ type Config struct {
 	GitHubHTTP *http.Client
 	// PhoneLink replaces the live address sources in tests; nil reads the system.
 	PhoneLink *phonelink.Source
+	// LANSwitch reaches the LAN switch owner in connectd; nil uses the control socket.
+	LANSwitch LANSwitchControl
 }
 
 func Routes(cfg Config) []api.Route {
@@ -99,6 +101,9 @@ func Routes(cfg Config) []api.Route {
 		api.Handle("integration.status", cfg.integrationStatus),
 		api.HandleRequest("app.status", cfg.status),
 		api.Handle("phone.addnas", cfg.phoneAddNAS),
+		api.Handle("phone.lanprobe", cfg.phoneLANProbe),
+		api.Handle("lanswitch.get", cfg.lanSwitchGet),
+		api.Handle("lanswitch.set", cfg.lanSwitchSet),
 		api.Handle("connection.status", cfg.connectionStatus),
 		api.Handle("ctl.connection.status", cfg.controlConnectionStatus),
 		api.Handle("ctl.connection.connect", cfg.controlConnectionConnect),

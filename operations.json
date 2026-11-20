@@ -4961,6 +4961,48 @@
         "type": "object"
       }
     },
+    "lanswitch.get": {
+      "summary": "Browser-only lanswitch get operation: read the option that offers a switch from Cloudflare to the DSM LAN address",
+      "cli": [
+        "internal",
+        "lanswitch",
+        "get"
+      ],
+      "effect": "read",
+      "permission": "administrators",
+      "ai": "hidden",
+      "flow": {
+        "type": "invoke",
+        "method": "lanswitch.get"
+      },
+      "paramsSchema": {
+        "type": "object"
+      },
+      "resultSchema": {
+        "type": "object"
+      }
+    },
+    "lanswitch.set": {
+      "summary": "Browser-only lanswitch set operation: turn the switch to the DSM LAN address on or off",
+      "cli": [
+        "internal",
+        "lanswitch",
+        "set"
+      ],
+      "effect": "write",
+      "permission": "administrators",
+      "ai": "hidden",
+      "flow": {
+        "type": "invoke",
+        "method": "lanswitch.set"
+      },
+      "paramsSchema": {
+        "type": "object"
+      },
+      "resultSchema": {
+        "type": "object"
+      }
+    },
     "phone.addnas": {
       "summary": "Browser-only phone addnas operation: list DSM's name and LAN addresses for the add-to-phone QR code",
       "cli": [
@@ -4974,6 +5016,27 @@
       "flow": {
         "type": "invoke",
         "method": "phone.addnas"
+      },
+      "paramsSchema": {
+        "type": "object"
+      },
+      "resultSchema": {
+        "type": "object"
+      }
+    },
+    "phone.lanprobe": {
+      "summary": "Browser-only phone lanprobe operation: one-use ICE credentials and the LAN addresses a signed-in page checks before offering to switch to the DSM LAN address",
+      "cli": [
+        "internal",
+        "phone",
+        "lanprobe"
+      ],
+      "effect": "read",
+      "permission": "administrators",
+      "ai": "hidden",
+      "flow": {
+        "type": "invoke",
+        "method": "phone.lanprobe"
       },
       "paramsSchema": {
         "type": "object"

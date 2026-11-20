@@ -89,7 +89,8 @@ and point `SYNOPKGLAND_CATALOG` at its `catalog.yaml`.
 See [development details](docs/development.md) for catalog requirements, focused
 tests and mobile assets; and [CLI operations](docs/ctl.md) for automation. Provider limits are in
 [NetBird](docs/netbird.md), [Tailscale](docs/tailscale.md),
-[Cloudflare Access](docs/cloudflare-access.md) and
+[Cloudflare Access](docs/cloudflare-access.md),
+[switch to the local network](docs/lan-switch.md) and
 [private proxy](docs/private-proxy-provider.md).
 
 ## License

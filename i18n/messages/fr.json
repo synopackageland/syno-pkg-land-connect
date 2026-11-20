@@ -1153,5 +1153,14 @@
   "cflimit.upload": "Envois : jusqu’à {mb} Mo par fichier (Cloudflare {plan})",
   "cflimit.download": "Téléchargements : sans limite",
   "cflimit.detail": "Cloudflare refuse les envois plus gros dès sa périphérie avec l’erreur 413 ; l’app ne les reçoit jamais. Business autorise 200 Mo, Enterprise 500 Mo. Pour les gros fichiers, passez par le réseau privé (NetBird ou Tailscale) ou le réseau local",
-  "cflimit.label": "Limite d’envoi Cloudflare"
+  "cflimit.label": "Limite d’envoi Cloudflare",
+  "lanswitch.row": "Réseau local",
+  "lanswitch.label": "Proposer l'adresse du réseau local",
+  "lanswitch.detail": "Désactivé par défaut. Une fois activé, une page ouverte via Cloudflare (domaine personnel, lien gratuit ou adresse temporaire) vérifie depuis le navigateur du visiteur s'il atteint DSM directement sur le réseau local, et ne propose qu'alors l'adresse locale de DSM. Le visiteur s'y reconnecte ; en HTTPS, le navigateur avertit au sujet du certificat propre à DSM. La vérification utilise le port TCP {port} : si le pare-feu de DSM est actif, autorisez-le depuis le réseau local",
+  "lanswitch.unavailable": "Une autre application utilise le port de la vérification : le réseau local n'est donc pas proposé",
+  "lanswitch.unsaved": "Impossible d'enregistrer le paramètre",
+  "lanswitch.found": "DSM est sur votre réseau local",
+  "lanswitch.signin": "Son adresse locale est plus rapide que le passage par Cloudflare. Vous vous y reconnectez.",
+  "lanswitch.certificate": "Le navigateur avertit au sujet du certificat propre à DSM : choisissez Paramètres avancés, puis continuez.",
+  "lanswitch.open": "Ouvrir DSM sur le réseau local"
 }

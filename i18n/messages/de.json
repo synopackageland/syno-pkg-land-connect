@@ -1153,5 +1153,14 @@
   "cflimit.upload": "Uploads: bis zu {mb} MB pro Datei (Cloudflare {plan})",
   "cflimit.download": "Downloads: keine Grenze",
   "cflimit.detail": "Cloudflare lehnt größere Uploads schon an seinem Rand mit Fehler 413 ab, die App sieht sie nie. Business erlaubt 200 MB, Enterprise 500 MB. Für große Dateien das private Netzwerk (NetBird oder Tailscale) oder das lokale Netzwerk nutzen",
-  "cflimit.label": "Cloudflare-Upload-Grenze"
+  "cflimit.label": "Cloudflare-Upload-Grenze",
+  "lanswitch.row": "Lokales Netzwerk",
+  "lanswitch.label": "Lokale Netzwerkadresse anbieten",
+  "lanswitch.detail": "Standardmäßig aus. Wenn aktiviert, prüft eine über Cloudflare geöffnete Seite (eigene Domain, kostenloser Link oder temporäre Adresse) im Browser des Besuchers, ob DSM direkt im lokalen Netzwerk erreichbar ist, und bietet nur dann die lokale Adresse von DSM an. Dort meldet sich der Besucher erneut an; bei HTTPS warnt der Browser vor dem eigenen Zertifikat von DSM. Die Prüfung nutzt TCP-Port {port}: Ist die DSM-Firewall aktiv, erlauben Sie ihn aus dem lokalen Netzwerk",
+  "lanswitch.unavailable": "Eine andere App nutzt den Port der Prüfung, daher wird das lokale Netzwerk nicht angeboten",
+  "lanswitch.unsaved": "Die Einstellung konnte nicht gespeichert werden",
+  "lanswitch.found": "DSM ist in Ihrem lokalen Netzwerk",
+  "lanswitch.signin": "Die lokale Adresse ist schneller als der Weg über Cloudflare. Dort melden Sie sich erneut an.",
+  "lanswitch.certificate": "Der Browser warnt vor dem eigenen Zertifikat von DSM: Wählen Sie „Erweitert“ und fahren Sie dann fort.",
+  "lanswitch.open": "DSM im lokalen Netzwerk öffnen"
 }

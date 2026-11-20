@@ -1153,5 +1153,14 @@
   "cflimit.upload": "上传：每个文件最多 {mb} MB（Cloudflare {plan}）",
   "cflimit.download": "下载：无限制",
   "cflimit.detail": "超过上限的上传会在 Cloudflare 边缘以错误 413 拒绝，App 完全收不到。Business 套餐为 200 MB，Enterprise 为 500 MB。大文件请改走私人网络（NetBird 或 Tailscale）或局域网",
-  "cflimit.label": "Cloudflare 上传上限"
+  "cflimit.label": "Cloudflare 上传上限",
+  "lanswitch.row": "局域网",
+  "lanswitch.label": "提供局域网地址",
+  "lanswitch.detail": "默认关闭。开启后，经 Cloudflare（自有域名、免费链接或临时网址）打开的页面，会从访客自己的浏览器确认能否直接连到局域网上的 DSM，确定可连才提供 DSM 的局域网地址。访客在那里要再登录一次；使用 HTTPS 时，浏览器会对 DSM 自己的证书显示警告。确认时使用 TCP 端口 {port}：若开启了 DSM 防火墙，请允许局域网访问这个端口",
+  "lanswitch.unavailable": "确认用的端口已被其他应用使用，因此不会提供局域网地址",
+  "lanswitch.unsaved": "无法保存设置",
+  "lanswitch.found": "DSM 就在你的局域网上",
+  "lanswitch.signin": "走局域网地址比经过 Cloudflare 更快。到那里要再登录一次。",
+  "lanswitch.certificate": "浏览器会对 DSM 自己的证书显示警告：请选择“高级”，再选择继续访问。",
+  "lanswitch.open": "在局域网打开 DSM"
 }

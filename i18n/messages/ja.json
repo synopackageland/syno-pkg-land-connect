@@ -1153,5 +1153,14 @@
   "cflimit.upload": "アップロード：1 ファイル最大 {mb} MB（Cloudflare {plan}）",
   "cflimit.download": "ダウンロード：制限なし",
   "cflimit.detail": "上限を超えるアップロードは Cloudflare のエッジでエラー 413 として拒否され、アプリには届きません。Business は 200 MB、Enterprise は 500 MB。大きなファイルはプライベートネットワーク（NetBird または Tailscale）かローカルネットワークを使ってください",
-  "cflimit.label": "Cloudflare のアップロード上限"
+  "cflimit.label": "Cloudflare のアップロード上限",
+  "lanswitch.row": "ローカルネットワーク",
+  "lanswitch.label": "ローカルネットワークのアドレスを案内",
+  "lanswitch.detail": "既定ではオフです。オンにすると、Cloudflare（独自ドメイン、無料リンク、一時アドレス）経由で開いたページが、訪問者自身のブラウザーからローカルネットワーク上の DSM に直接つながるかを確認し、つながる場合にだけ DSM のローカルアドレスを案内します。移動先では再度サインインが必要です。HTTPS ではブラウザーが DSM 自身の証明書について警告します。確認には TCP ポート {port} を使います。DSM のファイアウォールがオンの場合は、ローカルネットワークからこのポートを許可してください",
+  "lanswitch.unavailable": "確認用のポートを別のアプリが使っているため、ローカルネットワークは案内されません",
+  "lanswitch.unsaved": "設定を保存できませんでした",
+  "lanswitch.found": "DSM はローカルネットワーク上にあります",
+  "lanswitch.signin": "ローカルアドレスは Cloudflare 経由より高速です。移動先で再度サインインしてください。",
+  "lanswitch.certificate": "ブラウザーが DSM 自身の証明書について警告します。「詳細設定」を選び、そのまま進んでください。",
+  "lanswitch.open": "ローカルネットワークで DSM を開く"
 }

@@ -1153,5 +1153,14 @@
   "cflimit.upload": "Caricamenti: fino a {mb} MB per file (Cloudflare {plan})",
   "cflimit.download": "Download: nessun limite",
   "cflimit.detail": "Cloudflare rifiuta i caricamenti più grandi al suo edge con l’errore 413, quindi l’app non li riceve mai. Business consente 200 MB, Enterprise 500 MB. Per i file grandi usa la rete privata (NetBird o Tailscale) o la rete locale",
-  "cflimit.label": "Limite di caricamento Cloudflare"
+  "cflimit.label": "Limite di caricamento Cloudflare",
+  "lanswitch.row": "Rete locale",
+  "lanswitch.label": "Proponi l'indirizzo della rete locale",
+  "lanswitch.detail": "Disattivato per impostazione predefinita. Se attivo, una pagina aperta tramite Cloudflare (dominio personale, link gratuito o indirizzo temporaneo) verifica dal browser del visitatore se raggiunge DSM direttamente sulla rete locale e solo allora propone l'indirizzo locale di DSM. Lì il visitatore accede di nuovo; con HTTPS il browser avvisa del certificato proprio di DSM. La verifica usa la porta TCP {port}: se il firewall di DSM è attivo, consentila dalla rete locale",
+  "lanswitch.unavailable": "Un'altra app usa la porta della verifica, quindi la rete locale non viene proposta",
+  "lanswitch.unsaved": "Impossibile salvare l'impostazione",
+  "lanswitch.found": "DSM è sulla tua rete locale",
+  "lanswitch.signin": "Il suo indirizzo locale è più veloce del passaggio da Cloudflare. Lì accedi di nuovo.",
+  "lanswitch.certificate": "Il browser avvisa del certificato proprio di DSM: scegli Avanzate, poi continua.",
+  "lanswitch.open": "Apri DSM sulla rete locale"
 }

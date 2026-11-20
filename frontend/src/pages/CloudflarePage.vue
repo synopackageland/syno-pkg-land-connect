@@ -20,6 +20,7 @@ import CloudflareApps from '../components/CloudflareApps.vue'
 import FreeLink from '../components/FreeLink.vue'
 import TemporaryAddress from '../components/TemporaryAddress.vue'
 import UploadLimit from '../components/UploadLimit.vue'
+import LanSwitchSetting from '../components/LanSwitchSetting.vue'
 import ReadyGate from './ReadyGate.vue'
 import {useConnectState} from '../connect/state'
 import {appsApi,type AppsView} from '../connect/appUrls'
@@ -95,6 +96,8 @@ watch(workers,w=>{if(!landing.value&&w)landing.value=freeLinkState(w)!=='off'&&o
    </template>
    <!-- Every way through Cloudflare shares the upload limit: it stays on the Connection tab whatever runs. -->
    <KeyValueRow :label="t('cflimit.row')" data-cf-limit-status><UploadLimit :locale="s.ctx.locale" /></KeyValueRow>
+   <!-- Switching to the local network also covers every way through Cloudflare. -->
+   <KeyValueRow :label="t('lanswitch.row')" data-cf-lan-switch><LanSwitchSetting :ctx="s.ctx" /></KeyValueRow>
   </template>
 
   <template #tab-domain>

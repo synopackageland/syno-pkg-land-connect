@@ -1153,5 +1153,14 @@
   "cflimit.upload": "업로드: 파일당 최대 {mb} MB(Cloudflare {plan})",
   "cflimit.download": "다운로드: 제한 없음",
   "cflimit.detail": "이보다 큰 업로드는 Cloudflare 에지에서 오류 413으로 거부되어 앱에 전달되지 않습니다. Business는 200 MB, Enterprise는 500 MB입니다. 큰 파일은 비공개 네트워크(NetBird 또는 Tailscale)나 로컬 네트워크를 사용하세요",
-  "cflimit.label": "Cloudflare 업로드 한도"
+  "cflimit.label": "Cloudflare 업로드 한도",
+  "lanswitch.row": "로컬 네트워크",
+  "lanswitch.label": "로컬 네트워크 주소 안내",
+  "lanswitch.detail": "기본값은 꺼짐입니다. 켜면 Cloudflare(자체 도메인, 무료 링크, 임시 주소)로 연 페이지가 방문자의 브라우저에서 로컬 네트워크의 DSM에 직접 연결되는지 확인하고, 연결될 때만 DSM의 로컬 주소를 안내합니다. 그곳에서는 다시 로그인해야 하며, HTTPS에서는 브라우저가 DSM 자체 인증서에 대해 경고합니다. 확인에는 TCP 포트 {port}를 사용합니다. DSM 방화벽이 켜져 있으면 로컬 네트워크에서 이 포트를 허용하세요",
+  "lanswitch.unavailable": "다른 앱이 확인용 포트를 사용하고 있어 로컬 네트워크를 안내하지 않습니다",
+  "lanswitch.unsaved": "설정을 저장할 수 없습니다",
+  "lanswitch.found": "DSM이 로컬 네트워크에 있습니다",
+  "lanswitch.signin": "로컬 주소가 Cloudflare를 거치는 것보다 빠릅니다. 그곳에서 다시 로그인하세요.",
+  "lanswitch.certificate": "브라우저가 DSM 자체 인증서에 대해 경고합니다. '고급'을 선택한 다음 계속하세요.",
+  "lanswitch.open": "로컬 네트워크에서 DSM 열기"
 }

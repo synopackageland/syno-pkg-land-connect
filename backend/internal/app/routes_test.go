@@ -34,7 +34,7 @@ func testConfig(t *testing.T) Config {
 			t.Error(e)
 		}
 	})
-	return Config{Apps: &stubAppsAPI{}, PackageID: "HelloGo", Version: "0.1.0-0001", DataDir: dir, BinaryControl: service, NetBirdServer: &serverControlFixture{}, ExternalGet: func(context.Context, string, string) (dsmexternal.External, error) {
+	return Config{Apps: &stubAppsAPI{}, PackageID: "HelloGo", Version: "0.1.0-0001", DataDir: dir, BinaryControl: service, NetBirdServer: &serverControlFixture{}, LANSwitch: &lanSwitchFixture{}, ExternalGet: func(context.Context, string, string) (dsmexternal.External, error) {
 		httpPort, httpsPort := 80, 443
 		return dsmexternal.External{Hostname: "fixture.example.com", HTTPPort: &httpPort, HTTPSPort: &httpsPort}, nil
 	}, SecurityGet: func(context.Context, string, string) dsmsecurity.Status {
@@ -138,6 +138,9 @@ var sampleParams = map[string]string{
 	"integration.status":           `{}`,
 	"app.status":                   `{}`,
 	"phone.addnas":                 `{"protocol":"https:","host":"192.168.1.20","port":5001}`,
+	"phone.lanprobe":               `{}`,
+	"lanswitch.get":                `{}`,
+	"lanswitch.set":                `{"enabled":true}`,
 	"connection.status":            `{}`,
 	"connection.connect":           `{"provider":"fake","token":"demo-connect"}`,
 	"connection.disconnect":        `{}`,
