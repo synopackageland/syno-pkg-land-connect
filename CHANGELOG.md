@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.0-0187
+
+- Phone page: the browser tab, the home screen icon and the Add to Home Screen card show DSM's own icon instead of Package Land's
+
 ## 0.1.0-0186
 
 - Phone page: text fields highlight their whole rounded field on focus, and dashboard cards, card headers and toolbars in DSM Apps fit the phone

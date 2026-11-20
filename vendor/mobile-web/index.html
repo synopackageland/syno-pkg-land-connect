@@ -10,8 +10,15 @@
     <meta name="apple-mobile-web-app-title" content="Package Land" />
     <meta name="referrer" content="same-origin" />
     <link rel="manifest" href="manifest.webmanifest" />
-    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png" />
+    <!-- DSM's own icons, from DSM's origin, as DSM's login page lists them (src/core/install/dsm-icons.ts) -->
+    <link rel="icon" href="/webman/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/webman/resources/images/icon_dsm_96.png" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/webman/resources/images/icon_dsm_64.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/webman/resources/images/icon_dsm_48.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/webman/resources/images/icon_dsm_32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/webman/resources/images/icon_dsm_16.png" />
+    <link rel="apple-touch-icon" href="/webman/resources/images/icon_dsm_96.png" />
+    <link rel="mask-icon" href="/webman/safari_pin_icon.svg" color="#0086E5" />
     <title>Package Land</title>
     <script>
       // Another NAS's launcher checks for this one (Add NAS) by loading it in a hidden frame with
@@ -36,6 +43,6 @@
   <body>
     <noscript>Package Land needs JavaScript</noscript>
     <div id="root"></div>
-  <script src="./_expo/static/js/web/index-890ae940a07593d85124d79857266a48.js" defer></script>
+  <script src="./_expo/static/js/web/index-e5904505af4f67577ca25b33659a479e.js" defer></script>
 </body>
 </html>
