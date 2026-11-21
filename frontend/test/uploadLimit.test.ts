@@ -26,8 +26,8 @@ test('the own domain and Free link carry the 100 MB limit, the temporary address
  // Cloudflare's paid plans raise the size limit; the plan is named when known.
  expect(uploadLimit('cloudflare-domain','business')).toEqual({kind:'size',mb:200,plan:'Business'})
  expect(uploadLimit('cloudflare-workers','enterprise')).toEqual({kind:'size',mb:500,plan:'Enterprise'})
- expect(uploadLimitText('en','cloudflare-domain')).toBe('Uploads: up to 100 MB per file (Cloudflare Free/Pro) · Downloads: no limit')
- expect(uploadLimitText('en','cloudflare-quick')).toBe('Uploads: each must finish within 100 seconds, so large files may fail · Downloads: no limit')
+ expect(uploadLimitText('en','cloudflare-domain')).toBe('Uploads: large files work in a web browser; other apps up to 100 MB per file (Cloudflare Free/Pro) · Downloads: no limit')
+ expect(uploadLimitText('en','cloudflare-quick')).toBe('Uploads: large files work in a web browser; in other apps each must finish within 100 seconds · Downloads: no limit')
  expect(uploadLimitText('zh-TW','cloudflare-quick')).toContain('100 秒內完成')
  expect(uploadLimitText('fr','cloudflare-domain')).toContain('100 Mo')
 })
@@ -47,6 +47,9 @@ test('all nine locales say the line with its placeholders and no trailing period
   expect(m['cflimit.uploadTime'],file).toContain('{s}')
   expect(m['cflimit.detailTime'],file).toContain('{s}')
   expect(m['cflimit.detailTime'],file).not.toContain('413')
+  // Browser uploads of large files work on every Cloudflare way (iPhone and
+  // iPad too); the tooltip says so and keeps the limit for other apps.
+  for(const key of ['detail','detailTime'])for(const name of ['File Station','Synology Drive','Synology Photos','iPhone','iPad','WebDAV'])expect(m['cflimit.'+key],`${file}:${key}`).toContain(name)
   expect(m['advisor.limits.upload-100s']?.trim(),file).toBeTruthy()
  }
 })

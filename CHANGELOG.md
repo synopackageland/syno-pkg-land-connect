@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.0-0192
+
+- Cloudflare: large files now upload in a web browser through the own domain, Free link and temporary address, in File Station, Synology Drive, Synology Photos and DSM's other pages, iPhone and iPad included; desktop and mobile apps and WebDAV keep Cloudflare's limit
+
 ## 0.1.0-0191
 
 - Cloudflare: a new Local network option (off by default) lets a page opened through the own domain, Free link or temporary address offer DSM's local address when this browser is shown to reach it on the local network

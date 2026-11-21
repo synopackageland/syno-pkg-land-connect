@@ -7,6 +7,7 @@ import (
 	"dsmapp/internal/app"
 	"dsmapp/internal/appaccess"
 	"dsmapp/internal/apps"
+	"dsmapp/internal/bigupload"
 	"dsmapp/internal/binaries"
 	"dsmapp/internal/cfaccess"
 	"dsmapp/internal/cloudflare"
@@ -421,7 +422,16 @@ func run() (runErr error) {
 	serverDependencies.Signal = (nbserver.GRPCCheck{}).Check
 	workerOwner.CheckBridgeRemoval = func() error { return serverDependencies.Guard(dependency.Bridge) }
 	workerOwner.KeepSignalBridge = func() bool { return serverDependencies.Guard(dependency.Bridge) != nil }
+	// Large browser uploads through Cloudflare keep their pieces on the volume
+	// (never /tmp, which is memory on DSM); the directory starts empty.
+	uploads, uploadErr := bigupload.New(bigupload.Config{Dir: filepath.Join(os.Args[3], "upload-tmp")})
+	if uploadErr != nil {
+		connector.Logf("large uploads unavailable: %v", uploadErr)
+	} else {
+		defer uploads.Close()
+	}
 	appOwner = appaccess.New(ctx, appaccess.Config{
+		Uploads:          uploads,
 		IngressConnector: cf.Status,
 		Store:            approvalStore, Discovery: appDiscovery, Workers: workerOwner, Access: accessOwner,
 		ProjectionPath: filepath.Join(os.Args[3], "spl", "external.json"),

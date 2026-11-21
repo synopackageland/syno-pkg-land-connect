@@ -22,6 +22,7 @@ import (
 	"syscall"
 	"time"
 
+	"dsmapp/internal/bigupload"
 	"dsmapp/internal/localipc"
 	"github.com/synopackageland/syno-pkg-land-sdk/ipc"
 )
@@ -47,6 +48,9 @@ type PinConfig struct {
 	ProtectionDigest string
 	State            PinState
 	Verifier         *Verifier
+	// Uploads carries large browser uploads (docs/large-uploads.md). Used only
+	// on a public DSM binding; nil leaves pages and requests unchanged.
+	Uploads *bigupload.Manager
 }
 
 // PinObservation is a fresh discovery snapshot, not authority supplied by a
@@ -88,6 +92,7 @@ type PinProxy struct {
 	cacheMu         sync.Mutex
 	gatewayInfo     os.FileInfo
 	gatewayPort     int
+	uploads         http.Handler
 }
 
 func NewPinProxy(cfg PinConfig) (*PinProxy, error) {
@@ -119,6 +124,9 @@ func NewPinProxy(cfg PinConfig) (*PinProxy, error) {
 			if b.EntryPath != "" && (r.In.URL.Path == "/" || r.In.URL.Path == "/webapi/auth.cgi" || strings.HasPrefix(r.In.URL.Path, "/webapi/entry.cgi")) {
 				r.Out.Header.Set("Accept-Encoding", "identity")
 			}
+			if p.uploads != nil && bigupload.Navigation(r.In) {
+				r.Out.Header.Set("Accept-Encoding", "identity")
+			}
 			r.Out.Host = b.Authority
 			if cfg.Provider == "cloudflared" {
 				r.Out.Host = r.In.Host
@@ -139,6 +147,11 @@ func NewPinProxy(cfg PinConfig) (*PinProxy, error) {
 					return err
 				}
 			}
+			if p.uploads != nil {
+				if err := bigupload.Inject(res); err != nil {
+					return err
+				}
+			}
 			return batchPinBody(res)
 		},
 		ErrorHandler: func(w http.ResponseWriter, r *http.Request, _ error) {
@@ -146,7 +159,27 @@ func NewPinProxy(cfg PinConfig) (*PinProxy, error) {
 			writeEntryUnavailable(w, r, b.EntryPath, "unavailable")
 		},
 	}
+	if cfg.Uploads != nil && cfg.Provider == "cloudflared" && b.Target == TargetDSM {
+		p.uploads = cfg.Uploads.Handler(p.forwardDSM(target))
+	}
 	return p, nil
+}
+
+// forwardDSM sends an upload's request to DSM over the pinned transport, as
+// Rewrite does for forwarded requests.
+func (p *PinProxy) forwardDSM(target *url.URL) bigupload.Forwarder {
+	return func(req *http.Request) (*http.Response, error) {
+		out := req.Clone(req.Context())
+		out.URL.Scheme, out.URL.Host = target.Scheme, target.Host
+		out.RequestURI = ""
+		if p.cfg.Provider != "cloudflared" {
+			out.Host = p.cfg.Binding.Authority
+		}
+		for _, h := range []string{"Forwarded", "X-Forwarded-Host", "X-Forwarded-Proto", "X-Forwarded-For"} {
+			out.Header.Del(h)
+		}
+		return p.tr.RoundTrip(out)
+	}
 }
 
 // StartPinProxy binds before publishing the approved route to any provider.
@@ -497,6 +530,10 @@ func (p *PinProxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	if p.waiting.Load() {
 		writeEntryUnavailable(w, r, p.cfg.Binding.EntryPath, "unavailable")
+		return
+	}
+	if p.uploads != nil && bigupload.Handles(r.URL.Path) {
+		p.uploads.ServeHTTP(w, r)
 		return
 	}
 	if b := p.cfg.Binding; b.EntryPath != "" {
