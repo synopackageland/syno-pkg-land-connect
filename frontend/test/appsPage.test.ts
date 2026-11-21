@@ -7,7 +7,6 @@ import {translate} from '../src/i18n'
 import {fingerprint,type AppRow,type AppsView,type Inspection} from '../src/connect/appUrls'
 import {mainUrl,nothingSetUp,planChange,rowSummary,waysOf,waysReady} from '../src/connect/appWays'
 import {settle} from './support'
-import {uploadLimitText} from '../src/connect/uploadLimit'
 
 const a=(key:string)=>translate('en','apps.'+key)
 // The approval's notes are one FormNote list, one item each.
@@ -166,11 +165,10 @@ test('public is one choice: switching ways confirms the old one off, then approv
  const inline=dialog()!.querySelector<HTMLElement>('[data-apps-approval]')!
  expect(inline.dataset.scope).toBe('public')
  expect(inline.querySelector<HTMLInputElement>('[data-approve-hostname="SynoPkgOn"] input')?.value).toBe('on')
- // At most five short notes, Cloudflare's upload limit as the Cloudflare page says it, and the rest behind Learn more.
+ // At most five short notes, and the rest behind Learn more.
  const notes=noteTexts(inline)
  expect(notes.length).toBeLessThanOrEqual(5)
  expect(notes).toEqual(expect.arrayContaining(['signIn','media','restart'].map(key=>a('note.'+key))))
- expect(notes).toContain(uploadLimitText('en','cloudflare-domain'))
  expect(inline.querySelector<HTMLAnchorElement>('[data-approve-more]')?.href).toContain('developers.cloudflare.com')
  await click(dialog()!.querySelector<HTMLElement>('[data-approve-confirm]'))
  expect(f.call.mock.calls.find(c=>c[0]==='apps.setpublic')![1]).toMatchObject({packages:['SynoPkgOn'],enabled:true,approvals:{SynoPkgOn:{hostname:'on.example.com'}}})
@@ -277,7 +275,6 @@ test('several Apps are made public together in one approval; a failed one says s
  expect(d.dataset.scope).toBe('relay')
  expect(d.querySelectorAll('[data-approve-app]')).toHaveLength(2)
  expect(noteTexts(d)).toContain(a('note.quota'))
- expect(noteTexts(d)).toContain(uploadLimitText('en','cloudflare-workers'))
  await click(d.querySelector<HTMLElement>('[data-approve-confirm]'))
  const calls=f.call.mock.calls.filter(c=>c[0]==='apps.setrelay')
  expect(calls).toHaveLength(1)

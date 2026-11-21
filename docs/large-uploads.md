@@ -7,8 +7,10 @@ through any of these ways would fail, often with nothing on screen.
 
 Syno Connect Center handles this inside the browser page, for every web app that
 DSM serves (File Station, Synology Drive, Synology Photos and others). No app
-changes and there is no setting. Other clients (desktop sync apps, mobile apps,
-WebDAV) keep Cloudflare's limit.
+changes and there is no setting. Desktop sync apps, mobile apps and WebDAV do
+not use these ways: Connect's Cloudflare addresses are for a web browser and
+sit behind DSM's entry gate. So Syno Connect Center shows no upload limit for
+any Cloudflare way, and the comparison lists none.
 
 ```text
 App XHR (one large POST)

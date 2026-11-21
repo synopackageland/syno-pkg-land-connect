@@ -111,7 +111,7 @@ Each option also says what the user decides on:
   `netbird`, `cloudflared`, `synology-apps`), whether computers (`desktop`)
   and phones (`phone`) can use it (`yes`, `no`, `unknown`) and official
   download `links` per platform.
-- `pricing`: `limits` (message keys such as `upload-100mb`), official `links` and the month they were `checked`.
+- `pricing`: `limits` (message keys such as `workers-daily-requests`), official `links` and the month they were `checked`.
   Only official pricing and terms pages are used; Tailscale's Personal plan is
   free for up to 6 users, NetBird's cloud free plan for 5 users and 100
   devices and Cloudflare's free plan uploads up to 100 MB per request (all
