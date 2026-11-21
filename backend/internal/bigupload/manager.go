@@ -27,9 +27,9 @@ type Config struct {
 	MaxPerOwner int           // active sessions per DSM session, 8
 	MaxTotal    int           // active sessions, 16
 	Margin      int64         // free space kept after reservations, 1 GiB
-	SessionIdle time.Duration // a session with no request ends, 30 min
+	MaxSlots    int           // slots of one session, 262144 (6.25 TiB at 25 MiB)
+	SessionIdle time.Duration // a session with no request ends; an ended one's answer stays as long, 30 min
 	KeepFailed  time.Duration // data of a failed session waits for reuse, 30 min
-	EndedKeep   time.Duration // an ended session's answer stays for the page, 2 min
 	ResultWait  time.Duration // result long-poll, 25 s
 	ReadIdle    time.Duration // a piece body read with no byte ends, 60 s
 	MaxAnswer   int64         // DSM answer kept in memory, 1 MiB
@@ -54,11 +54,13 @@ func (c *Config) defaults() {
 	set(&c.MaxAnswer, 1<<20)
 	setD(&c.SessionIdle, 30*time.Minute)
 	setD(&c.KeepFailed, 30*time.Minute)
-	setD(&c.EndedKeep, 2*time.Minute)
 	setD(&c.ResultWait, 25*time.Second)
 	setD(&c.ReadIdle, 60*time.Second)
 	if c.MaxPerOwner <= 0 {
 		c.MaxPerOwner = 8
+	}
+	if c.MaxSlots <= 0 {
+		c.MaxSlots = 1 << 18
 	}
 	if c.MaxTotal <= 0 {
 		c.MaxTotal = 16
@@ -160,10 +162,13 @@ var (
 )
 
 // reserve checks the session limits and space, then attaches or creates the
-// blobs of a new session. On error nothing stays reserved.
-func (m *Manager) reserve(owner string, files []fileSpec) ([]*blob, error) {
-	m.mu.Lock()
-	defer m.mu.Unlock()
+// blobs of a new session. The caller holds m.mu. On error nothing stays
+// reserved and no temp file is left.
+//
+// Every file's full size is reserved, in stream mode too: DSM reads a file
+// part only once its bytes are on disk, and nothing is deleted before DSM has
+// answered, so the whole file is on the volume at the end.
+func (m *Manager) reserveLocked(owner string, files []fileSpec) ([]*blob, error) {
 	active, mine := 0, 0
 	for _, s := range m.sessions {
 		if s.isActive() {
@@ -176,25 +181,36 @@ func (m *Manager) reserve(owner string, files []fileSpec) ([]*blob, error) {
 	if active >= m.cfg.MaxTotal || mine >= m.cfg.MaxPerOwner {
 		return nil, errBusy
 	}
-	out := make([]*blob, len(files))
-	var need int64
-	reuse := map[string]bool{}
-	for i, f := range files {
-		k := owner + "\x00" + f.Key
-		if b := m.retained[k]; b != nil && b.size == f.Size && !reuse[k] {
-			reuse[k] = true
-			out[i] = b
-			continue
-		}
-		need += f.Size
-	}
 	free, err := m.cfg.Free(m.cfg.Dir)
 	if err != nil {
 		return nil, err
 	}
-	outstanding := m.reserved - m.written.Load()
-	if free-outstanding-need < m.cfg.Margin {
-		return nil, errSpace
+	// avail is what new files may take; each size is checked against what is
+	// left before it is added, so the sum never overflows.
+	avail := free - (m.reserved - m.written.Load()) - m.cfg.Margin
+	out := make([]*blob, len(files))
+	var need int64
+	slots := 0
+	reuse := map[string]bool{}
+	for i, f := range files {
+		if f.Size <= 0 {
+			return nil, errSpace
+		}
+		k := owner + "\x00" + f.Key
+		if b := m.retained[k]; b != nil && b.size == f.Size && !reuse[k] {
+			reuse[k] = true
+			out[i] = b
+			slots += len(b.slots)
+		} else {
+			if f.Size > avail-need {
+				return nil, errSpace
+			}
+			need += f.Size
+			slots += int((f.Size-1)/m.cfg.Slot) + 1
+		}
+		if slots > m.cfg.MaxSlots {
+			return nil, errSpace
+		}
 	}
 	created := []*blob{}
 	for i, f := range files {
@@ -242,12 +258,8 @@ func (m *Manager) newBlob(owner string, f fileSpec) (*blob, error) {
 	if err != nil {
 		return nil, err
 	}
-	n := int((f.Size + m.cfg.Slot - 1) / m.cfg.Slot)
-	b := &blob{m: m, owner: owner, key: f.Key, size: f.Size, path: path, f: fh, slots: make([]slot, n)}
-	for i := range b.slots {
-		b.slots[i].h = sha256.New()
-	}
-	return b, nil
+	n := int((f.Size-1)/m.cfg.Slot) + 1
+	return &blob{m: m, owner: owner, key: f.Key, size: f.Size, path: path, f: fh, slots: make([]slot, n)}, nil
 }
 
 // release is called once per blob by blob.remove.

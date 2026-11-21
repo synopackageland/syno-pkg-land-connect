@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { ANSWER_MS, CONTROL_MS, STALL_MS, install } from '../src/upload/wrapper'
+import { ANSWER_MS, BEAT_AFTER_MS, BEAT_MS, CONTROL_MS, STALL_MS, install } from '../src/upload/wrapper'
 
 // A fake XMLHttpRequest whose requests go to an in-memory NAS (FakeNAS). It
 // keeps the native shape that matters: state getters on the prototype, on*
@@ -105,10 +105,17 @@ class FakeNAS {
   resultFailure: string | null = null
   createLost = 0 // creates handled whose answer never reaches the page
   resultLost = 0 // result requests whose answer never reaches the page
+  pings: number[] = [] // times of heartbeat requests
+  failed: string[] = [] // sessions the page reported failed
 
   handle(x: FakeXHR) {
     const u = new URL(x.url, ORIGIN)
     if (!u.pathname.startsWith('/_connect/')) { this.native.push(x); return }
+    if (u.pathname === '/_connect/upload/ping') {
+      this.pings.push(Date.now())
+      void Promise.resolve().then(() => x.respond(204))
+      return
+    }
     this.log.push(`${x.method} ${u.pathname}${u.search}`)
     if (x.method === 'PUT' && !x.header('X-Upload-Reuse')) {
       const key = `${u.pathname}:${Math.floor(Number(u.searchParams.get('offset')) / SLOT)}`
@@ -124,6 +131,7 @@ class FakeNAS {
       const s = this.sessions.get(parts[3])
       if (!s) return x.respond(404, { error: 'unknown' })
       if (x.method === 'DELETE') { s.ended = 'cancelled'; return x.respond(204) }
+      if (x.method === 'POST' && parts[4] === 'fail') { this.failed.push(parts[3]); s.ended ??= 'failed'; return x.respond(204) }
       if (x.method === 'GET' && parts[4] === 'result') {
         if (this.resultLost > 0) { this.resultLost--; return }
         return this.result(x, s)
@@ -450,6 +458,8 @@ describe('upload wrapper', () => {
     const { events } = bigUpload()
     await until(() => events.includes('loadend'))
     expect(events).toContain('error')
+    await run(100)
+    expect(nas.failed).toEqual(['s1']) // the NAS frees the place and keeps the data
     await run(60_000)
     expect(nas.log.filter(l => l.startsWith('PUT')).length).toBeLessThanOrEqual(2)
   })
@@ -520,7 +530,7 @@ describe('upload wrapper', () => {
     nas.resultLost = 1
     const { x, events } = bigUpload()
     await until(() => events.includes('up.load'))
-    await run(50_000)
+    await run(25_000 + CONTROL_MS - 1000) // the result request's limit
     expect(events).not.toContain('load')
     await until(() => events.includes('loadend'), 20_000)
     expect(x.status).toBe(200)
@@ -545,6 +555,51 @@ describe('upload wrapper', () => {
     await until(() => events.includes('loadend'), 5000)
     expect(events.slice(-2)).toEqual(['error', 'loadend'])
     expect(nas.log.filter(l => l.startsWith('PUT'))).toHaveLength(2)
+  })
+
+  it('keeps the link busy while an answer is awaited, and only then', async () => {
+    let lost = 0
+    nas.putHook = (_x, _n, off) => off === 0 && lost++ === 0 ? 'fill' : 'normal'
+    const { events } = bigUpload()
+    await until(() => lost === 1)
+    const from = Date.now()
+    await run(BEAT_AFTER_MS - 100)
+    // Other pieces finish quickly and need no heartbeat; this one waits.
+    const early = nas.pings.filter(t => t >= from && t < from + BEAT_AFTER_MS - 100)
+    expect(early).toHaveLength(0)
+    await run(ANSWER_MS - BEAT_AFTER_MS)
+    const during = nas.pings.filter(t => t >= from)
+    expect(during.length).toBeGreaterThanOrEqual(Math.floor((ANSWER_MS - BEAT_AFTER_MS) / BEAT_MS) - 1)
+    for (let k = 1; k < during.length; k++) expect(during[k] - during[k - 1]).toBeLessThanOrEqual(BEAT_MS + 250)
+    await until(() => events.includes('loadend'), 20_000)
+    expect(events).toContain('load')
+    const after = nas.pings.length
+    await run(30_000)
+    expect(nas.pings.length).toBe(after)
+  })
+
+  it('a piece another request took over is checked and continued, not retried later', async () => {
+    let taken = 0
+    nas.putHook = (_x, _n, off) => off === 0 && taken++ === 0 ? 409 : 'normal'
+    const { events } = bigUpload()
+    await until(() => events.includes('loadend'), 900) // well under the first retry pause
+    expect(events).toContain('load')
+    expect(nas.log).toContain('GET /_connect/upload/sessions/s1/files/0?offset=0')
+  })
+
+  it('a check whose answer is lost is sent again, never failing the upload', async () => {
+    let lost = 0
+    nas.putHook = (_x, _n, off) => off === 0 && lost++ === 0 ? 'fill' : 'normal'
+    const real = nas.handle.bind(nas)
+    let dropped = 0
+    nas.handle = (x: FakeXHR) => {
+      if (x.method === 'GET' && x.url.includes('/files/0?') && dropped++ < 2) { nas.log.push('lost check'); return }
+      real(x)
+    }
+    const { events } = bigUpload()
+    await until(() => events.includes('loadend'), ANSWER_MS * 4 + CONTROL_MS * 3)
+    expect(events).toContain('load')
+    expect(nas.log.filter(l => l === 'lost check')).toHaveLength(2)
   })
 
   it('hands over DSM early answer when the NAS ends the session', async () => {

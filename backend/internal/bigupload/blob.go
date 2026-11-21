@@ -1,7 +1,6 @@
 package bigupload
 
 import (
-	"crypto/sha256"
 	"hash"
 	"os"
 	"sync"
@@ -12,7 +11,7 @@ import (
 // the slot continues, so the slot is hashed while it is written.
 type slot struct {
 	fill     int64
-	h        hash.Hash
+	h        hash.Hash // while the slot fills; created on its first byte
 	sum      []byte
 	gen      uint64
 	verified bool // complete and written or confirmed in this attachment
@@ -62,7 +61,7 @@ func (b *blob) resetLocked(i int) {
 	s := &b.slots[i]
 	b.written -= s.fill
 	b.m.written.Add(-s.fill)
-	s.fill, s.h, s.sum, s.verified = 0, sha256.New(), nil, false
+	s.fill, s.h, s.sum, s.verified = 0, nil, nil, false
 	s.gen++
 }
 

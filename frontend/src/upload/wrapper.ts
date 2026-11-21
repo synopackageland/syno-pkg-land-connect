@@ -14,13 +14,23 @@ const FIRST_PIECE = 8 * 1024 * 1024
 const MIN_PIECE = 1024 * 1024
 const PIECE_SECONDS = 30
 export const STALL_MS = 45_000
-export const ANSWER_MS = 30_000
-// The wrapper's own small requests (create, check, reuse, cancel) are given up
-// after this long without an answer and sent again: Cloudflare can hold an
-// answer on its way back to a phone for minutes. The result request waits up
-// to 25 s on the NAS, so it gets that much more.
-export const CONTROL_MS = 30_000
+// A piece whose every byte was sent and that has no answer after this long is
+// checked on the NAS and continued from there.
+export const ANSWER_MS = 12_000
+// The wrapper's own small requests (create, check, reuse, fail) are given up
+// after this long without an answer and sent again: a phone's link can lose
+// an answer for good. The result request waits up to 25 s on the NAS, so it
+// gets that much more.
+export const CONTROL_MS = 15_000
 const RESULT_MS = 25_000 + CONTROL_MS
+// While any request of the wrapper has waited this long for its answer, a tiny
+// request goes to the NAS every BEAT_MS: a phone's Wi-Fi may drop what
+// arrives after about a second of silence from the phone, and the answers
+// then crawl in on TCP retransmission backoff. See docs/large-uploads.md.
+export const BEAT_AFTER_MS = 500
+export const BEAT_MS = 1000
+const PING = '/_connect/upload/ping'
+const MAX_PINGS = 3
 const TICK_MS = 250
 const MAX_DATA = 512 * 1024
 const PATCHED = Symbol.for('connect.upload.patched')
@@ -205,6 +215,36 @@ export function install(win: Window, given?: Partial<Deps>): boolean {
 
   // ---- requests of the wrapper itself (native methods, never wrapped) ----
 
+  // Requests waiting for their answer, with the time they started waiting.
+  const waits = new Map<XMLHttpRequest, number>()
+  let beatTimer: unknown
+  let lastPing = -Infinity
+  let pings = 0
+  function waitOn(x: XMLHttpRequest) {
+    waits.set(x, deps.now())
+    if (beatTimer === undefined) beatTimer = deps.setInterval(beat, 250)
+  }
+  function waitOff(x: XMLHttpRequest) {
+    if (!waits.delete(x) || waits.size || beatTimer === undefined) return
+    deps.clearInterval(beatTimer)
+    beatTimer = undefined
+  }
+  function beat() {
+    const now = deps.now()
+    let oldest = now
+    for (const t of waits.values()) oldest = Math.min(oldest, t)
+    if (now - oldest < BEAT_AFTER_MS || now - lastPing < BEAT_MS - 100 || pings >= MAX_PINGS) return
+    lastPing = now
+    pings++
+    const x = new X()
+    let done = false
+    const settle = () => { if (!done) { done = true; pings--; deps.clearTimeout(t) } }
+    const t = deps.setTimeout(() => { settle(); o.abort.call(x) }, 5000)
+    x.onload = x.onerror = x.onabort = x.ontimeout = settle
+    o.open.call(x, 'GET', PING, true)
+    o.send.call(x, null)
+  }
+
   interface Res { status: number, json: any }
   // request sends one of the wrapper's requests. A request without an answer
   // after limit ms (0: no limit) is aborted and reported as a network error.
@@ -216,6 +256,7 @@ export function install(win: Window, given?: Partial<Deps>): boolean {
         if (settled) return
         settled = true
         if (timer !== undefined) deps.clearTimeout(timer)
+        waitOff(x)
         done(r)
       }
       const x = new X()
@@ -231,6 +272,9 @@ export function install(win: Window, given?: Partial<Deps>): boolean {
       x.onabort = () => resolve({ status: -1, json: null })
       onXhr?.(x)
       o.send.call(x, body)
+      // A piece starts waiting once its body is sent (see send); a small
+      // request at once.
+      if (!(body instanceof (win as unknown as { Blob: typeof Blob }).Blob)) waitOn(x)
       if (limit > 0) {
         timer = deps.setTimeout(() => {
           resolve({ status: 0, json: null })
@@ -285,6 +329,12 @@ export function install(win: Window, given?: Partial<Deps>): boolean {
     live.delete(big)
   }
 
+  // failRemote tells the NAS the App was told the upload failed, so the session
+  // frees its place at once and its data waits for the App's next request.
+  function failRemote(big: Big) {
+    if (big.id) void request(big, 'POST', `${BASE}/${big.id}/fail`, null)
+  }
+
   function cancelRemote(big: Big, keepalive = false) {
     big.cancelled = true
     if (!big.id) return
@@ -302,7 +352,8 @@ export function install(win: Window, given?: Partial<Deps>): boolean {
     if (!active(big)) return
     big.phase = 'ended'
     stopTimers(big)
-    if (kind !== 'error') cancelRemote(big)
+    if (kind === 'error') failRemote(big)
+    else cancelRemote(big)
     big.readyState = 4
     fire(x, 'readystatechange')
     if (!big.uploadDone) {
@@ -446,8 +497,9 @@ export function install(win: Window, given?: Partial<Deps>): boolean {
       p.xhr = px
       px.upload.onprogress = e => {
         if (e.loaded > p.sent) { p.sent = Math.min(e.loaded, len); p.moved = deps.now() }
+        if (p.sent >= len && !waits.has(px)) waitOn(px)
       }
-      px.upload.onload = () => { p.sent = len; p.moved = deps.now() }
+      px.upload.onload = () => { p.sent = len; p.moved = deps.now(); waitOn(px) }
     }, 0).then(async r => { // pieces are watched by tick() instead of a limit
       if (!big.pieces.has(p)) return // superseded after a probe, or ended
       big.pieces.delete(p)
@@ -466,13 +518,37 @@ export function install(win: Window, given?: Partial<Deps>): boolean {
         stored(x, big, n, off, r.json.fill)
         return schedule(x, big)
       }
+      if (r.status === 409 && r.json?.wait) {
+        f.busy[i] = false
+        return later(big, 1000, () => schedule(x, big))
+      }
+      // Another request for this slot took over (the browser may repeat a
+      // piece on a new connection by itself): ask where it stands, go on.
+      if (r.status === 409) return resync(x, big, n, off)
       f.busy[i] = false
-      if (r.status === 409 && r.json?.wait) return later(big, 1000, () => schedule(x, big))
       if (r.status === 410) return answerPhase(x, big)
       if (isFinal(r.status)) return end(x, big, 'error')
       if (r.status === 0 && !(await readable(f.blob, off))) return end(x, big, 'error')
-      retry(big, () => schedule(x, big)) // network error, 5xx, 408, 429, 409 superseded
+      retry(big, () => schedule(x, big)) // network error, 5xx, 408, 429
     })
+  }
+
+  // resync learns where a slot continues on the NAS and goes on from there.
+  async function resync(x: XMLHttpRequest, big: Big, n: number, off: number) {
+    const f = big.files[n]
+    const i = Math.floor(off / big.slot)
+    f.busy[i] = true // nothing else is sent for this slot meanwhile
+    for (;;) {
+      const r = await request(big, 'GET', `${BASE}/${big.id}/files/${n}?offset=${off}`, null)
+      if (big.phase !== 'upload') return
+      if (r.status === 200 && typeof r.json?.fill === 'number') {
+        stored(x, big, n, off, r.json.fill)
+        return schedule(x, big)
+      }
+      if (r.status === 410) { f.busy[i] = false; return answerPhase(x, big) }
+      if (isFinal(r.status)) return end(x, big, 'error')
+      await new Promise<void>(res => retry(big, res))
+    }
   }
 
   // ---- DSM's answer ----

@@ -2,6 +2,7 @@ package bigupload
 
 import (
 	"context"
+	"crypto/sha256"
 	"crypto/subtle"
 	"encoding/base64"
 	"encoding/hex"
@@ -25,11 +26,14 @@ type Forwarder func(*http.Request) (*http.Response, error)
 const (
 	Prefix     = "/_connect/upload"
 	ScriptPath = "/_connect/upload.js"
+	// PingPath answers at once. The page asks it every second while it waits
+	// for an answer, so the phone's link never sits idle (see the design doc).
+	PingPath = Prefix + "/ping"
 )
 
 // Handles reports whether a request path belongs to this package.
 func Handles(path string) bool {
-	return path == ScriptPath || path == Prefix+"/sessions" || strings.HasPrefix(path, Prefix+"/sessions/")
+	return path == ScriptPath || path == PingPath || path == Prefix+"/sessions" || strings.HasPrefix(path, Prefix+"/sessions/")
 }
 
 // Handler serves the protocol for one DSM binding.
@@ -38,7 +42,9 @@ func (m *Manager) Handler(forward Forwarder) http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET "+ScriptPath, serveScript)
 	mux.HandleFunc("POST "+Prefix+"/sessions", h.create)
+	mux.HandleFunc("GET "+PingPath, ping)
 	mux.HandleFunc("DELETE "+Prefix+"/sessions/{id}", h.cancel)
+	mux.HandleFunc("POST "+Prefix+"/sessions/{id}/fail", h.fail)
 	mux.HandleFunc("GET "+Prefix+"/sessions/{id}/result", h.result)
 	mux.HandleFunc("PUT "+Prefix+"/sessions/{id}/files/{n}", h.put)
 	mux.HandleFunc("GET "+Prefix+"/sessions/{id}/files/{n}", h.probe)
@@ -134,12 +140,18 @@ func (h *handler) create(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	if err := h.checkSession(r); err != nil {
-		fail(w, http.StatusUnauthorized, "no_session")
-		return
-	}
+	// A repeat of a create whose answer was lost: the session was made after
+	// DSM accepted this owner, so DSM is not asked again (it may be slow).
 	if s := h.m.byNonce(owner, in.Nonce); s != nil {
 		h.created(w, s)
+		return
+	}
+	switch err := h.checkSession(r); {
+	case errors.Is(err, errNoSession):
+		fail(w, http.StatusUnauthorized, "no_session")
+		return
+	case err != nil:
+		fail(w, http.StatusServiceUnavailable, "dsm_unavailable") // the page tries again
 		return
 	}
 	dsmReq, err := http.NewRequest(in.Method, in.URL, nil)
@@ -162,21 +174,34 @@ func (h *handler) create(w http.ResponseWriter, r *http.Request) {
 	}
 	dsmReq.Header.Set("Accept-Encoding", "identity")
 
-	blobs, err := h.m.reserve(owner, files)
-	switch {
-	case errors.Is(err, errBusy):
-		fail(w, http.StatusTooManyRequests, "busy")
-		return
-	case errors.Is(err, errSpace):
-		fail(w, http.StatusInsufficientStorage, "no_space")
-		return
-	case err != nil:
-		fail(w, http.StatusInternalServerError, "unavailable")
+	ctx, cancel := context.WithCancel(context.Background())
+	s := &session{m: h.m, id: randomID(), owner: owner, nonce: in.Nonce, mode: in.Mode, request: dsmReq, forward: h.forward,
+		sig: make(chan struct{}, 1), ctx: ctx, cancel: cancel, done: make(chan struct{})}
+	// Reserving, attaching and publishing happen under one lock: a repeat of
+	// this create sees either nothing or the finished session.
+	h.m.mu.Lock()
+	if other := h.m.byNonceLocked(owner, in.Nonce); other != nil {
+		h.m.mu.Unlock()
+		cancel()
+		h.created(w, other)
 		return
 	}
-	ctx, cancel := context.WithCancel(context.Background())
-	s := &session{m: h.m, id: randomID(), owner: owner, nonce: in.Nonce, mode: in.Mode, files: blobs, request: dsmReq, forward: h.forward,
-		sig: make(chan struct{}, 1), ctx: ctx, cancel: cancel, done: make(chan struct{})}
+	blobs, err := h.m.reserveLocked(owner, files)
+	if err != nil {
+		h.m.mu.Unlock()
+		cancel()
+		switch {
+		case errors.Is(err, errBusy):
+			fail(w, http.StatusTooManyRequests, "busy")
+		case errors.Is(err, errSpace):
+			writeJSON(w, http.StatusInsufficientStorage, map[string]string{"error": "no_space",
+				"message": "Not enough free space on the NAS volume: an upload through Cloudflare needs its full size plus 1 GiB free."})
+		default:
+			fail(w, http.StatusInternalServerError, "unavailable")
+		}
+		return
+	}
+	s.files = blobs
 	for _, p := range plan {
 		if p.file < 0 {
 			s.parts = append(s.parts, part{data: p.data})
@@ -184,25 +209,19 @@ func (h *handler) create(w http.ResponseWriter, r *http.Request) {
 			s.parts = append(s.parts, part{blob: blobs[p.file]})
 		}
 	}
-	h.m.mu.Lock()
-	if other := h.m.byNonceLocked(owner, in.Nonce); other != nil {
-		// A repeat of this create won the race; keep that one.
-		h.m.mu.Unlock()
-		cancel()
-		for _, b := range blobs {
-			b.remove()
-		}
-		h.created(w, other)
-		return
+	for _, b := range blobs {
+		b.attach(s.poke)
 	}
 	h.m.sessions[s.id] = s
 	s.idle = time.AfterFunc(h.m.cfg.SessionIdle, s.expire)
 	h.m.mu.Unlock()
-	for _, b := range blobs {
-		b.attach(s.poke)
-	}
 	go s.run()
 	h.created(w, s)
+}
+
+func ping(w http.ResponseWriter, _ *http.Request) {
+	w.Header().Set("Cache-Control", "no-store")
+	w.WriteHeader(http.StatusNoContent)
 }
 
 // created answers a create with the session and the slots it already has.
@@ -221,11 +240,14 @@ func (h *handler) created(w http.ResponseWriter, s *session) {
 	writeJSON(w, http.StatusCreated, out)
 }
 
-// checkSession asks DSM whether the cookie and token are a live session.
+var errNoSession = errors.New("no DSM session")
+
+// checkSession asks DSM whether the cookie and token are a live session. It
+// returns errNoSession only when DSM says no; any other error means DSM could
+// not be asked (slow, restarting) and the page should try again. There is no
+// time limit of its own: the page gives up and repeats the create.
 func (h *handler) checkSession(r *http.Request) error {
-	ctx, cancel := context.WithTimeout(r.Context(), 15*time.Second)
-	defer cancel()
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, "/webapi/entry.cgi?api=SYNO.Core.Desktop.Timeout&method=check&version=1", nil)
+	req, err := http.NewRequestWithContext(r.Context(), http.MethodGet, "/webapi/entry.cgi?api=SYNO.Core.Desktop.Timeout&method=check&version=1", nil)
 	if err != nil {
 		return err
 	}
@@ -244,8 +266,14 @@ func (h *handler) checkSession(r *http.Request) error {
 	var v struct {
 		Success bool `json:"success"`
 	}
-	if res.StatusCode != http.StatusOK || json.NewDecoder(io.LimitReader(res.Body, 4096)).Decode(&v) != nil || !v.Success {
-		return errors.New("no DSM session")
+	if res.StatusCode != http.StatusOK {
+		return errors.New("DSM answered " + res.Status)
+	}
+	if err := json.NewDecoder(io.LimitReader(res.Body, 4096)).Decode(&v); err != nil {
+		return err
+	}
+	if !v.Success {
+		return errNoSession
 	}
 	return nil
 }
@@ -277,6 +305,17 @@ func (h *handler) cancel(w http.ResponseWriter, r *http.Request) {
 	}
 	s.finish(stateCancelled, "", nil)
 	s.drop()
+	w.WriteHeader(http.StatusNoContent)
+}
+
+// fail ends a session the page gave up on (it reported an error to the App).
+// Its data stays for the App's new request, as after any failure.
+func (h *handler) fail(w http.ResponseWriter, r *http.Request) {
+	s := h.own(w, r)
+	if s == nil {
+		return
+	}
+	s.finish(stateFailed, "client", nil)
 	w.WriteHeader(http.StatusNoContent)
 }
 
@@ -423,12 +462,20 @@ func (h *handler) put(w http.ResponseWriter, r *http.Request) {
 	if !sl.verified && sl.fill == slotLen && off == start {
 		b.resetLocked(idx) // a complete slot from before, sent again instead of confirmed
 	}
-	if start+sl.fill != off {
-		fill := start + sl.fill
+	have := start + sl.fill
+	if off > have {
 		b.mu.Unlock()
-		writeJSON(w, http.StatusConflict, map[string]int64{"fill": fill})
+		writeJSON(w, http.StatusConflict, map[string]int64{"fill": have})
 		return
 	}
+	// A piece sent again (the browser may repeat a request on a new
+	// connection by itself): bytes already stored are skipped, not an error.
+	if off+r.ContentLength <= have {
+		b.mu.Unlock()
+		writeJSON(w, http.StatusOK, map[string]int64{"fill": have})
+		return
+	}
+	skip := have - off
 	if s.mode == modeStream && start > b.contiguousLocked()+cfg.Window {
 		b.mu.Unlock()
 		writeJSON(w, http.StatusConflict, map[string]bool{"wait": true})
@@ -442,8 +489,14 @@ func (h *handler) put(w http.ResponseWriter, r *http.Request) {
 	bufp := copyBuffers.Get().(*[]byte)
 	defer copyBuffers.Put(bufp)
 	buf := *bufp
-	remaining := r.ContentLength
-	pos := off
+	if skip > 0 {
+		_ = rc.SetReadDeadline(time.Now().Add(cfg.ReadIdle))
+		if _, err := io.CopyBuffer(io.Discard, io.LimitReader(r.Body, skip), buf); err != nil {
+			return
+		}
+	}
+	remaining := r.ContentLength - skip
+	pos := off + skip
 	for remaining > 0 {
 		_ = rc.SetReadDeadline(time.Now().Add(cfg.ReadIdle))
 		k, rerr := r.Body.Read(buf[:min(int64(len(buf)), remaining)])
@@ -459,12 +512,15 @@ func (h *handler) put(w http.ResponseWriter, r *http.Request) {
 				h.stopped(w, s, "write_failed")
 				return
 			}
+			if sl.h == nil {
+				sl.h = sha256.New()
+			}
 			sl.h.Write(buf[:k])
 			sl.fill += int64(k)
 			b.written += int64(k)
 			h.m.written.Add(int64(k))
 			if sl.fill == slotLen {
-				sl.sum, sl.verified = sl.h.Sum(nil), true
+				sl.sum, sl.verified, sl.h = sl.h.Sum(nil), true, nil
 			}
 			poke := b.poke
 			b.mu.Unlock()

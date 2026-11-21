@@ -91,11 +91,7 @@ func (s *session) touch() {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if s.idle != nil {
-		if s.st == stateActive {
-			s.idle.Reset(s.m.cfg.SessionIdle)
-		} else {
-			s.idle.Reset(s.m.cfg.EndedKeep)
-		}
+		s.idle.Reset(s.m.cfg.SessionIdle)
 	}
 }
 
@@ -120,7 +116,9 @@ func (s *session) finish(st state, code string, a *answer) {
 	s.st, s.code, s.answer = st, code, a
 	close(s.done)
 	if s.idle != nil {
-		s.idle.Reset(s.m.cfg.EndedKeep) // the page may fetch the answer again
+		// A phone may come back much later for the answer; it stays as long
+		// as an active session would wait for the page.
+		s.idle.Reset(s.m.cfg.SessionIdle)
 	}
 	s.mu.Unlock()
 	s.cancel()
@@ -148,8 +146,7 @@ func (s *session) drop() {
 }
 
 // expire runs when the page has sent nothing for SessionIdle: an active
-// session fails (its data waits for reuse). An ended session is forgotten
-// EndedKeep after its last request.
+// session fails (its data waits for reuse); an ended one is forgotten.
 func (s *session) expire() {
 	s.finish(stateFailed, "expired", nil)
 	s.drop()
