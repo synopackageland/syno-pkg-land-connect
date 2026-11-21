@@ -228,8 +228,11 @@ func TestWGuardNegativeControls(t *testing.T) {
 					t.Fatal(err)
 				}
 			}
-			for _, dep := range []string{"localipc", "ipctest", "publicname"} {
+			for _, dep := range []string{"localipc", "ipctest", "publicname", "bigupload"} {
 				files, err := filepath.Glob(filepath.Join("..", dep, "*.go"))
+				if dep == "bigupload" {
+					files = append(files, filepath.Join("..", dep, "upload.js"))
+				}
 				if err != nil {
 					t.Fatal(err)
 				}

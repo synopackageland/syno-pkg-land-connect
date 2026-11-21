@@ -1,8 +1,9 @@
 <script setup lang="ts">
 // One line, the same wherever a Cloudflare way shows (the Cloudflare page's
 // tabs, the temporary address's facts, a public App approval): an info icon
-// whose tooltip says why, then an upload icon with the way's limit (100 MB
-// per file, or the temporary address's 100 seconds per upload) and a
+// whose tooltip says why, then an upload icon with "large files work in a
+// web browser" and the limit other apps keep (100 MB per file, or the
+// temporary address's 100 seconds per upload) and a
 // download icon with "no limit". The separator ends the upload half, so a
 // narrow screen wraps after it and never starts a line with it. Nothing
 // shows for a way the catalog gives no upload limit.

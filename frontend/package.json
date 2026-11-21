@@ -6,7 +6,8 @@
     "build": "vue-tsc --noEmit && vite build",
     "test": "vitest run",
     "lint": "eslint src test vite.config.ts vitest.config.ts",
-    "typecheck": "vue-tsc --noEmit"
+    "typecheck": "vue-tsc --noEmit",
+    "build:upload": "node scripts/build-upload.mjs"
   },
   "dependencies": {
     "@lucide/vue": "1.48.0",

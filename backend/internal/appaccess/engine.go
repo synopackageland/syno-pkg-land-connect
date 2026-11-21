@@ -20,6 +20,7 @@ import (
 	"time"
 
 	"dsmapp/internal/apps"
+	"dsmapp/internal/bigupload"
 	"dsmapp/internal/cfaccess"
 	"dsmapp/internal/cloudflare"
 	"dsmapp/internal/connector"
@@ -66,6 +67,8 @@ type Config struct {
 	// (turned on, Add DSM, a followed rename), so its connection check
 	// settles from now, as a new own-domain connection does.
 	WorkersAddress func()
+	// Uploads carries large browser uploads through public DSM bindings.
+	Uploads *bigupload.Manager
 }
 type running struct {
 	binding apps.PinBinding
@@ -766,7 +769,7 @@ func (e *Engine) ensure(b apps.PinBinding) error {
 	state := apps.StorePinState{Store: e.cfg.Store, ProjectionPath: e.cfg.ProjectionPath, Cleanup: func(ctx context.Context, b apps.PinBinding) error {
 		return e.Remove(ctx, apps.Target{Package: b.Package, Kind: b.Scope, Scope: apps.Scope{Socket: b.Socket}})
 	}}
-	p, err := apps.StartPinProxy(e.ctx, apps.PinConfig{Binding: b, Provider: providerName, InfoPath: filepath.Join(root, b.Package, "INFO"), GatewayJSON: filepath.Join(root, b.Package, "target", "sso", "gateway.json"), ProtectionDigest: b.Summary, State: state, Verifier: e.cfg.Verifier, Authorize: e.accessAuthorizer(b)})
+	p, err := apps.StartPinProxy(e.ctx, apps.PinConfig{Binding: b, Provider: providerName, InfoPath: filepath.Join(root, b.Package, "INFO"), GatewayJSON: filepath.Join(root, b.Package, "target", "sso", "gateway.json"), ProtectionDigest: b.Summary, State: state, Verifier: e.cfg.Verifier, Authorize: e.accessAuthorizer(b), Uploads: e.cfg.Uploads})
 	if err != nil {
 		return err
 	}

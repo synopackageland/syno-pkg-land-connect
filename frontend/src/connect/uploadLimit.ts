@@ -1,5 +1,7 @@
 // Cloudflare's upload limits, from the catalog's marks; a way without one has
-// no line. Downloads have no such limit on any way.
+// no line. Downloads have no such limit on any way. In a web browser, DSM's
+// pages send large files in pieces (docs/large-uploads.md), so the line says
+// large files work there and the limit holds for other apps.
 // - upload-100mb (own domain, Free link): Cloudflare's edge refuses a request
 //   body over 100 MB with error 413 before the NAS sees it. Cloudflare raises
 //   the limit only on its paid Business (200 MB) and Enterprise (500 MB)
