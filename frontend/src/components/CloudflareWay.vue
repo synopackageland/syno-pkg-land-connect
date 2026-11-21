@@ -11,9 +11,7 @@
 // red tool button in the action row at the end of the tab, where the
 // Tailscale and NetBird pages turn off from their status card. The
 // way's own row keeps one height, so everything below lines up across tabs. Both ways end HTTPS at
-// Cloudflare, so the address says so in the same InfoTip, and both carry
-// Cloudflare's upload limit in one File size row, on or off, so it is known
-// before the way is chosen. The page's footer line holds
+// Cloudflare, so the address says so in the same InfoTip. The page's footer line holds
 // the one note that differs. Every row uses the label column, so the
 // buttons line up across both tabs.
 import {computed} from 'vue'
@@ -21,7 +19,6 @@ import {Button,InfoTip,KeyValueRow,Space,Tag} from '@synopackageland/ui'
 import CloudflarePath from './CloudflarePath.vue'
 import SettingUp from './SettingUp.vue'
 import ShowMore from './ShowMore.vue'
-import UploadLimit from './UploadLimit.vue'
 import type {LinkSpec} from '../connect/topology'
 import {translate} from '../i18n'
 import type {WayState} from '../connect/cloudflareWay'
@@ -46,7 +43,6 @@ const tag=computed(()=>props.state==='on'?{key:'on',tone:'success'} as const:{ke
    <div data-way-extra><slot name="extra" /></div>
   </template>
   <slot v-else name="signin" />
-  <KeyValueRow :label="t('cflimit.row')" :data-cf-limit="kind"><UploadLimit :locale="locale" :way="kind==='free'?'cloudflare-workers':'cloudflare-domain'" /></KeyValueRow>
   <CloudflarePath :kind="kind" :state="path" :locale="locale" :links="links" />
   <ShowMore v-if="on&&$slots.change&&changeTitle" :key="changeKey" :title="changeTitle" data-way-change-toggle><div data-way-change><slot name="change" /></div></ShowMore>
   <Space v-if="on||stoppable" spacing="compact" data-way-actions><Button variant="secondary" :disabled="busy" data-way-off @click="emit('turnOff')">{{turnOffLabel}}</Button></Space>

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.0-0193
+
+- Cloudflare: the own domain, Free link and temporary address no longer show an upload limit, and the comparison no longer lists one; large files upload in a web browser on every Cloudflare way
+
 ## 0.1.0-0192
 
 - Cloudflare: large files now upload in a web browser through the own domain, Free link and temporary address, in File Station, Synology Drive and Synology Photos

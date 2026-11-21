@@ -334,29 +334,10 @@ Reconnect are the section's one blue tool button.
 A provider error puts its machine code in `Callout`'s `code`.
 
 - Cloudflare
-  - Upload limit: the own domain and Free link refuse an upload over 100 MB
-    per file (Free and Pro plans) with Cloudflare's own error 413, before the
-    NAS sees it. The temporary address has no size limit, but one upload must
-    finish within 100 seconds, so a large file on a slow line fails (at about
-    5 MB/s, 300 MB does). Downloads have no limit on any way. In a web
+  - Uploads: no upload limit is shown on any Cloudflare way (tabs, the
+    temporary address's facts, App approvals, the comparison). In a web
     browser DSM's pages send large files in pieces on every Cloudflare way
-    (docs/large-uploads.md), so the limit holds only for other apps (desktop
-    and mobile apps, WebDAV). One line (`UploadLimit`, from the catalog's
-    `upload-100mb` or `upload-100s`) says so with a leading InfoTip (browser
-    uploads in pieces, iPhone and iPad included; why other apps keep the
-    limit, the paid plans' 200 MB and 500 MB or the 100-second cut, and the
-    private network or LAN for large files there), an upload icon with
-    "Uploads: large files work in a web browser; other apps up to 100 MB per
-    file (Cloudflare Free/Pro)" or "Uploads: large files work in a web
-    browser; in other apps each must finish within 100 seconds", and a
-    download icon with "Downloads: no limit". The "·" ends the
-    upload half, so a narrow screen wraps after it, never before. It is
-    permanent, never a dismissible Callout: a File size row on the Connection
-    tab (the temporary address's line while it runs, beside the Free link's
-    when that is on too; otherwise the 100 MB line) and in the Own domain and
-    Free link layout (on or off), and under the temporary address's facts
-    (the wizard's temporary step too). A public or Free link App approval
-    lists the same words among its notes.
+    (docs/large-uploads.md), and other clients do not use these ways.
   - Off: one `RadioGroup` (own domain, temporary address; the own domain is
     chosen when one is saved) and the chosen start. The own domain is the
     Cloudflare connect form: a saved name reconnects after the consent, "Use
