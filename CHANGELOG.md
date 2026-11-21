@@ -2,7 +2,9 @@
 
 ## 0.1.0-0192
 
-- Cloudflare: large files now upload in a web browser through the own domain, Free link and temporary address, in File Station, Synology Drive, Synology Photos and DSM's other pages, iPhone and iPad included; desktop and mobile apps and WebDAV keep Cloudflare's limit
+- Cloudflare: large files now upload in a web browser through the own domain, Free link and temporary address, in File Station, Synology Drive and Synology Photos
+- Cloudflare: the upload progress bar starts moving right away
+- Cloudflare: desktop and mobile apps and WebDAV keep Cloudflare's upload limit
 
 ## 0.1.0-0191
 
